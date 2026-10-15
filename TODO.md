@@ -4,3 +4,4 @@
 - [x] Trang Cảnh sát khu vực các phường có bảng tra cứu, tìm kiếm, lọc phường và ghi chú dữ liệu minh họa.
 - [x] Trang Hệ thống biểu mẫu có nhóm danh mục, tìm kiếm, thẻ định dạng và nút xem/tải mẫu.
 - [x] Bảo vệ các trang danh bạ và biểu mẫu, chỉ tài khoản đã được phê duyệt mới truy cập được.
+- [x] Tối ưu hiển thị mobile: sidebar cố định dạng thanh biểu tượng, header/hero/thẻ chức năng xếp gọn, giảm tràn ngang và tối ưu footer.

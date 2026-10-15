@@ -48,3 +48,72 @@ body{background:#fff8f8;color:var(--ink)}
 .quick-desc{display:block;color:#8d777a;font-size:9px;margin-top:5px;line-height:1.35}.directory-shortcuts{padding:0 42px 38px}.shortcut-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.shortcut-grid a{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);padding:15px 16px;color:var(--red);font-size:16px;transition:transform .2s,box-shadow .2s}.shortcut-grid a:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(73,22,26,.08)}.shortcut-grid a span{width:34px;height:34px;display:grid;place-items:center;background:#fff0f1;color:var(--red)}.shortcut-grid a div{flex:1}.shortcut-grid a strong,.shortcut-grid a small{display:block}.shortcut-grid a strong{font-size:12px}.shortcut-grid a small{font-size:9px;color:#8d777a;margin-top:4px}.notice-panel{margin:0 42px 40px;padding:23px 26px;background:#8f1724;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:25px}.notice-panel .eyebrow{color:#f1c6a2}.notice-panel h2{font:500 24px 'Playfair Display',Georgia,serif;margin:3px 0 6px}.notice-panel p:not(.eyebrow){font-size:10px;line-height:1.5;color:#f6dedd;max-width:620px;margin:0}.notice-panel>a{white-space:nowrap;background:#f0c36b;color:#62111a;padding:10px 13px;font-size:10px;font-weight:700}.directory-main,.forms-main{max-width:1220px;margin:0 auto;padding:32px 42px 60px}.directory-hero{display:flex;align-items:center;gap:15px;margin-bottom:22px}.directory-hero>div:nth-child(2){flex:1}.directory-icon{width:52px;height:52px;display:grid;place-items:center;background:#fff0f1;color:var(--red);font-size:25px;border:1px solid #f0d3d5}.directory-hero h2{font:500 30px 'Playfair Display',Georgia,serif;color:var(--red);margin:3px 0 5px}.directory-hero p:not(.eyebrow){color:#8d777a;font-size:11px;margin:0;line-height:1.45}.data-note{display:flex;gap:10px;align-items:center;background:#fff8e8;border:1px solid #f1dfb7;color:#805f28;padding:11px 14px;font-size:10px;margin-bottom:18px}.data-note strong{white-space:nowrap}.directory-toolbar,.forms-toolbar{display:flex;align-items:center;gap:12px;margin:15px 0}.directory-search{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);padding:0 10px;color:#9b8588;min-height:35px;flex:1}.directory-search input{border:0;outline:0;flex:1;padding:9px 0;background:transparent;color:var(--ink);font-size:10px}.directory-toolbar select{border:1px solid var(--line);background:#fff;padding:10px;color:#6f595c;font-size:10px}.result-count{font-size:10px;color:#9b8588;white-space:nowrap}.directory-table-wrap{background:#fff;border:1px solid var(--line);overflow:auto}.directory-table{width:100%;border-collapse:collapse;font-size:10px}.directory-table th{background:#fff0f1;color:#805b5e;text-align:left;text-transform:uppercase;letter-spacing:.06em;font-size:9px;padding:11px 13px;white-space:nowrap}.directory-table td{padding:13px;border-top:1px solid #f1e7e7;color:#604d50;white-space:nowrap}.directory-table td:first-child{color:var(--red)}.phone-cell{font-weight:700}.demo-badge{font-size:8px;background:#fff8e8;color:#8b682a;padding:4px 6px}.forms-toolbar{align-items:flex-start}.forms-toolbar .filter-pills{display:flex;gap:5px;flex-wrap:wrap}.forms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.form-card{background:#fff;border:1px solid var(--line);padding:18px;display:flex;flex-direction:column;min-height:205px}.form-card-top{display:flex;justify-content:space-between;align-items:center;color:#9b8588;font-size:9px}.form-file{background:#fff0f1;color:var(--red);padding:5px 7px;font-weight:700}.form-category{color:var(--red);font-size:9px;text-transform:uppercase;letter-spacing:.1em;margin:18px 0 5px}.form-card h3{font:500 18px/1.25 'Playfair Display',Georgia,serif;color:var(--red);margin:0 0 7px}.form-card>p:not(.form-category){font-size:10px;color:#8d777a;line-height:1.45;margin:0}.form-card-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:17px}.form-card-bottom small{color:#a38d8f;font-size:8px}.form-card-bottom button{border:0;background:transparent;color:var(--red);font-size:9px;font-weight:700}.form-toast{position:fixed;right:24px;bottom:24px;background:#7e1722;color:#fff;padding:12px 15px;font-size:10px;box-shadow:0 8px 25px rgba(51,14,17,.2)}
 @media(max-width:900px){.directory-shortcuts{padding-left:20px;padding-right:20px}.notice-panel{margin-left:20px;margin-right:20px}.directory-main,.forms-main{padding-left:20px;padding-right:20px}.shortcut-grid{grid-template-columns:1fr 1fr}.forms-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.shortcut-grid,.forms-grid{grid-template-columns:1fr}.directory-toolbar,.forms-toolbar{display:block}.directory-toolbar select{width:100%;margin-top:8px}.result-count{display:block;margin-top:8px}.directory-hero{align-items:flex-start;flex-wrap:wrap}.directory-hero .secure-badge{margin-left:67px}.notice-panel{display:block}.notice-panel>a{display:inline-block;margin-top:14px}.directory-table{min-width:720px}}
+
+/* Mobile-first refinement: keep the navigation fixed as a compact icon rail. */
+@media(max-width:760px){
+  .sidebar{width:72px;padding:18px 8px 12px;align-items:center}
+  .sidebar-brand{padding:0;display:block;text-align:center}
+  .sidebar-brand .official-logo{width:43px;height:43px}
+  .sidebar-brand>div,.sidebar-rule,.side-group>p,.side-link>span:not(.side-icon),.side-link>b,.sidebar-bottom span{display:none}
+  .sidebar-rule{margin:15px 0 11px;width:42px}
+  .side-nav{width:100%}
+  .side-group{margin-bottom:15px}
+  .side-link{width:52px;height:40px;justify-content:center;padding:0;margin:3px auto;font-size:17px;position:relative}
+  .side-link .side-icon{margin:0;font-size:17px}
+  .side-link:hover:after{content:attr(aria-label);position:absolute;left:61px;top:8px;background:#66121b;color:#fff;padding:5px 7px;white-space:nowrap;font-size:9px;z-index:80}
+  .sidebar-bottom{padding:10px 0 0;border-top:1px solid #2c4a5d;width:42px;justify-content:center}
+  .main-area{margin-left:72px;min-width:0}
+  .topbar{height:auto;min-height:42px;padding:8px 14px;gap:8px}
+  .topbar-left,.topbar-right{gap:8px;min-width:0}
+  .breadcrumb{display:none}
+  .topbar-right{margin-left:auto;display:block;text-align:right}
+  .system-status{display:none}
+  .clock{display:block;font-size:8px;line-height:1.35;max-width:200px}
+  .clock-label{display:block;margin-right:0;margin-bottom:2px}
+  .main-header{padding:27px 20px 23px;display:block}
+  .main-header h1{font-size:27px;line-height:1.12}
+  .main-header .subtitle{font-size:9px;margin-top:8px}
+  .header-actions{margin-top:17px;display:flex;gap:7px}
+  .support-button{font-size:9px;padding:9px 10px;flex:1;text-align:center}
+  .digital-hero{margin:0 20px 34px;padding:26px 23px;min-height:0;display:block}
+  .hero-content{max-width:none}
+  .digital-hero h2{font-size:29px;line-height:1.08}
+  .digital-hero p{font-size:10px;max-width:245px}
+  .hero-scale{display:none}
+  .quick-section,.all-apps{padding-left:20px;padding-right:20px}
+  .section-title{align-items:flex-start;gap:8px}
+  .section-title h2{font-size:24px}
+  .section-note{font-size:8px;text-align:right}
+  .quick-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .quick-card{padding:12px 10px;min-height:110px;gap:8px}
+  .quick-card .quick-icon{width:30px;height:30px;font-size:15px}
+  .quick-card strong{font-size:10px;line-height:1.25}
+  .quick-desc{font-size:8px}
+  .quick-card>b{font-size:11px}
+  .directory-shortcuts{padding:0 20px 28px}
+  .shortcut-grid{grid-template-columns:1fr;gap:8px}
+  .shortcut-grid a{padding:12px;font-size:14px}
+  .app-grid{grid-template-columns:1fr;gap:9px}
+  .app-card{min-height:150px;padding:16px}
+  .filter-row{display:block}
+  .filter-pills{overflow-x:auto;flex-wrap:nowrap;padding-bottom:5px}
+  .filter-pills button{white-space:nowrap}
+  .search-box{width:100%;margin-top:9px}
+  .notice-panel{margin:0 20px 28px;padding:19px 17px}
+  .notice-panel h2{font-size:20px}
+  .notice-panel p:not(.eyebrow){font-size:9px}
+  .contact{padding:25px 20px 28px}
+  .contact-heading{gap:10px}
+  .contact-heading h2{font-size:21px}
+  .contact-items{grid-template-columns:1fr;gap:15px;margin-top:20px}
+  .footer{margin-left:-72px;width:calc(100% + 72px);padding:13px 16px;display:grid;grid-template-columns:1fr auto;gap:5px;font-size:8px}
+  .footer>span{grid-column:1/-1}
+  .footer p{grid-column:2;grid-row:1;align-self:center;font-size:8px}
+}
+@media(max-width:420px){
+  .quick-grid{grid-template-columns:1fr}
+  .quick-card{min-height:82px}
+  .topbar-right{max-width:145px}
+  .clock{font-size:7px}
+  .main-header h1{font-size:24px}
+}
