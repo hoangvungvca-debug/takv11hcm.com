@@ -179,7 +179,7 @@ async function api(req, res, url) {
   }
   if (url.pathname === '/api/auth/login' && req.method === 'POST') {
     const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase(); const password = String(body.password || ''); const connection = await db(); const [rows] = await connection.execute('SELECT open_id AS openId, email, display_name AS name, password_hash AS passwordHash, password_salt AS passwordSalt, role, status FROM app_users WHERE email=? LIMIT 1', [email]); const user = rows[0];
-    if (!user || !passwordMatches(password, user.passwordSalt, user.passwordHash)) return json(res, 401, { error: 'Email hoặc mật khẩu không đúng.' });
+    if (!user || !passwordMatches(password, user.passwordSalt, user.passwordHash)) return json(res, 401, { error: 'Email hoặc mật khẩu riêng của website không đúng. Mật khẩu Gmail/Manus không dùng được ở đây.' });
     if (user.status !== 'approved' && user.status !== 'admin') return json(res, 403, { pending: true, error: 'Tài khoản đang chờ quản trị viên phê duyệt.' });
     await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setCookie(res, 'webdev_app_session', session, SESSION_MAX_AGE); return json(res, 200, { ok: true, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
   }
