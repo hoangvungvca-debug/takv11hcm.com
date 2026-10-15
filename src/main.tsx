@@ -32,6 +32,37 @@ const sidebarGroups = [
 
 
 
+type SessionUser = { email: string; name: string; role: string; status: string; isAdmin?: boolean };
+type Letter = { id: number; incomingNumber: string; receivedDate: string; sender: string; documentNumber?: string; documentDate?: string; summary: string; handler?: string; deadline?: string; status: string; createdBy?: string };
+
+function LoginPage({ message = 'Đăng nhập bằng tài khoản Manus để truy cập khu vực nội bộ.' }: { message?: string }) {
+  return <div className="login-shell"><div className="login-card"><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="eyebrow">KHU VỰC NỘI BỘ</p><h1>Đăng nhập hệ thống</h1><p>{message}</p><a className="admin-login-button" href="/auth/login">Đăng nhập bằng Manus</a><a className="admin-back" href="/">← Quay về trang chủ</a></div></div>;
+}
+
+function LedgerPage() {
+  const [user, setUser] = useState<SessionUser | null | undefined>(undefined);
+  const [letters, setLetters] = useState<Letter[]>([]);
+  const [notice, setNotice] = useState('');
+  const [form, setForm] = useState({ incomingNumber: '', receivedDate: '', sender: '', documentNumber: '', documentDate: '', summary: '', handler: '', deadline: '', status: 'Chưa xử lý' });
+  const load = async () => { const response = await fetch('/api/letters'); if (response.ok) setLetters((await response.json()).letters || []); };
+  useEffect(() => { fetch('/api/auth/me').then((response) => response.json()).then((data) => { setUser(data.user || null); if (data.authenticated) load(); }).catch(() => setUser(null)); }, []);
+  const update = (key: keyof typeof form, value: string) => setForm((current) => ({ ...current, [key]: value }));
+  const save = async (event: React.FormEvent) => { event.preventDefault(); setNotice(''); const response = await fetch('/api/letters', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) }); const data = await response.json(); if (!response.ok) return setNotice(data.error || 'Không thể lưu công văn.'); setNotice('Đã lưu công văn vào sổ.'); setForm({ incomingNumber: '', receivedDate: '', sender: '', documentNumber: '', documentDate: '', summary: '', handler: '', deadline: '', status: 'Chưa xử lý' }); load(); };
+  if (user === undefined) return <div className="login-shell"><div className="login-card"><p>Đang kiểm tra phiên đăng nhập...</p></div></div>;
+  if (!user) return <LoginPage message="Sổ công văn đến là khu vực nội bộ. Bạn cần đăng nhập để tiếp tục." />;
+  return <div className="internal-shell"><header className="internal-header"><div><p className="eyebrow">HỆ THỐNG PHẦN MỀM TAND</p><h1>Sổ công văn đến</h1><span>TAND KHU VỰC 11 - TP HỒ CHÍ MINH</span></div><div className="internal-user">{user.name || user.email}<a href="/">Trang chủ</a></div></header><main className="ledger-main"><div className="ledger-heading"><div><p className="eyebrow">QUẢN LÝ VĂN BẢN</p><h2>Sổ công văn đến</h2><p>Nhập, lưu và tra cứu công văn đến trong phạm vi người dùng đã được phê duyệt.</p></div><span className="secure-badge">● Nội bộ</span></div><form className="ledger-form" onSubmit={save}><label>Số đến *<input value={form.incomingNumber} onChange={(e) => update('incomingNumber', e.target.value)} required placeholder="VD: 125/2026" /></label><label>Ngày đến *<input type="date" value={form.receivedDate} onChange={(e) => update('receivedDate', e.target.value)} required /></label><label>Cơ quan/người gửi *<input value={form.sender} onChange={(e) => update('sender', e.target.value)} required /></label><label>Số, ký hiệu văn bản<input value={form.documentNumber} onChange={(e) => update('documentNumber', e.target.value)} /></label><label>Ngày văn bản<input type="date" value={form.documentDate} onChange={(e) => update('documentDate', e.target.value)} /></label><label>Người xử lý<input value={form.handler} onChange={(e) => update('handler', e.target.value)} /></label><label>Hạn xử lý<input type="date" value={form.deadline} onChange={(e) => update('deadline', e.target.value)} /></label><label>Trạng thái<select value={form.status} onChange={(e) => update('status', e.target.value)}><option>Chưa xử lý</option><option>Đang xử lý</option><option>Đã hoàn thành</option></select></label><label className="wide-field">Trích yếu nội dung *<textarea value={form.summary} onChange={(e) => update('summary', e.target.value)} required rows={3} placeholder="Tóm tắt nội dung công văn" /></label><div className="ledger-actions"><button className="primary-button" type="submit">Lưu vào sổ công văn</button>{notice && <span className="form-notice">{notice}</span>}</div></form><section className="ledger-table-wrap"><div className="ledger-table-heading"><h3>Danh sách công văn đã ghi sổ</h3><span>{letters.length} văn bản</span></div><div className="ledger-table-scroll"><table><thead><tr><th>Số đến</th><th>Ngày đến</th><th>Nơi gửi</th><th>Trích yếu</th><th>Người xử lý</th><th>Trạng thái</th></tr></thead><tbody>{letters.map((letter) => <tr key={letter.id}><td>{letter.incomingNumber}</td><td>{letter.receivedDate}</td><td>{letter.sender}</td><td>{letter.summary}</td><td>{letter.handler || '—'}</td><td><span className="status-pill">{letter.status}</span></td></tr>)}</tbody></table>{letters.length === 0 && <p className="empty">Chưa có công văn nào được ghi sổ.</p>}</div></section></main></div>;
+}
+
+function AdminPage() {
+  const [user, setUser] = useState<SessionUser | null | undefined>(undefined); const [users, setUsers] = useState<SessionUser[]>([]);
+  const load = async () => { const response = await fetch('/api/admin/users'); if (response.ok) setUsers((await response.json()).users || []); };
+  useEffect(() => { fetch('/api/auth/me').then((response) => response.json()).then((data) => { setUser(data.user || null); if (data.user?.isAdmin) load(); }).catch(() => setUser(null)); }, []);
+  const act = async (openId: string, action: string) => { await fetch(`/api/admin/users/${encodeURIComponent(openId)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) }); load(); };
+  if (user === undefined) return <div className="login-shell"><div className="login-card"><p>Đang kiểm tra quyền quản trị...</p></div></div>;
+  if (!user?.isAdmin) return <LoginPage message="Khu vực này chỉ dành cho quản trị viên đã được cấp quyền." />;
+  return <div className="internal-shell"><header className="internal-header"><div><p className="eyebrow">QUẢN TRỊ HỆ THỐNG</p><h1>Duyệt tài khoản</h1></div><a className="internal-user" href="/so-cong-van">Sổ công văn đến →</a></header><main className="ledger-main"><div className="ledger-table-wrap"><div className="ledger-table-heading"><h3>Tài khoản người dùng</h3><span>{users.length} tài khoản</span></div><div className="ledger-table-scroll"><table><thead><tr><th>Họ tên</th><th>Email</th><th>Vai trò</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>{users.map((item: any) => <tr key={item.openId}><td>{item.name}</td><td>{item.email}</td><td>{item.role}</td><td>{item.status}</td><td>{item.status === 'pending' && <><button className="table-action" onClick={() => act(item.openId, 'approve')}>Duyệt</button><button className="table-action danger" onClick={() => act(item.openId, 'reject')}>Từ chối</button></>}</td></tr>)}</tbody></table></div></div></main></div>;
+}
+
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -58,13 +89,14 @@ function App() {
         <nav className="side-nav" aria-label="Danh mục phần mềm">
           {sidebarGroups.map((group) => <div className="side-group" key={group.label}><p>{group.label}</p>{group.items.length === 0 ? <button className="side-link current" onClick={closeSidebar}><span className="side-icon">⌂</span>Trang chủ</button> : group.items.map((item) => <a className="side-link" href={item.href} target="_blank" rel="noreferrer" key={`${group.label}-${item.title}`} onClick={closeSidebar}><span className={`side-icon ${item.tone}`}>{item.icon}</span><span>{item.title}</span><b>↗</b></a>)}</div>)}
         </nav>
+        <div className="side-group internal-nav"><p>Nội bộ</p><a className="side-link" href="/so-cong-van" onClick={closeSidebar}><span className="side-icon">▣</span><span>Sổ công văn đến</span><b>↗</b></a><a className="side-link" href="/dang-nhap" onClick={closeSidebar}><span className="side-icon">◉</span><span>Đăng nhập nội bộ</span><b>↗</b></a></div>
         <div className="sidebar-bottom"><div className="online-dot" /><span>Hệ thống đang hoạt động</span></div>
       </aside>
       {sidebarOpen && <button className="sidebar-overlay" onClick={closeSidebar} aria-label="Đóng menu" />}
 
       <div className="main-area">
         <div className="topbar"><div className="topbar-left"><button className="mobile-toggle" onClick={() => setSidebarOpen(true)} aria-label="Mở sidebar">☰</button><span className="breadcrumb">Trang chủ <b>/</b> Hệ thống phần mềm</span></div><div className="topbar-right"><span className="system-status"><i /> Hệ thống nội bộ</span><span className="clock"><b className="clock-label">Thời gian</b>{clock}</span></div></div>
-        <header className="main-header"><div><p className="eyebrow">CỔNG KẾT NỐI NGHIỆP VỤ</p><h1>Hệ thống phần mềm TAND</h1><p className="subtitle">TAND KHU VỰC 11 - TP HỒ CHÍ MINH</p></div><button className="support-button" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Hỗ trợ hệ thống <span>?</span></button></header>
+        <header className="main-header"><div><p className="eyebrow">CỔNG KẾT NỐI NGHIỆP VỤ</p><h1>Hệ thống phần mềm TAND</h1><p className="subtitle">TAND KHU VỰC 11 - TP HỒ CHÍ MINH</p></div><div className="header-actions"><button className="support-button" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Hỗ trợ hệ thống <span>?</span></button><a className="support-button login-link" href="/dang-nhap">Đăng nhập nội bộ</a></div></header>
 
         <main>
           <section className="digital-hero"><div className="hero-content"><span className="hero-badge">CHUYỂN ĐỔI SỐ TÒA ÁN</span><h2>Công cụ đúng lúc.<br /><em>Quy trình thông suốt.</em></h2><p>Một không gian tập trung cho các phần mềm nghiệp vụ, điều hành và tiện ích dùng chung của Tòa án nhân dân khu vực 11.</p><button className="hero-link" onClick={() => document.getElementById('all-apps')?.scrollIntoView({ behavior: 'smooth' })}>Xem tất cả ứng dụng <span>↓</span></button></div><div className="hero-scale" aria-label="Biểu tượng Tòa án nhân dân"><div className="hero-emblem"><img src="/court-logo.png" alt="Biểu trưng Tòa án nhân dân" /></div><div className="orbit orbit-a" /><div className="orbit orbit-b" /></div></section>
@@ -82,6 +114,6 @@ function App() {
   );
 }
 
-function Root() { return <App />; }
+function Root() { if (window.location.pathname.startsWith('/so-cong-van')) return <LedgerPage />; if (window.location.pathname.startsWith('/dang-nhap')) return <LoginPage />; if (window.location.pathname.startsWith('/admin')) return <AdminPage />; return <App />; }
 
 createRoot(document.getElementById('root')!).render(<Root />);

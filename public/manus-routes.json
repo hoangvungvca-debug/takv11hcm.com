@@ -1,1 +1,1 @@
-{"routes":[{"path":"/","title":"Hệ thống phần mềm TAND"}]}
+{"routes":[{"path":"/","title":"Hệ thống phần mềm TAND"},{"path":"/dang-nhap","title":"Đăng nhập nội bộ"},{"path":"/so-cong-van","title":"Sổ công văn đến"},{"path":"/admin","title":"Duyệt tài khoản"}]}

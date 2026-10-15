@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 3000",
+    "dev": "node server.mjs",
     "build": "tsc && vite build",
     "start": "NODE_ENV=production node server.mjs",
     "preview": "vite preview --host 0.0.0.0 --port 3000"
@@ -14,7 +14,8 @@
     "react": "latest",
     "react-dom": "latest",
     "typescript": "latest",
-    "vite": "latest"
+    "vite": "latest",
+    "mysql2": "^3.24.6"
   },
   "devDependencies": {
     "@types/react": "^19.3.0",
