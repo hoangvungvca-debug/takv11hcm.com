@@ -181,7 +181,7 @@ async function handle(req, res) {
   const url = new URL(req.url, originFor(req));
   try {
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
-    if (req.method === 'GET' && ['/', '/so-cong-van', '/admin'].includes(url.pathname)) {
+    if (req.method === 'GET' && ['/', '/so-cong-van', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/admin'].includes(url.pathname)) {
       const user = await currentUser(req);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }

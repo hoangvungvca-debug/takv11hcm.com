@@ -1,29 +1,6 @@
-# TODO — Hệ thống phần mềm TAND
-
-- [x] Sắp xếp các ứng dụng theo sidebar trái, phân nhóm gọn gàng và dễ nhìn.
-- [x] Hiển thị biểu tượng cán cân công lý và chủ đề chuyển đổi số Tòa án.
-- [x] Ghi rõ tên “Hệ thống phần mềm TAND”.
-- [x] Hiển thị dòng “TAND KHU VỰC 11 - TP HỒ CHÍ MINH”.
-- [x] Giữ đồng hồ ngày giờ Việt Nam theo thời gian thực.
-- [x] Hiển thị các ứng dụng nổi bật và toàn bộ ứng dụng ở khu vực nội dung chính.
-- [x] Có tìm kiếm và lọc ứng dụng theo nhóm chức năng.
-- [x] Chân trang ghi “Bản quyền: Hoàng Vững”.
-- [x] Responsive cho máy tính, máy tính bảng và điện thoại.
-- [x] Build production và kiểm tra preview thành công.
-- [x] Sidebar hiển thị cố định, không yêu cầu bấm nút để mở trên màn hình desktop và điện thoại.
-- [x] Thanh đầu trang hiển thị nhãn “Thời gian” trước đồng hồ ngày giờ Việt Nam.
-- [x] Thu gọn chiều cao và khoảng đệm bảng giới thiệu “Công cụ đúng lúc. Quy trình thông suốt.” để bố cục cân đối hơn.
-- [x] Tạo thư viện Tài liệu công khai với 74 file Word, tìm kiếm, lọc theo thư mục và tải xuống.
-- [x] Dùng Manus OAuth cho đăng nhập, không lưu mật khẩu riêng trên website.
-- [x] Gán hoangvungvca@gmail.com làm quản trị viên cao nhất.
-- [x] Lưu tài khoản mới ở trạng thái Chờ duyệt; quản trị viên có thể Duyệt, Từ chối hoặc Khóa.
-- [x] Khu vực /admin được bảo vệ và chỉ tài khoản đã được duyệt mới truy cập được.
-- [x] Hiển thị thư viện tài liệu theo các thư mục; mặc định không trải toàn bộ file, chỉ hiện tài liệu sau khi người dùng mở thư mục.
-- [x] Tạo trang đăng nhập riêng bằng Manus OAuth để người dùng dễ nhận biết và truy cập.
-- [x] Gỡ toàn bộ 74 tài liệu công khai khỏi website, mã nguồn và file tải lên; loại bỏ thư viện tài liệu khỏi giao diện để tránh truy cập lại các đường dẫn cũ.
-- [ ] Chân trang trải dài toàn bộ chiều ngang, bao gồm cả khu vực sidebar và vùng nội dung.
-- [ ] Thiết kế sổ công văn đến với biểu mẫu nhập, lưu dữ liệu, tra cứu và phân quyền người dùng.
-- [x] Bắt buộc xác thực trước khi truy cập trang chủ, Sổ công văn đến và khu vực quản trị; người chưa đăng nhập được chuyển đến trang đăng nhập.
-- [x] Thay Manus OAuth bằng biểu mẫu Email + Mật khẩu riêng của website; mật khẩu được băm bằng scrypt, không nhận mật khẩu Gmail/Manus thật.
-- [x] Cho phép tự đăng ký tài khoản; email quản trị hoangvungvca@gmail.com được cấp quyền quản trị, tài khoản khác ở trạng thái chờ duyệt.
-- [x] Ghi nhớ phiên đăng nhập trong 30 ngày bằng cookie HttpOnly, Secure, SameSite=None; không lưu mật khẩu trên trình duyệt.
+- [x] Trang chủ phân nhóm rõ: Truy cập nhanh, Nghiệp vụ Tòa án, Danh bạ phối hợp, Chuyển đổi số và Quản trị hệ thống.
+- [x] Trang Hội thẩm nhân dân có bảng tra cứu, tìm kiếm, lọc phường và ghi chú dữ liệu minh họa.
+- [x] Trang Danh sách khu phố trưởng có bảng tra cứu, tìm kiếm, lọc phường và ghi chú dữ liệu minh họa.
+- [x] Trang Cảnh sát khu vực các phường có bảng tra cứu, tìm kiếm, lọc phường và ghi chú dữ liệu minh họa.
+- [x] Trang Hệ thống biểu mẫu có nhóm danh mục, tìm kiếm, thẻ định dạng và nút xem/tải mẫu.
+- [x] Bảo vệ các trang danh bạ và biểu mẫu, chỉ tài khoản đã được phê duyệt mới truy cập được.
