@@ -39,3 +39,4 @@ body{background:#fff8f8;color:var(--ink)}
 
 /* Footer sits above the fixed sidebar so the bottom bar spans both columns. */
 .footer{position:relative;z-index:45;box-sizing:border-box;min-width:100%;}
+.auth-remember{color:#987d80;font-size:9px;line-height:1.4;text-align:center;margin-top:2px}

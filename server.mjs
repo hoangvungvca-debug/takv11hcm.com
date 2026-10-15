@@ -10,6 +10,7 @@ import { createServer as createViteServer } from 'vite';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 3000);
 const adminEmail = (process.env.ADMIN_EMAIL || 'hoangvungvca@gmail.com').trim().toLowerCase();
+const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
 const projectId = process.env.MANUS_PROJECT_ID || '';
 const jwtSecret = process.env.MANUS_JWT_SECRET || '';
 const oauthPortal = process.env.MANUS_OAUTH_PORTAL_URL || '';
@@ -136,13 +137,13 @@ async function api(req, res, url) {
     const identityId = `local_${randomBytes(12).toString('hex')}`; const admin = email === adminEmail; const hashed = passwordHash(password); const status = admin ? 'approved' : 'pending'; const role = admin ? 'admin' : 'viewer';
     await connection.execute('INSERT INTO app_users (open_id,email,display_name,password_hash,password_salt,role,status,last_login_at) VALUES (?,?,?,?,?,?,?,CURRENT_TIMESTAMP)', [identityId, email, name, hashed.hash, hashed.salt, role, status]);
     if (!admin) return json(res, 201, { ok: true, pending: true, message: 'Tài khoản đã đăng ký và đang chờ quản trị viên phê duyệt.' });
-    const session = sign({ appId: projectId, openId: identityId, email, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 }); setCookie(res, 'webdev_app_session', session); return json(res, 201, { ok: true, pending: false });
+    const session = sign({ appId: projectId, openId: identityId, email, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setCookie(res, 'webdev_app_session', session, SESSION_MAX_AGE); return json(res, 201, { ok: true, pending: false });
   }
   if (url.pathname === '/api/auth/login' && req.method === 'POST') {
     const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase(); const password = String(body.password || ''); const connection = await db(); const [rows] = await connection.execute('SELECT open_id AS openId, email, display_name AS name, password_hash AS passwordHash, password_salt AS passwordSalt, role, status FROM app_users WHERE email=? LIMIT 1', [email]); const user = rows[0];
     if (!user || !passwordMatches(password, user.passwordSalt, user.passwordHash)) return json(res, 401, { error: 'Email hoặc mật khẩu không đúng.' });
     if (user.status !== 'approved' && user.status !== 'admin') return json(res, 403, { pending: true, error: 'Tài khoản đang chờ quản trị viên phê duyệt.' });
-    await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 }); setCookie(res, 'webdev_app_session', session); return json(res, 200, { ok: true, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
+    await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setCookie(res, 'webdev_app_session', session, SESSION_MAX_AGE); return json(res, 200, { ok: true, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
   }
   if (url.pathname === '/api/auth/me' && req.method === 'GET') {
     const user = await currentUser(req);

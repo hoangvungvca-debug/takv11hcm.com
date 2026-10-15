@@ -26,3 +26,4 @@
 - [x] Bắt buộc xác thực trước khi truy cập trang chủ, Sổ công văn đến và khu vực quản trị; người chưa đăng nhập được chuyển đến trang đăng nhập.
 - [x] Thay Manus OAuth bằng biểu mẫu Email + Mật khẩu riêng của website; mật khẩu được băm bằng scrypt, không nhận mật khẩu Gmail/Manus thật.
 - [x] Cho phép tự đăng ký tài khoản; email quản trị hoangvungvca@gmail.com được cấp quyền quản trị, tài khoản khác ở trạng thái chờ duyệt.
+- [x] Ghi nhớ phiên đăng nhập trong 30 ngày bằng cookie HttpOnly, Secure, SameSite=None; không lưu mật khẩu trên trình duyệt.
