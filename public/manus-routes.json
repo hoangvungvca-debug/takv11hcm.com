@@ -1,1 +1,1 @@
-{"routes":[{"path":"/","title":"Hệ thống phần mềm TAND"}]}
+{"routes":[{"path":"/","title":"Hệ thống phần mềm TAND"},{"path":"/admin","title":"Quản trị hệ thống"}]}
