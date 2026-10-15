@@ -1,224 +1,60 @@
-import { useMemo, useState, type ReactNode } from 'react';
+import { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
-type NewsItem = {
-  category: string;
-  date: string;
-  title: string;
-  summary: string;
-  featured?: boolean;
-};
+type Module = { icon: string; title: string; description: string; href: string; tone: string; tag: string };
 
-type ScheduleItem = {
-  date: string;
-  time: string;
-  room: string;
-  code: string;
-  title: string;
-  type: string;
-  status: string;
-};
-
-type IconName = 'search' | 'arrow' | 'calendar' | 'document' | 'book' | 'phone' | 'pin' | 'mail' | 'menu' | 'close' | 'download' | 'external' | 'chevron';
-
-const news: NewsItem[] = [
-  {
-    category: 'Hoạt động',
-    date: '14.10.2026',
-    title: 'Tòa án nhân dân thành phố tổ chức Hội nghị triển khai nhiệm vụ quý IV',
-    summary: 'Tập trung nâng cao chất lượng xét xử, đẩy mạnh cải cách tư pháp và phục vụ người dân.',
-    featured: true,
-  },
-  {
-    category: 'Cải cách tư pháp',
-    date: '10.10.2026',
-    title: 'Ra mắt khu vực hỗ trợ tra cứu thủ tục trực tuyến',
-    summary: 'Các hướng dẫn được sắp xếp theo từng nhu cầu để người dân dễ tìm và chuẩn bị hồ sơ.',
-  },
-  {
-    category: 'Phổ biến pháp luật',
-    date: '06.10.2026',
-    title: 'Chương trình tuyên truyền pháp luật học đường năm 2026',
-    summary: 'Lan tỏa kiến thức pháp luật cơ bản và kỹ năng tiếp cận công lý cho học sinh, sinh viên.',
-  },
+const modules: Module[] = [
+  { icon: '▥', title: 'Báo cáo — Thống kê', description: 'Tổng hợp số liệu, báo cáo nghiệp vụ và các biểu mẫu thống kê.', href: 'https://tk.toaan.gov.vn/Login/', tone: 'blue', tag: 'Nghiệp vụ' },
+  { icon: '▣', title: 'Lịch xét xử', description: 'Theo dõi lịch xét xử và các phiên tòa đã được sắp xếp.', href: 'https://docs.google.com/spreadsheets/d/1BM_e1mOkqr3l6HqeL4SmrWLmTvkdzwTS3dwKLJ_QILI/edit?gid=853317092#gid=853317092', tone: 'gold', tag: 'Lịch làm việc' },
+  { icon: '▤', title: 'Phần mềm chuyển kháng cáo', description: 'Tiếp nhận và quản lý quy trình chuyển hồ sơ kháng cáo.', href: 'https://quanly.tahcmc.vn/login', tone: 'terracotta', tag: 'Quản lý hồ sơ' },
+  { icon: '↗', title: 'E-QLTA (QLA toàn trình)', description: 'Hệ thống quản lý tòa án điện tử toàn trình.', href: 'https://e-qlta.toaan.gov.vn', tone: 'teal', tag: 'Hệ thống điện tử' },
+  { icon: '▦', title: 'Lịch làm việc theo tuần', description: 'Lịch công tác, phân công và lịch làm việc trong tuần.', href: 'https://docs.google.com/document/d/1zpDjH9EkvJ6ktjymfaSfAR_UL0yVWWpg/edit?usp=sharing&ouid=104268435571682100822&rtpof=true&sd=true', tone: 'gold', tag: 'Điều phối' },
+  { icon: '➜', title: 'Tống đạt thừa phát lại', description: 'Theo dõi và cập nhật tình trạng tống đạt hồ sơ.', href: 'https://docs.google.com/spreadsheets/d/1QEx69CMJgr8YE_w_s9uKuCt_TqtAhOyp/edit?usp=sharing&ouid=117303282830124686971', tone: 'blue', tag: 'Hỗ trợ tố tụng' },
+  { icon: '✦', title: 'AI Tòa án', description: 'Tra cứu, hỗ trợ tìm kiếm và xử lý thông tin bằng AI.', href: 'https://ai.toaan.gov.vn/#/chat', tone: 'violet', tag: 'Công nghệ mới' },
+  { icon: '⚖', title: 'Quản lý Tòa án', description: 'Quản lý nghiệp vụ, tài khoản và thông tin vận hành.', href: 'https://qlta.toaan.gov.vn/Login.aspx', tone: 'navy', tag: 'Quản trị' },
+  { icon: '▤', title: 'Công văn đi — đến', description: 'Quản lý văn bản, công văn đến và công văn đi.', href: 'https://vbdh.toaan.gov.vn/Pages/login.zul', tone: 'terracotta', tag: 'Văn thư' },
+  { icon: '◈', title: 'Trợ lý ảo', description: 'Kênh hỗ trợ nhanh cho cán bộ, công chức và người dùng nội bộ.', href: 'https://trolyao.toaan.gov.vn/', tone: 'violet', tag: 'Hỗ trợ' },
+  { icon: '♙', title: 'Thông tin CBCC', description: 'Tra cứu, cập nhật thông tin cán bộ, công chức.', href: 'https://cbccvc.toaan.gov.vn/web/login', tone: 'teal', tag: 'Nhân sự' },
+  { icon: '⌖', title: 'Tìm kiếm địa chỉ sau sáp nhập', description: 'Tra cứu địa chỉ, đơn vị hành chính sau sắp xếp.', href: 'https://diachi.io/?utm_source=zalo&utm_medium=zalo&utm_campaign=zalo', tone: 'gold', tag: 'Tra cứu' },
+  { icon: '✉', title: 'Email công vụ', description: 'Truy cập hệ thống thư điện tử công vụ của ngành.', href: 'https://mail.toaan.gov.vn/owa/#path=/mail/inbox', tone: 'blue', tag: 'Liên lạc' },
+  { icon: '⌁', title: 'Tra cứu án phí', description: 'Công cụ tham khảo và tính mức án phí, lệ phí.', href: 'https://thuvienphapluat.vn/banan/tinh-an-phi?ThuTuc=0&GiaNgach=0&LinhVuc=2&SoTien=324979938', tone: 'terracotta', tag: 'Công cụ' },
+  { icon: '▰', title: 'Phần mềm xét xử trực tuyến', description: 'Đăng ký và hỗ trợ tổ chức phiên tòa trực tuyến.', href: 'http://hotro.tahcmc.vn/call/dangky.php', tone: 'navy', tag: 'Trực tuyến' },
 ];
-
-const announcements = [
-  { date: '12.10.2026', title: 'Thông báo về việc tiếp nhận hồ sơ tại bộ phận một cửa' },
-  { date: '08.10.2026', title: 'Lịch làm việc và tiếp công dân tháng 10 năm 2026' },
-  { date: '01.10.2026', title: 'Công khai danh mục thủ tục hành chính thuộc thẩm quyền' },
-  { date: '26.09.2026', title: 'Hướng dẫn đăng ký nhận văn bản tố tụng qua đường bưu chính' },
-];
-
-const schedules: ScheduleItem[] = [
-  { date: '20/10/2026', time: '08:00', room: 'Phòng xử 01', code: 'HS-2026-001', title: 'Phiên tòa hình sự sơ thẩm', type: 'Hình sự', status: 'Đã xếp lịch' },
-  { date: '20/10/2026', time: '13:30', room: 'Phòng xử 03', code: 'DS-2026-017', title: 'Tranh chấp hợp đồng dân sự', type: 'Dân sự', status: 'Đã xếp lịch' },
-  { date: '21/10/2026', time: '08:00', room: 'Phòng xử 02', code: 'HN-2026-008', title: 'Yêu cầu công nhận thuận tình ly hôn', type: 'Hôn nhân & gia đình', status: 'Đã xếp lịch' },
-  { date: '22/10/2026', time: '08:00', room: 'Phòng xử 01', code: 'KD-2026-004', title: 'Tranh chấp nghĩa vụ thanh toán', type: 'Kinh doanh thương mại', status: 'Đã xếp lịch' },
-  { date: '23/10/2026', time: '13:30', room: 'Phòng xử 04', code: 'HC-2026-003', title: 'Khiếu kiện quyết định hành chính', type: 'Hành chính', status: 'Đã xếp lịch' },
-];
-
-const procedures = [
-  { icon: 'document' as IconName, number: '01', title: 'Nộp đơn khởi kiện', text: 'Điều kiện, thành phần hồ sơ và các bước nộp đơn tại Tòa án.' },
-  { icon: 'book' as IconName, number: '02', title: 'Án phí và lệ phí', text: 'Mức thu, đối tượng được miễn giảm và cách thức nộp.' },
-  { icon: 'calendar' as IconName, number: '03', title: 'Tham gia phiên tòa', text: 'Quyền, nghĩa vụ và những điều cần chuẩn bị trước ngày xét xử.' },
-  { icon: 'phone' as IconName, number: '04', title: 'Tiếp công dân', text: 'Lịch tiếp, cách đăng ký và kênh gửi ý kiến, phản ánh.' },
-];
-
-const forms = [
-  { type: 'Mẫu 01', title: 'Đơn khởi kiện', detail: 'Dùng trong vụ án dân sự, hôn nhân và gia đình, kinh doanh thương mại.' },
-  { type: 'Mẫu 02', title: 'Đơn yêu cầu giải quyết việc dân sự', detail: 'Biểu mẫu tham khảo cho các yêu cầu thuộc thẩm quyền của Tòa án.' },
-  { type: 'Mẫu 03', title: 'Đơn đề nghị sao chụp hồ sơ', detail: 'Dành cho đương sự, người đại diện hoặc người được ủy quyền hợp lệ.' },
-];
-
-function Icon({ name }: { name: IconName }) {
-  const symbols: Record<IconName, string> = {
-    search: '⌕', arrow: '↗', calendar: '□', document: '▤', book: '▥', phone: '◌', pin: '⌖', mail: '✉', menu: '☰', close: '×', download: '↓', external: '↗', chevron: '⌄',
-  };
-  return <span className={`icon icon-${name}`} aria-hidden="true">{symbols[name]}</span>;
-}
-
-function SectionHeading({ eyebrow, title, text, action }: { eyebrow: string; title: string; text?: string; action?: ReactNode }) {
-  return (
-    <div className="section-heading">
-      <div>
-        <p className="eyebrow">{eyebrow}</p>
-        <h2>{title}</h2>
-        {text && <p className="section-lead">{text}</p>}
-      </div>
-      {action}
-    </div>
-  );
-}
 
 function App() {
+  const [query, setQuery] = useState('');
+  const [activeTag, setActiveTag] = useState('Tất cả');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [scheduleType, setScheduleType] = useState('Tất cả lĩnh vực');
-  const [selectedSession, setSelectedSession] = useState<ScheduleItem | null>(null);
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const tags = ['Tất cả', ...Array.from(new Set(modules.map((item) => item.tag)))];
+  const filtered = useMemo(() => modules.filter((item) => {
+    const matchesTag = activeTag === 'Tất cả' || item.tag === activeTag;
+    const text = `${item.title} ${item.description} ${item.tag}`.toLowerCase();
+    return matchesTag && text.includes(query.trim().toLowerCase());
+  }), [activeTag, query]);
+
+  const go = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
     setMenuOpen(false);
   };
 
-  const filteredSchedule = useMemo(() => scheduleType === 'Tất cả lĩnh vực' ? schedules : schedules.filter((item) => item.type === scheduleType), [scheduleType]);
-  const searchResults = useMemo(() => {
-    const term = searchTerm.trim().toLowerCase();
-    if (!term) return [];
-    const candidates = [
-      ...news.map((item) => ({ kind: 'Tin tức', title: item.title, detail: item.summary, anchor: 'tin-tuc' })),
-      ...announcements.map((item) => ({ kind: 'Thông báo', title: item.title, detail: item.date, anchor: 'thong-bao' })),
-      ...procedures.map((item) => ({ kind: 'Thủ tục', title: item.title, detail: item.text, anchor: 'thu-tuc' })),
-      ...forms.map((item) => ({ kind: 'Biểu mẫu', title: item.title, detail: item.detail, anchor: 'bieu-mau' })),
-    ];
-    return candidates.filter((item) => `${item.title} ${item.detail} ${item.kind}`.toLowerCase().includes(term));
-  }, [searchTerm]);
-
-  const downloadForm = (title: string) => {
-    const content = `BẢN MẪU MINH HỌA\n\n${title}\n\nLưu ý: Đây là tệp minh họa cho giao diện, không phải biểu mẫu pháp lý chính thức. Vui lòng liên hệ Tòa án để được hướng dẫn bản hiện hành.`;
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${title.replaceAll(' ', '-').toLowerCase()}.txt`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
-    <div className="site-shell">
-      <div className="topline">
-        <div className="container top-line-inner">
-          <span>TOÀ ÁN NHÂN DÂN THÀNH PHỐ MINH HỌA</span>
-          <span className="topline-note">Công khai · Minh bạch · Vì công lý</span>
-        </div>
-      </div>
+    <div className="portal">
+      <div className="top-ribbon"><div className="wrap ribbon-inner"><span>TÒA ÁN NHÂN DÂN KHU VỰC 11 — THÀNH PHỐ HỒ CHÍ MINH</span><span className="ribbon-right">Cổng phần mềm nội bộ <b>●</b> 2026</span></div></div>
+      <header className="header"><div className="wrap header-inner"><button className="wordmark" onClick={() => go('top')}><span className="mark"><img src="/court-seal.svg" alt="" /></span><span><strong>PHẦN MỀM NỘI BỘ</strong><small>TAND KHU VỰC 11</small></span></button><button className="mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Mở menu">{menuOpen ? '×' : '☰'}</button><nav className={menuOpen ? 'open' : ''}><button className="selected" onClick={() => go('top')}>Trang chủ</button><button onClick={() => go('modules')}>Danh mục phần mềm</button><button onClick={() => go('contact')}>Liên hệ hỗ trợ</button></nav><button className="help-btn" onClick={() => go('contact')}>Trợ giúp <span>?</span></button></div></header>
 
-      <header className="site-header">
-        <div className="container header-inner">
-          <button className="brand" onClick={() => scrollTo('trang-chu')} aria-label="Về trang chủ">
-            <span className="seal"><img src="/court-seal.svg" alt="" /></span>
-            <span className="brand-copy"><strong>CỔNG THÔNG TIN</strong><span>TÒA ÁN NHÂN DÂN</span></span>
-          </button>
-          <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'}><Icon name={menuOpen ? 'close' : 'menu'} /></button>
-          <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Điều hướng chính">
-            <button className="active" onClick={() => scrollTo('trang-chu')}>Trang chủ</button>
-            <button onClick={() => scrollTo('tin-tuc')}>Tin tức</button>
-            <button onClick={() => scrollTo('lich-xet-xu')}>Lịch xét xử</button>
-            <button onClick={() => scrollTo('thu-tuc')}>Thủ tục</button>
-            <button onClick={() => scrollTo('bieu-mau')}>Biểu mẫu</button>
-            <button onClick={() => scrollTo('lien-he')}>Liên hệ</button>
-          </nav>
-          <button className="header-search" onClick={() => document.getElementById('global-search')?.focus()} aria-label="Tìm kiếm"><Icon name="search" /></button>
-        </div>
-      </header>
+      <main id="top">
+        <section className="hero"><div className="wrap hero-inner"><div className="hero-copy"><div className="hero-kicker"><span className="kicker-line" /> CỔNG KẾT NỐI NGHIỆP VỤ</div><h1>Một nơi cho mọi<br /><em>công việc của Tòa án.</em></h1><p>Truy cập nhanh các phần mềm, công cụ nghiệp vụ và kênh hỗ trợ dành cho cán bộ, công chức Tòa án nhân dân khu vực 11.</p><div className="hero-actions"><button className="primary-btn" onClick={() => go('modules')}>Mở danh mục phần mềm <span>↗</span></button><button className="text-link" onClick={() => go('contact')}>Cần hỗ trợ? <span>→</span></button></div></div><div className="hero-art" aria-hidden="true"><div className="sun" /><div className="arch arch-one" /><div className="arch arch-two" /><div className="column column-a" /><div className="column column-b" /><div className="scale"><span /><i /><b /></div><div className="hero-stamp">TAND<br /><small>KHU VỰC 11</small></div></div></div></section>
 
-      <main>
-        <section className="hero" id="trang-chu">
-          <div className="hero-grid container">
-            <div className="hero-copy">
-              <p className="eyebrow light">CỔNG THÔNG TIN ĐIỆN TỬ</p>
-              <h1>Công lý bắt đầu từ<br /><em>thông tin rõ ràng.</em></h1>
-              <p className="hero-text">Tra cứu thông tin công khai, thủ tục hành chính và hướng dẫn cần thiết trong quá trình tiếp cận công lý.</p>
-              <div className="hero-search">
-                <Icon name="search" />
-                <input id="global-search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="Bạn đang tìm kiếm điều gì?" aria-label="Tìm kiếm nội dung" />
-                <button onClick={() => document.getElementById('tim-kiem')?.scrollIntoView({ behavior: 'smooth' })}>Tìm kiếm</button>
-              </div>
-              <div className="hero-links"><button onClick={() => scrollTo('lich-xet-xu')}>Xem lịch xét xử <Icon name="arrow" /></button><button onClick={() => scrollTo('thu-tuc')}>Hướng dẫn thủ tục <Icon name="arrow" /></button></div>
-            </div>
-            <div className="hero-panel">
-              <div className="hero-panel-top"><span className="panel-label">THÔNG TIN HÔM NAY</span><span className="panel-date">15.10.2026</span></div>
-              <div className="hero-stat"><span>12</span><p>phiên tòa<br />dự kiến</p></div>
-              <div className="hero-rule" />
-              <div className="hero-stat small"><span>04</span><p>thông báo<br />mới cập nhật</p></div>
-              <p className="hero-panel-foot">Dữ liệu đang hiển thị là dữ liệu minh họa.</p>
-            </div>
-          </div>
-          <div className="hero-pattern" aria-hidden="true" />
-        </section>
+        <section className="intro wrap"><div className="intro-label"><span>01</span><i /></div><div className="intro-copy"><p className="eyebrow">QUẢN LÝ TẬP TRUNG</p><h2>Công cụ đúng lúc.<br /><em>Quy trình thông suốt.</em></h2></div><p className="intro-text">Trang này tập hợp các hệ thống đang được sử dụng trong công tác nghiệp vụ, điều hành và hỗ trợ nội bộ. Chọn một mục để bắt đầu.</p></section>
 
-        <section className="notice-wrap container">
-          <div className="notice-banner"><span className="notice-mark">!</span><div><strong>Lưu ý quan trọng</strong><p>Website đang sử dụng dữ liệu minh họa để trình bày giao diện. Không sử dụng thông tin tại đây để thay thế thông báo hoặc văn bản chính thức.</p></div><button onClick={() => scrollTo('lien-he')}>Liên hệ xác nhận <Icon name="arrow" /></button></div>
-        </section>
+        <section className="modules-section" id="modules"><div className="wrap"><div className="section-head"><div><p className="eyebrow">DANH MỤC HỆ THỐNG</p><h2>Tất cả công cụ</h2></div><div className="count"><strong>{filtered.length.toString().padStart(2, '0')}</strong><span>hệ thống<br />hiển thị</span></div></div><div className="toolbar"><div className="pills">{tags.map((tag) => <button key={tag} className={activeTag === tag ? 'active' : ''} onClick={() => setActiveTag(tag)}>{tag}</button>)}</div><label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm phần mềm..." aria-label="Tìm phần mềm" /></label></div><div className="module-grid">{filtered.map((item, index) => <a className={`module-card ${item.tone}`} href={item.href} target="_blank" rel="noreferrer" key={item.title}><div className="card-top"><span className="module-icon">{item.icon}</span><span className="card-number">{String(index + 1).padStart(2, '0')}</span></div><div className="module-card-body"><span className="module-tag">{item.tag}</span><h3>{item.title}</h3><p>{item.description}</p></div><span className="card-arrow">↗</span></a>)}</div>{filtered.length === 0 && <div className="no-results">Không tìm thấy phần mềm phù hợp với từ khóa “{query}”.</div>}</div></section>
 
-        <section className="quick-links container" aria-label="Truy cập nhanh">
-          <button onClick={() => scrollTo('lich-xet-xu')}><span className="quick-icon"><Icon name="calendar" /></span><span><strong>Lịch xét xử</strong><small>Tra cứu theo ngày</small></span><Icon name="arrow" /></button>
-          <button onClick={() => scrollTo('thu-tuc')}><span className="quick-icon"><Icon name="document" /></span><span><strong>Thủ tục & hướng dẫn</strong><small>Chuẩn bị hồ sơ</small></span><Icon name="arrow" /></button>
-          <button onClick={() => scrollTo('bieu-mau')}><span className="quick-icon"><Icon name="book" /></span><span><strong>Thư viện biểu mẫu</strong><small>Tải mẫu minh họa</small></span><Icon name="arrow" /></button>
-          <button onClick={() => scrollTo('lien-he')}><span className="quick-icon"><Icon name="phone" /></span><span><strong>Tiếp công dân</strong><small>Kênh liên hệ</small></span><Icon name="arrow" /></button>
-        </section>
-
-        {searchTerm && <section className="search-results container" id="tim-kiem"><div className="search-results-head"><div><p className="eyebrow">KẾT QUẢ TRA CỨU</p><h2>{searchResults.length} kết quả cho “{searchTerm}”</h2></div><button className="text-button" onClick={() => setSearchTerm('')}>Xóa tìm kiếm ×</button></div>{searchResults.length > 0 ? <div className="result-list">{searchResults.map((result) => <button key={`${result.kind}-${result.title}`} onClick={() => scrollTo(result.anchor)}><span className="result-kind">{result.kind}</span><strong>{result.title}</strong><small>{result.detail}</small><Icon name="arrow" /></button>)}</div> : <div className="empty-state">Chưa tìm thấy nội dung phù hợp. Hãy thử từ khóa khác như “đơn”, “lịch” hoặc “thông báo”.</div>}</section>}
-
-        <section className="section container news-section" id="tin-tuc">
-          <SectionHeading eyebrow="CẬP NHẬT MỚI NHẤT" title="Tin tức & thông báo" text="Những thông tin được công khai để người dân chủ động theo dõi." action={<button className="outline-button">Xem tất cả <Icon name="arrow" /></button>} />
-          <div className="news-grid">
-            <article className="featured-news"><div className="featured-media"><span className="media-stamp">TAND</span><span className="media-caption">MINH BẠCH TRONG TỪNG BƯỚC</span></div><div className="news-body"><div className="meta"><span>{news[0].category}</span><time>{news[0].date}</time></div><h3>{news[0].title}</h3><p>{news[0].summary}</p><button className="read-more">Đọc tin <Icon name="arrow" /></button></div></article>
-            <div className="news-list">{news.slice(1).map((item) => <article className="news-list-item" key={item.title}><div className="meta"><span>{item.category}</span><time>{item.date}</time></div><h3>{item.title}</h3><p>{item.summary}</p><button className="read-more">Đọc tin <Icon name="arrow" /></button></article>)}<div className="announcement-box" id="thong-bao"><div className="box-heading"><div><p className="eyebrow">MỚI CẬP NHẬT</p><h3>Thông báo công khai</h3></div><Icon name="external" /></div>{announcements.slice(0, 3).map((item) => <button className="announcement-item" key={item.title}><time>{item.date}</time><span>{item.title}</span><Icon name="arrow" /></button>)}</div></div>
-          </div>
-        </section>
-
-        <section className="section schedule-section" id="lich-xet-xu">
-          <div className="container"><SectionHeading eyebrow="CÔNG KHAI LỊCH LÀM VIỆC" title="Lịch xét xử" text="Tra cứu lịch xét xử minh họa theo lĩnh vực. Vui lòng xác nhận với Tòa án trước khi đến làm việc." action={<button className="outline-button">Tải lịch <Icon name="download" /></button>} />
-            <div className="schedule-toolbar"><div className="date-tabs"><button className="selected">Tất cả</button><button>Hôm nay · 15/10</button><button>Ngày mai · 16/10</button><button>Tuần này</button></div><label className="select-wrap"><span>Lọc lĩnh vực</span><select value={scheduleType} onChange={(event) => setScheduleType(event.target.value)}><option>Tất cả lĩnh vực</option><option>Hình sự</option><option>Dân sự</option><option>Hôn nhân & gia đình</option><option>Kinh doanh thương mại</option><option>Hành chính</option></select><Icon name="chevron" /></label></div>
-            <div className="schedule-table-wrap"><table className="schedule-table"><thead><tr><th>Ngày / giờ</th><th>Phòng xử</th><th>Mã minh họa</th><th>Nội dung phiên tòa</th><th>Trạng thái</th><th><span className="sr-only">Chi tiết</span></th></tr></thead><tbody>{filteredSchedule.map((item) => <tr key={`${item.date}-${item.time}-${item.code}`}><td><strong>{item.date}</strong><span>{item.time}</span></td><td>{item.room}</td><td><span className="case-code">{item.code}</span></td><td><strong>{item.title}</strong><span>{item.type}</span></td><td><span className="status"><i />{item.status}</span></td><td><button className="row-arrow" onClick={() => setSelectedSession(item)} aria-label={`Xem ${item.title}`}><Icon name="arrow" /></button></td></tr>)}</tbody></table></div>
-            <div className="data-note"><span>i</span><p>Lịch xét xử trên đây chỉ là dữ liệu mẫu phục vụ minh họa giao diện. Lịch chính thức có thể thay đổi theo quyết định của Hội đồng xét xử.</p></div>
-          </div>
-        </section>
-
-        <section className="section container guide-section" id="thu-tuc"><SectionHeading eyebrow="ĐỒNG HÀNH CÙNG NGƯỜI DÂN" title="Thủ tục & hướng dẫn" text="Các nội dung được trình bày ngắn gọn, theo từng bước để bạn dễ chuẩn bị." action={<button className="outline-button">Xem toàn bộ <Icon name="arrow" /></button>} /><div className="procedure-grid">{procedures.map((item) => <button className="procedure-card" key={item.number}><span className="procedure-number">{item.number}</span><span className="procedure-icon"><Icon name={item.icon} /></span><h3>{item.title}</h3><p>{item.text}</p><span className="card-link">Xem hướng dẫn <Icon name="arrow" /></span></button>)}</div></section>
-
-        <section className="section forms-section" id="bieu-mau"><div className="container"><SectionHeading eyebrow="TẢI VỀ VÀ THAM KHẢO" title="Thư viện biểu mẫu" text="Mẫu biểu được cung cấp để tham khảo. Hãy kiểm tra phiên bản chính thức trước khi sử dụng." action={<button className="outline-button">Danh mục đầy đủ <Icon name="arrow" /></button>} /><div className="forms-list">{forms.map((form) => <div className="form-row" key={form.type}><div className="form-file"><span className="file-icon">PDF</span><div><span className="form-type">{form.type}</span><h3>{form.title}</h3></div></div><p>{form.detail}</p><button className="download-button" onClick={() => downloadForm(form.title)}><Icon name="download" /> Tải mẫu</button></div>)}</div></div></section>
-
-        <section className="contact-section" id="lien-he"><div className="container contact-grid"><div><p className="eyebrow light">KẾT NỐI VỚI CHÚNG TÔI</p><h2>Cần hỗ trợ thêm<br /><em>về thủ tục?</em></h2><p className="contact-lead">Bộ phận tiếp nhận và trả kết quả sẵn sàng hướng dẫn các thông tin công khai trong giờ làm việc.</p><button className="solid-light-button" onClick={() => window.location.href = 'tel:02473000000'}>Gọi bộ phận một cửa <Icon name="phone" /></button></div><div className="contact-details"><div className="contact-item"><span className="contact-icon"><Icon name="pin" /></span><div><strong>Địa chỉ</strong><p>Số 01, đường Công Lý, phường Minh Bạch,<br />thành phố Minh Họa</p></div></div><div className="contact-item"><span className="contact-icon"><Icon name="phone" /></span><div><strong>Điện thoại</strong><p>(024) 7300 0000 · (024) 7300 0001</p></div></div><div className="contact-item"><span className="contact-icon"><Icon name="mail" /></span><div><strong>Thư điện tử</strong><p>congthongtin@toaan-minhhoa.gov.vn</p></div></div><div className="contact-hours"><span>Giờ làm việc</span><strong>Thứ Hai – Thứ Sáu · 07:30 – 17:00</strong></div></div></div></section>
+        <section className="support wrap" id="contact"><div className="support-main"><span className="support-icon">?</span><div><p className="eyebrow">BẠN CẦN HỖ TRỢ?</p><h2>Liên hệ bộ phận<br /><em>vận hành hệ thống.</em></h2><p>Chúng tôi hỗ trợ giải đáp trong giờ làm việc và tiếp nhận các phản hồi liên quan đến tài khoản, phần mềm và dữ liệu.</p></div></div><div className="support-details"><div><span>Địa chỉ</span><strong>Số 989 đường 2/9, phường Phước Thắng,<br />TP. Hồ Chí Minh</strong></div><div><span>Điện thoại hỗ trợ</span><a href="tel:0913742969">0913 742 969</a></div><div><span>Giờ làm việc</span><strong>Thứ Hai — Thứ Sáu<br />07:30 — 17:00</strong></div></div></section>
       </main>
 
-      <footer className="site-footer"><div className="container footer-grid"><div className="footer-brand"><div className="brand-mark-small"><img src="/court-seal.svg" alt="" /></div><div><strong>CỔNG THÔNG TIN<br />TÒA ÁN NHÂN DÂN</strong><p>Thông tin công khai · Minh bạch · Vì công lý</p></div></div><div className="footer-links"><div><span>Điều hướng</span><button onClick={() => scrollTo('trang-chu')}>Trang chủ</button><button onClick={() => scrollTo('tin-tuc')}>Tin tức</button><button onClick={() => scrollTo('lich-xet-xu')}>Lịch xét xử</button></div><div><span>Hỗ trợ</span><button onClick={() => scrollTo('thu-tuc')}>Thủ tục & hướng dẫn</button><button onClick={() => scrollTo('bieu-mau')}>Biểu mẫu</button><button onClick={() => scrollTo('lien-he')}>Liên hệ</button></div></div></div><div className="container footer-bottom"><span>© 2026 Cổng thông tin Tòa án · Bản giao diện minh họa</span><span>Không phải cổng thông tin chính thức</span></div></footer>
-
-      {selectedSession && <div className="modal-backdrop" onClick={() => setSelectedSession(null)}><div className="session-modal" role="dialog" aria-modal="true" aria-labelledby="session-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" onClick={() => setSelectedSession(null)} aria-label="Đóng"><Icon name="close" /></button><p className="eyebrow">CHI TIẾT LỊCH MINH HỌA</p><h2 id="session-title">{selectedSession.title}</h2><div className="modal-meta"><div><span>Ngày giờ</span><strong>{selectedSession.date} · {selectedSession.time}</strong></div><div><span>Địa điểm</span><strong>{selectedSession.room}</strong></div><div><span>Mã minh họa</span><strong>{selectedSession.code}</strong></div><div><span>Lĩnh vực</span><strong>{selectedSession.type}</strong></div></div><div className="data-note"><span>i</span><p>Thông tin trong cửa sổ này là dữ liệu mẫu và không có giá trị thay thế giấy triệu tập hoặc thông báo chính thức.</p></div></div></div>}
+      <footer className="footer"><div className="wrap footer-inner"><div className="footer-brand"><img src="/court-seal.svg" alt="" /><div><strong>TÒA ÁN NHÂN DÂN KHU VỰC 11</strong><p>Thành phố Hồ Chí Minh</p></div></div><div className="footer-note"><span>Thiết kế và vận hành bởi</span><strong>Thư ký TAND khu vực 11</strong></div><div className="footer-end">Bản quyền nội bộ · 2026</div></div></footer>
     </div>
   );
 }
