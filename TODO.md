@@ -20,3 +20,4 @@
 - [x] Khu vực /admin được bảo vệ và chỉ tài khoản đã được duyệt mới truy cập được.
 - [x] Hiển thị thư viện tài liệu theo các thư mục; mặc định không trải toàn bộ file, chỉ hiện tài liệu sau khi người dùng mở thư mục.
 - [x] Tạo trang đăng nhập riêng bằng Manus OAuth để người dùng dễ nhận biết và truy cập.
+- [x] Gỡ toàn bộ 74 tài liệu công khai khỏi website, mã nguồn và file tải lên; loại bỏ thư viện tài liệu khỏi giao diện để tránh truy cập lại các đường dẫn cũ.

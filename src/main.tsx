@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
-import { publicDocuments } from './documents';
 
 type Module = { icon: string; title: string; description: string; href: string; tone: string; tag: string };
 
@@ -37,9 +36,6 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeTag, setActiveTag] = useState('Tất cả');
-  const [documentQuery, setDocumentQuery] = useState('');
-  const [documentFolder, setDocumentFolder] = useState('Tất cả');
-  const [openDocumentFolder, setOpenDocumentFolder] = useState<string | null>(null);
   const [now, setNow] = useState(() => new Date());
 
   const clock = new Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(now);
@@ -53,15 +49,6 @@ function App() {
 
   const closeSidebar = () => setSidebarOpen(false);
   const quickModules = [modules[0], modules[1], modules[3], modules[6]];
-  const documentFolders = ['Tất cả', ...Array.from(new Set(publicDocuments.map((document) => document.folder)))];
-  const filteredDocuments = publicDocuments.filter((document) => {
-    const selectedFolder = openDocumentFolder || documentFolder;
-    const matchesFolder = selectedFolder === 'Tất cả' || document.folder === selectedFolder;
-    return matchesFolder && `${document.name} ${document.folder}`.toLowerCase().includes(documentQuery.trim().toLowerCase());
-  });
-  const folderCounts = publicDocuments.reduce<Record<string, number>>((counts, document) => { counts[document.folder] = (counts[document.folder] || 0) + 1; return counts; }, {});
-  const showDocumentFiles = Boolean(openDocumentFolder) || documentFolder !== 'Tất cả' || documentQuery.trim().length > 0;
-  const openDocuments = () => document.getElementById('documents')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
     <div className="app-shell">
@@ -71,7 +58,6 @@ function App() {
         <nav className="side-nav" aria-label="Danh mục phần mềm">
           {sidebarGroups.map((group) => <div className="side-group" key={group.label}><p>{group.label}</p>{group.items.length === 0 ? <button className="side-link current" onClick={closeSidebar}><span className="side-icon">⌂</span>Trang chủ</button> : group.items.map((item) => <a className="side-link" href={item.href} target="_blank" rel="noreferrer" key={`${group.label}-${item.title}`} onClick={closeSidebar}><span className={`side-icon ${item.tone}`}>{item.icon}</span><span>{item.title}</span><b>↗</b></a>)}</div>)}
         </nav>
-        <div className="side-group side-document-link"><p>Tài liệu</p><button className="side-link" onClick={() => { closeSidebar(); openDocuments(); }}><span className="side-icon">▤</span><span>Tài liệu công khai</span><b>↓</b></button></div>
         <div className="sidebar-bottom"><div className="online-dot" /><span>Hệ thống đang hoạt động</span></div>
       </aside>
       {sidebarOpen && <button className="sidebar-overlay" onClick={closeSidebar} aria-label="Đóng menu" />}
@@ -86,8 +72,6 @@ function App() {
           <section className="quick-section"><div className="section-title"><div><p className="eyebrow">TRUY CẬP NHANH</p><h2>Ứng dụng nổi bật</h2></div><span className="section-note">04 lối tắt thường dùng</span></div><div className="quick-grid">{quickModules.map((item) => <a className={`quick-card ${item.tone}`} href={item.href} target="_blank" rel="noreferrer" key={item.title}><span className="quick-icon">{item.icon}</span><div><small>{item.tag}</small><strong>{item.title}</strong></div><b>↗</b></a>)}</div></section>
 
           <section className="all-apps" id="all-apps"><div className="section-title"><div><p className="eyebrow">DANH MỤC HỆ THỐNG</p><h2>Tất cả ứng dụng</h2></div><span className="app-count"><strong>{String(filtered.length).padStart(2, '0')}</strong> ứng dụng</span></div><div className="filter-row"><div className="filter-pills">{tags.map((tag) => <button className={activeTag === tag ? 'active' : ''} key={tag} onClick={() => setActiveTag(tag)}>{tag}</button>)}</div><label className="search-box"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm ứng dụng..." aria-label="Tìm ứng dụng" /></label></div><div className="app-grid">{filtered.map((item, index) => <a className={`app-card ${item.tone}`} href={item.href} target="_blank" rel="noreferrer" key={item.title}><div className="app-card-top"><span className="app-symbol">{item.icon}</span><span className="app-index">{String(index + 1).padStart(2, '0')}</span></div><span className="app-tag">{item.tag}</span><h3>{item.title}</h3><p>{item.description}</p><span className="app-arrow">↗</span></a>)}</div>{filtered.length === 0 && <div className="empty">Không tìm thấy ứng dụng phù hợp.</div>}</section>
-
-          <section className="documents-section" id="documents"><div className="section-title"><div><p className="eyebrow">THƯ VIỆN CÔNG KHAI</p><h2>Tài liệu công khai</h2></div><span className="app-count"><strong>{publicDocuments.length}</strong> tài liệu · {documentFolders.length - 1} thư mục</span></div><div className="documents-toolbar"><select className="document-select" value={documentFolder} onChange={(event) => { const value = event.target.value; setDocumentFolder(value); setOpenDocumentFolder(value === 'Tất cả' ? null : value); }} aria-label="Lọc theo thư mục"><option value="Tất cả">Tất cả thư mục</option>{documentFolders.slice(1).map((folder) => <option value={folder} key={folder}>{folder}</option>)}</select><label className="search-box"><span>⌕</span><input value={documentQuery} onChange={(event) => setDocumentQuery(event.target.value)} placeholder="Tìm trong tài liệu..." aria-label="Tìm tài liệu" /></label></div>{!showDocumentFiles ? <div className="folder-grid">{documentFolders.slice(1).map((folder) => <button className="folder-card" key={folder} onClick={() => { setDocumentFolder(folder); setOpenDocumentFolder(folder); }}><span className="folder-icon">▰</span><span><strong>{folder}</strong><small>{folderCounts[folder]} tài liệu</small></span><b>→</b></button>)}</div> : <><div className="folder-open-bar"><button onClick={() => { setOpenDocumentFolder(null); setDocumentFolder('Tất cả'); setDocumentQuery(''); }}>← Tất cả thư mục</button><strong>{openDocumentFolder || (documentFolder !== 'Tất cả' ? documentFolder : 'Kết quả tìm kiếm')}</strong><span>{filteredDocuments.length} tài liệu</span></div><div className="document-list">{filteredDocuments.map((document) => <a className="document-row" href={document.path} target="_blank" rel="noreferrer" download key={document.path}><span className="doc-icon">{document.extension}</span><span className="doc-copy"><strong>{document.name}</strong><small>{document.folder}</small></span><span className="doc-arrow">↓</span></a>)}</div>{filteredDocuments.length === 0 && <div className="empty">Không tìm thấy tài liệu phù hợp.</div>}</>}</section>
 
           <section className="contact" id="contact"><div className="contact-heading"><span className="contact-mark">?</span><div><p className="eyebrow">BẠN CẦN HỖ TRỢ?</p><h2>Liên hệ bộ phận vận hành hệ thống.</h2></div></div><div className="contact-items"><div><small>Địa chỉ</small><strong>Số 989 đường 2/9, phường Phước Thắng,<br />TP. Hồ Chí Minh</strong></div><div><small>Điện thoại</small><a href="tel:0913742969">0913 742 969</a></div><div><small>Giờ làm việc</small><strong>Thứ Hai — Thứ Sáu<br />07:30 — 17:00</strong></div></div></section>
         </main>
