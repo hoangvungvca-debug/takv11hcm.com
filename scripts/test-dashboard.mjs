@@ -1,0 +1,47 @@
+import assert from 'node:assert/strict';
+import { createServer } from 'vite';
+import { readFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+const vite = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom' });
+try {
+  const u = await vite.ssrLoadModule('/src/dashboard/dashboard-utils.ts');
+  const { modules } = await vite.ssrLoadModule('/src/dashboard/apps.ts');
+  const user = { name: 'Nguyễn Văn A', email: 'a@example.com' };
+  assert.equal(u.normalizeSearch('Hội thẩm ĐỊA PHƯỜNG'), 'hoi tham dia phuong');
+  assert.equal(u.dateKey('2026-10-15T20:00:00.000Z'), '2026-10-16');
+  assert.equal(u.dateKey('2026-10-16'), '2026-10-16');
+  assert.equal(u.displayDate('2026-10-16'), '16/10/2026');
+  assert.equal(u.displayDate('bad date'), 'Chưa có hạn');
+  assert(u.assignedToUser({ handler: 'nguyễn văn a' }, user));
+  assert(u.assignedToUser({ handler: 'A@EXAMPLE.COM' }, user));
+  assert(!u.assignedToUser({ handler: 'Nguyễn Văn B' }, user));
+  assert(!u.assignedToUser({ handler: '' }, user));
+  const now = new Date('2026-10-16T00:00:00+07:00');
+  assert.equal(u.deadlineState({ deadline: '2026-10-15', status: 'Chưa xử lý' }, now), 'overdue');
+  assert.equal(u.deadlineState({ deadline: '2026-10-18', status: 'Đang xử lý' }, now), 'soon');
+  assert.equal(u.deadlineState({ deadline: '2026-10-19', status: 'Đang xử lý' }, now), 'normal');
+  assert.equal(u.deadlineState({ deadline: '2026-10-15', status: 'Đã hoàn thành' }, now), 'normal');
+  assert.equal(modules.length, 15);
+  const source = await readFile('src/main.tsx', 'utf8');
+  const previous = execFileSync('git', ['show', 'dee362c:src/main.tsx'], { encoding: 'utf8' });
+  const loginBlock = text => text.slice(text.indexOf('function LoginPage('), text.indexOf('function LedgerPage('));
+  assert.equal(loginBlock(source), loginBlock(previous), 'Không thay đổi phần đăng nhập đã chốt');
+  const oldApps = previous.slice(previous.indexOf('const modules:'), previous.indexOf('const sidebarGroups'));
+  for (const item of modules) assert(oldApps.includes(item.href), `Giữ URL ${item.title}`);
+  const html = await readFile('/home/ubuntu/deliverables/tand-dashboard/index.html', 'utf8');
+  assert.equal((html.match(/class="db-quick-card/g) || []).length, 4);
+  for (const id of ['db-main', 'db-notices', 'db-directories', 'db-forms', 'db-apps', 'db-support']) assert(html.includes(`id="${id}"`));
+  assert(!html.includes('<details open'), 'Ứng dụng mặc định thu gọn');
+  assert(html.indexOf('class="db-footer"') > html.indexOf('id="db-support"'));
+  assert(html.includes('Bản HTML/CSS minh họa'));
+  assert(!html.includes('hoangvungvca@gmail.com'));
+  assert(!html.includes('manus.computer'));
+  assert(!html.includes('0913 742 969'));
+  assert(html.includes('aria-label="Hỗ trợ hệ thống"'));
+  const routes = JSON.parse(await readFile('public/manus-routes.json', 'utf8'));
+  const oldRoutes = JSON.parse(execFileSync('git', ['show', 'dee362c:public/manus-routes.json'], { encoding: 'utf8' }));
+  assert.deepEqual(routes, oldRoutes, 'Không thêm route bỏ qua đăng nhập');
+  console.log('PASS: tìm kiếm không dấu, ngày Việt Nam, phân công cá nhân, hạn công việc, 4 lối tắt, 15 URL, giữ đăng nhập/route, HTML minh họa.');
+} finally {
+  await vite.close();
+}
