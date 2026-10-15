@@ -167,9 +167,14 @@ async function handle(req, res) {
       const token = await exchangeCode(url.searchParams.get('code'), state.redirectUri); const identity = await getIdentity(token.accessToken);
       const user = await upsertUser({ openId: identity.openId, email: (identity.email || '').toLowerCase(), name: identity.name || identity.email || 'Người dùng Manus' });
       const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 }); setCookie(res, 'webdev_app_session', session, 60 * 60 * 24 * 7); clearCookie(res, 'oauth_state');
-      res.writeHead(302, { Location: user.status === 'pending' ? '/?login=pending' : '/admin' }); return res.end();
+      res.writeHead(302, { Location: user.status === 'pending' ? '/dang-nhap?login=pending' : (isAdmin(user) ? '/admin' : '/so-cong-van') }); return res.end();
     }
     if (req.method === 'GET' && url.pathname === '/api/auth/login-url') return json(res, 200, { url: '/auth/login' });
+    if (req.method === 'GET' && ['/', '/so-cong-van', '/admin'].includes(url.pathname)) {
+      const user = await currentUser(req);
+      if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
+      if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }
+    }
     return null;
   } catch (error) { console.error(error); return json(res, 500, { error: 'Có lỗi máy chủ. Vui lòng thử lại.' }); }
 }

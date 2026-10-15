@@ -23,3 +23,4 @@
 - [x] Gỡ toàn bộ 74 tài liệu công khai khỏi website, mã nguồn và file tải lên; loại bỏ thư viện tài liệu khỏi giao diện để tránh truy cập lại các đường dẫn cũ.
 - [ ] Chân trang trải dài toàn bộ chiều ngang, bao gồm cả khu vực sidebar và vùng nội dung.
 - [ ] Thiết kế sổ công văn đến với biểu mẫu nhập, lưu dữ liệu, tra cứu và phân quyền người dùng.
+- [x] Bắt buộc xác thực trước khi truy cập trang chủ, Sổ công văn đến và khu vực quản trị; người chưa đăng nhập được chuyển đến trang đăng nhập.

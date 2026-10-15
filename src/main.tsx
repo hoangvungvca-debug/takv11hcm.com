@@ -36,7 +36,8 @@ type SessionUser = { email: string; name: string; role: string; status: string; 
 type Letter = { id: number; incomingNumber: string; receivedDate: string; sender: string; documentNumber?: string; documentDate?: string; summary: string; handler?: string; deadline?: string; status: string; createdBy?: string };
 
 function LoginPage({ message = 'Đăng nhập bằng tài khoản Manus để truy cập khu vực nội bộ.' }: { message?: string }) {
-  return <div className="login-shell"><div className="login-card"><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="eyebrow">KHU VỰC NỘI BỘ</p><h1>Đăng nhập hệ thống</h1><p>{message}</p><a className="admin-login-button" href="/auth/login">Đăng nhập bằng Manus</a><a className="admin-back" href="/">← Quay về trang chủ</a></div></div>;
+  const pending = new URLSearchParams(window.location.search).get('login') === 'pending';
+  return <div className="login-shell"><div className="login-card"><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="eyebrow">KHU VỰC NỘI BỘ</p><h1>{pending ? 'Đang chờ phê duyệt' : 'Đăng nhập hệ thống'}</h1><p>{pending ? 'Tài khoản đã được ghi nhận. Vui lòng chờ quản trị viên phê duyệt quyền truy cập.' : message}</p>{!pending && <a className="admin-login-button" href="/auth/login">Đăng nhập bằng Manus</a>}<a className="admin-back" href="/">Quay về trang chủ</a></div></div>;
 }
 
 function LedgerPage() {
