@@ -1,5 +1,5 @@
 import http from 'node:http';
-import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
+import { createHmac, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -17,6 +17,7 @@ const oauthApi = process.env.MANUS_OAUTH_API_URL || '';
 let pool;
 let schemaPromise;
 let lettersSchemaPromise;
+let passwordSchemaPromise;
 
 const base64url = (value) => Buffer.from(value).toString('base64url');
 const parseJson = (value) => { try { return JSON.parse(value); } catch { return null; } };
@@ -52,6 +53,7 @@ async function db() {
     open_id VARCHAR(191) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     display_name VARCHAR(255) NOT NULL,
+    password_hash VARCHAR(255) NULL,
     role VARCHAR(32) NOT NULL DEFAULT 'viewer',
     status VARCHAR(32) NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -60,6 +62,11 @@ async function db() {
     INDEX idx_app_users_status (status)
   )`);
   await schemaPromise;
+  if (!passwordSchemaPromise) passwordSchemaPromise = Promise.all([
+    pool.query('ALTER TABLE app_users ADD COLUMN password_hash VARCHAR(255) NULL'),
+    pool.query('ALTER TABLE app_users ADD COLUMN password_salt VARCHAR(255) NULL')
+  ]).catch((error) => { if (error.code !== 'ER_DUP_FIELDNAME') throw error; });
+  await passwordSchemaPromise;
   if (!lettersSchemaPromise) lettersSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS incoming_letters (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     incoming_number VARCHAR(80) NOT NULL,
@@ -102,6 +109,10 @@ async function currentUser(req) {
 }
 
 const isAdmin = (user) => user?.role === 'admin' && user?.status === 'approved';
+const passwordHash = (password, salt = randomBytes(16).toString('hex')) => ({ salt, hash: scryptSync(password, salt, 64).toString('hex') });
+const passwordMatches = (password, salt, expected) => { if (!salt || !expected) return false; const actual = Buffer.from(passwordHash(password, salt).hash, 'hex'); const target = Buffer.from(expected, 'hex'); return actual.length === target.length && timingSafeEqual(actual, target); };
+const validEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
 
 async function exchangeCode(code, redirectUri) {
   if (!oauthApi || !projectId) throw new Error('OAuth chưa được cấu hình trong môi trường máy chủ');
@@ -118,6 +129,21 @@ async function getIdentity(accessToken) {
 
 async function api(req, res, url) {
   if (url.pathname === '/_app/health') return json(res, 200, { ok: true });
+  if (url.pathname === '/api/auth/register' && req.method === 'POST') {
+    const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase(); const password = String(body.password || ''); const name = String(body.name || email.split('@')[0]).trim();
+    if (!validEmail(email) || password.length < 8 || !name) return json(res, 400, { error: 'Vui lòng nhập họ tên, email hợp lệ và mật khẩu từ 8 ký tự.' });
+    const connection = await db(); const [existing] = await connection.execute('SELECT open_id FROM app_users WHERE email=? LIMIT 1', [email]); if (existing.length) return json(res, 409, { error: 'Email này đã được đăng ký.' });
+    const identityId = `local_${randomBytes(12).toString('hex')}`; const admin = email === adminEmail; const hashed = passwordHash(password); const status = admin ? 'approved' : 'pending'; const role = admin ? 'admin' : 'viewer';
+    await connection.execute('INSERT INTO app_users (open_id,email,display_name,password_hash,password_salt,role,status,last_login_at) VALUES (?,?,?,?,?,?,?,CURRENT_TIMESTAMP)', [identityId, email, name, hashed.hash, hashed.salt, role, status]);
+    if (!admin) return json(res, 201, { ok: true, pending: true, message: 'Tài khoản đã đăng ký và đang chờ quản trị viên phê duyệt.' });
+    const session = sign({ appId: projectId, openId: identityId, email, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 }); setCookie(res, 'webdev_app_session', session); return json(res, 201, { ok: true, pending: false });
+  }
+  if (url.pathname === '/api/auth/login' && req.method === 'POST') {
+    const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase(); const password = String(body.password || ''); const connection = await db(); const [rows] = await connection.execute('SELECT open_id AS openId, email, display_name AS name, password_hash AS passwordHash, password_salt AS passwordSalt, role, status FROM app_users WHERE email=? LIMIT 1', [email]); const user = rows[0];
+    if (!user || !passwordMatches(password, user.passwordSalt, user.passwordHash)) return json(res, 401, { error: 'Email hoặc mật khẩu không đúng.' });
+    if (user.status !== 'approved' && user.status !== 'admin') return json(res, 403, { pending: true, error: 'Tài khoản đang chờ quản trị viên phê duyệt.' });
+    await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 }); setCookie(res, 'webdev_app_session', session); return json(res, 200, { ok: true, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
+  }
   if (url.pathname === '/api/auth/me' && req.method === 'GET') {
     const user = await currentUser(req);
     return json(res, 200, { authenticated: Boolean(user), user: user ? { ...user, isAdmin: isAdmin(user) } : null });
@@ -154,22 +180,6 @@ async function handle(req, res) {
   const url = new URL(req.url, originFor(req));
   try {
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
-    if (url.pathname === '/auth/login') {
-      if (!oauthPortal || !projectId) return json(res, 503, { error: 'OAuth Manus chưa được cấu hình.' });
-      const nonce = randomBytes(18).toString('hex'); const redirectUri = `${originFor(req)}/manus-oauth/callback`;
-      const state = base64url(JSON.stringify({ redirectUri, nonce })); setCookie(res, 'oauth_state', `${state}.${nonce}`, 600);
-      const authUrl = new URL(`${oauthPortal}/app-auth`); authUrl.searchParams.set('appId', projectId); authUrl.searchParams.set('redirectUri', redirectUri); authUrl.searchParams.set('state', state); authUrl.searchParams.set('responseType', 'code');
-      res.writeHead(302, { Location: authUrl.toString() }); return res.end();
-    }
-    if (url.pathname === '/manus-oauth/callback') {
-      const stateCookie = cookies(req).oauth_state; const state = parseJson(Buffer.from(url.searchParams.get('state') || '', 'base64url').toString('utf8'));
-      if (!stateCookie || !state || stateCookie !== `${url.searchParams.get('state')}.${state.nonce}` || !url.searchParams.get('code')) return json(res, 400, { error: 'Phiên đăng nhập không hợp lệ.' });
-      const token = await exchangeCode(url.searchParams.get('code'), state.redirectUri); const identity = await getIdentity(token.accessToken);
-      const user = await upsertUser({ openId: identity.openId, email: (identity.email || '').toLowerCase(), name: identity.name || identity.email || 'Người dùng Manus' });
-      const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7 }); setCookie(res, 'webdev_app_session', session, 60 * 60 * 24 * 7); clearCookie(res, 'oauth_state');
-      res.writeHead(302, { Location: user.status === 'pending' ? '/dang-nhap?login=pending' : (isAdmin(user) ? '/admin' : '/so-cong-van') }); return res.end();
-    }
-    if (req.method === 'GET' && url.pathname === '/api/auth/login-url') return json(res, 200, { url: '/auth/login' });
     if (req.method === 'GET' && ['/', '/so-cong-van', '/admin'].includes(url.pathname)) {
       const user = await currentUser(req);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
