@@ -24,3 +24,6 @@ Giao diện viết HTML ngữ nghĩa bằng JSX React và CSS tách riêng, khô
 Chat được giới hạn cho tài khoản `approved`/`admin`, lưu tên, email, nội dung và thời gian trong bảng `internal_chat_messages`; mỗi tin tối đa 1.000 ký tự. API trả tối đa 100 tin mới nhất và React escape nội dung khi hiển thị. Không hỗ trợ chat công khai.
 
 Footer hiển thị tổng lượt truy cập và lượt trong ngày từ bảng `site_visit_stats`. Chỉ ghi nhận khi người dùng đã đăng nhập mở trang chủ; không lưu IP hoặc dấu vân tay thiết bị. API thống kê cũng yêu cầu tài khoản được duyệt.
+
+## Quyết định cập nhật sau nghiệm thu
+Trang chủ chính thức sử dụng lại component App và cách sắp xếp ứng dụng của phiên bản cũ theo yêu cầu người dùng. Dashboard nghiệp vụ mới chỉ giữ lại như mã tham khảo/demonstration, không thay thế trang chủ mặc định. Các thay đổi tiếp theo chỉ thực hiện ở đúng mục được yêu cầu.

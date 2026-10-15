@@ -9,3 +9,4 @@
 - [ ] Cấu hình email gửi đi chính thức (`RESEND_API_KEY` và địa chỉ người gửi đã xác minh) để liên kết khôi phục được gửi đến hộp thư.
 - [x] Thêm checkbox Remember Me: phiên 30 ngày khi chọn, phiên tạm thời khi bỏ chọn.
 - [x] Tự điền email lần sau bằng localStorage; không lưu mật khẩu.
+- [x] Khôi phục trang chủ về bố cục App cũ theo yêu cầu; không thay đổi đăng nhập, Remember Me, Sổ công văn, danh bạ và biểu mẫu.
