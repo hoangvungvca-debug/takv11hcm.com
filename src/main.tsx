@@ -32,6 +32,12 @@ const sidebarGroups = [
 ];
 
 
+
+function LoginPage() {
+  const pending = new URLSearchParams(window.location.search).get('login') === 'pending';
+  return <div className="login-shell"><div className="login-card"><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="eyebrow">HỆ THỐNG PHẦN MỀM TAND</p><h1>Đăng nhập hệ thống</h1><p>{pending ? 'Tài khoản của bạn đã được ghi nhận và đang chờ quản trị viên phê duyệt.' : 'Sử dụng tài khoản Manus của bạn để gửi yêu cầu truy cập khu vực nội bộ.'}</p>{!pending && <a className="admin-login-button" href="/auth/login">Đăng nhập bằng Manus</a>}<a className="admin-back" href="/">← Quay về trang chủ</a></div></div>;
+}
+
 function AdminPage() {
   const [me, setMe] = useState<{ email: string; isAdmin: boolean; status: string } | null>(null);
   const [users, setUsers] = useState<Array<{ openId: string; email: string; name: string; role: string; status: string }>>([]);
@@ -50,6 +56,7 @@ function App() {
   const [activeTag, setActiveTag] = useState('Tất cả');
   const [documentQuery, setDocumentQuery] = useState('');
   const [documentFolder, setDocumentFolder] = useState('Tất cả');
+  const [openDocumentFolder, setOpenDocumentFolder] = useState<string | null>(null);
   const [now, setNow] = useState(() => new Date());
   const [authUser, setAuthUser] = useState<{ email: string; isAdmin: boolean; status: string } | null>(null);
 
@@ -67,9 +74,12 @@ function App() {
   const quickModules = [modules[0], modules[1], modules[3], modules[6]];
   const documentFolders = ['Tất cả', ...Array.from(new Set(publicDocuments.map((document) => document.folder)))];
   const filteredDocuments = publicDocuments.filter((document) => {
-    const matchesFolder = documentFolder === 'Tất cả' || document.folder === documentFolder;
+    const selectedFolder = openDocumentFolder || documentFolder;
+    const matchesFolder = selectedFolder === 'Tất cả' || document.folder === selectedFolder;
     return matchesFolder && `${document.name} ${document.folder}`.toLowerCase().includes(documentQuery.trim().toLowerCase());
   });
+  const folderCounts = publicDocuments.reduce<Record<string, number>>((counts, document) => { counts[document.folder] = (counts[document.folder] || 0) + 1; return counts; }, {});
+  const showDocumentFiles = Boolean(openDocumentFolder) || documentFolder !== 'Tất cả' || documentQuery.trim().length > 0;
   const openDocuments = () => document.getElementById('documents')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
@@ -81,13 +91,14 @@ function App() {
           {sidebarGroups.map((group) => <div className="side-group" key={group.label}><p>{group.label}</p>{group.items.length === 0 ? <button className="side-link current" onClick={closeSidebar}><span className="side-icon">⌂</span>Trang chủ</button> : group.items.map((item) => <a className="side-link" href={item.href} target="_blank" rel="noreferrer" key={`${group.label}-${item.title}`} onClick={closeSidebar}><span className={`side-icon ${item.tone}`}>{item.icon}</span><span>{item.title}</span><b>↗</b></a>)}</div>)}
         </nav>
         <div className="side-group side-document-link"><p>Tài liệu</p><button className="side-link" onClick={() => { closeSidebar(); openDocuments(); }}><span className="side-icon">▤</span><span>Tài liệu công khai</span><b>↓</b></button></div>
+        <div className="side-group side-login-link"><p>Tài khoản</p><a className="side-link" href="/dang-nhap" onClick={closeSidebar}><span className="side-icon">◉</span><span>Đăng nhập quản trị</span><b>↗</b></a></div>
         <div className="sidebar-bottom"><div className="online-dot" /><span>Hệ thống đang hoạt động</span></div>
       </aside>
       {sidebarOpen && <button className="sidebar-overlay" onClick={closeSidebar} aria-label="Đóng menu" />}
 
       <div className="main-area">
         <div className="topbar"><div className="topbar-left"><button className="mobile-toggle" onClick={() => setSidebarOpen(true)} aria-label="Mở sidebar">☰</button><span className="breadcrumb">Trang chủ <b>/</b> Hệ thống phần mềm</span></div><div className="topbar-right"><span className="system-status"><i /> Hệ thống nội bộ</span><span className="clock"><b className="clock-label">Thời gian</b>{clock}</span></div></div>
-        <header className="main-header"><div><p className="eyebrow">CỔNG KẾT NỐI NGHIỆP VỤ</p><h1>Hệ thống phần mềm TAND</h1><p className="subtitle">TAND KHU VỰC 11 - TP HỒ CHÍ MINH</p></div><div className="header-actions"><a className="auth-link" href={authUser?.isAdmin ? "/admin" : "/auth/login"}>{authUser?.isAdmin ? "Quản trị" : "Đăng nhập"}</a><button className="support-button" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Hỗ trợ hệ thống <span>?</span></button></div></header>
+        <header className="main-header"><div><p className="eyebrow">CỔNG KẾT NỐI NGHIỆP VỤ</p><h1>Hệ thống phần mềm TAND</h1><p className="subtitle">TAND KHU VỰC 11 - TP HỒ CHÍ MINH</p></div><div className="header-actions"><a className="auth-link" href={authUser?.isAdmin ? "/admin" : "/dang-nhap"}>{authUser?.isAdmin ? "Quản trị" : "Đăng nhập"}</a><button className="support-button" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Hỗ trợ hệ thống <span>?</span></button></div></header>
 
         <main>
           <section className="digital-hero"><div className="hero-content"><span className="hero-badge">CHUYỂN ĐỔI SỐ TÒA ÁN</span><h2>Công cụ đúng lúc.<br /><em>Quy trình thông suốt.</em></h2><p>Một không gian tập trung cho các phần mềm nghiệp vụ, điều hành và tiện ích dùng chung của Tòa án nhân dân khu vực 11.</p><button className="hero-link" onClick={() => document.getElementById('all-apps')?.scrollIntoView({ behavior: 'smooth' })}>Xem tất cả ứng dụng <span>↓</span></button></div><div className="hero-scale" aria-label="Biểu tượng Tòa án nhân dân"><div className="hero-emblem"><img src="/court-logo.png" alt="Biểu trưng Tòa án nhân dân" /></div><div className="orbit orbit-a" /><div className="orbit orbit-b" /></div></section>
@@ -96,7 +107,7 @@ function App() {
 
           <section className="all-apps" id="all-apps"><div className="section-title"><div><p className="eyebrow">DANH MỤC HỆ THỐNG</p><h2>Tất cả ứng dụng</h2></div><span className="app-count"><strong>{String(filtered.length).padStart(2, '0')}</strong> ứng dụng</span></div><div className="filter-row"><div className="filter-pills">{tags.map((tag) => <button className={activeTag === tag ? 'active' : ''} key={tag} onClick={() => setActiveTag(tag)}>{tag}</button>)}</div><label className="search-box"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm ứng dụng..." aria-label="Tìm ứng dụng" /></label></div><div className="app-grid">{filtered.map((item, index) => <a className={`app-card ${item.tone}`} href={item.href} target="_blank" rel="noreferrer" key={item.title}><div className="app-card-top"><span className="app-symbol">{item.icon}</span><span className="app-index">{String(index + 1).padStart(2, '0')}</span></div><span className="app-tag">{item.tag}</span><h3>{item.title}</h3><p>{item.description}</p><span className="app-arrow">↗</span></a>)}</div>{filtered.length === 0 && <div className="empty">Không tìm thấy ứng dụng phù hợp.</div>}</section>
 
-          <section className="documents-section" id="documents"><div className="section-title"><div><p className="eyebrow">THƯ VIỆN CÔNG KHAI</p><h2>Tài liệu công khai</h2></div><span className="app-count"><strong>{publicDocuments.length}</strong> tài liệu</span></div><div className="documents-toolbar"><select className="document-select" value={documentFolder} onChange={(event) => setDocumentFolder(event.target.value)} aria-label="Lọc theo thư mục"><option value="Tất cả">Tất cả thư mục</option>{documentFolders.slice(1).map((folder) => <option value={folder} key={folder}>{folder}</option>)}</select><label className="search-box"><span>⌕</span><input value={documentQuery} onChange={(event) => setDocumentQuery(event.target.value)} placeholder="Tìm tài liệu..." aria-label="Tìm tài liệu" /></label></div><div className="document-list">{filteredDocuments.map((document) => <a className="document-row" href={document.path} target="_blank" rel="noreferrer" download key={document.path}><span className="doc-icon">{document.extension}</span><span className="doc-copy"><strong>{document.name}</strong><small>{document.folder}</small></span><span className="doc-arrow">↓</span></a>)}</div>{filteredDocuments.length === 0 && <div className="empty">Không tìm thấy tài liệu phù hợp.</div>}</section>
+          <section className="documents-section" id="documents"><div className="section-title"><div><p className="eyebrow">THƯ VIỆN CÔNG KHAI</p><h2>Tài liệu công khai</h2></div><span className="app-count"><strong>{publicDocuments.length}</strong> tài liệu · {documentFolders.length - 1} thư mục</span></div><div className="documents-toolbar"><select className="document-select" value={documentFolder} onChange={(event) => { const value = event.target.value; setDocumentFolder(value); setOpenDocumentFolder(value === 'Tất cả' ? null : value); }} aria-label="Lọc theo thư mục"><option value="Tất cả">Tất cả thư mục</option>{documentFolders.slice(1).map((folder) => <option value={folder} key={folder}>{folder}</option>)}</select><label className="search-box"><span>⌕</span><input value={documentQuery} onChange={(event) => setDocumentQuery(event.target.value)} placeholder="Tìm trong tài liệu..." aria-label="Tìm tài liệu" /></label></div>{!showDocumentFiles ? <div className="folder-grid">{documentFolders.slice(1).map((folder) => <button className="folder-card" key={folder} onClick={() => { setDocumentFolder(folder); setOpenDocumentFolder(folder); }}><span className="folder-icon">▰</span><span><strong>{folder}</strong><small>{folderCounts[folder]} tài liệu</small></span><b>→</b></button>)}</div> : <><div className="folder-open-bar"><button onClick={() => { setOpenDocumentFolder(null); setDocumentFolder('Tất cả'); setDocumentQuery(''); }}>← Tất cả thư mục</button><strong>{openDocumentFolder || (documentFolder !== 'Tất cả' ? documentFolder : 'Kết quả tìm kiếm')}</strong><span>{filteredDocuments.length} tài liệu</span></div><div className="document-list">{filteredDocuments.map((document) => <a className="document-row" href={document.path} target="_blank" rel="noreferrer" download key={document.path}><span className="doc-icon">{document.extension}</span><span className="doc-copy"><strong>{document.name}</strong><small>{document.folder}</small></span><span className="doc-arrow">↓</span></a>)}</div>{filteredDocuments.length === 0 && <div className="empty">Không tìm thấy tài liệu phù hợp.</div>}</>}</section>
 
           <section className="contact" id="contact"><div className="contact-heading"><span className="contact-mark">?</span><div><p className="eyebrow">BẠN CẦN HỖ TRỢ?</p><h2>Liên hệ bộ phận vận hành hệ thống.</h2></div></div><div className="contact-items"><div><small>Địa chỉ</small><strong>Số 989 đường 2/9, phường Phước Thắng,<br />TP. Hồ Chí Minh</strong></div><div><small>Điện thoại</small><a href="tel:0913742969">0913 742 969</a></div><div><small>Giờ làm việc</small><strong>Thứ Hai — Thứ Sáu<br />07:30 — 17:00</strong></div></div></section>
         </main>
@@ -107,6 +118,6 @@ function App() {
   );
 }
 
-function Root() { return window.location.pathname.startsWith('/admin') ? <AdminPage /> : <App />; }
+function Root() { if (window.location.pathname.startsWith('/admin')) return <AdminPage />; if (window.location.pathname.startsWith('/dang-nhap')) return <LoginPage />; return <App />; }
 
 createRoot(document.getElementById('root')!).render(<Root />);

@@ -18,3 +18,5 @@
 - [x] Gán hoangvungvca@gmail.com làm quản trị viên cao nhất.
 - [x] Lưu tài khoản mới ở trạng thái Chờ duyệt; quản trị viên có thể Duyệt, Từ chối hoặc Khóa.
 - [x] Khu vực /admin được bảo vệ và chỉ tài khoản đã được duyệt mới truy cập được.
+- [x] Hiển thị thư viện tài liệu theo các thư mục; mặc định không trải toàn bộ file, chỉ hiện tài liệu sau khi người dùng mở thư mục.
+- [x] Tạo trang đăng nhập riêng bằng Manus OAuth để người dùng dễ nhận biết và truy cập.
