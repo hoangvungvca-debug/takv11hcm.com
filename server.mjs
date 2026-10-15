@@ -21,6 +21,7 @@ let lettersSchemaPromise;
 let passwordSchemaPromise;
 let chatSchemaPromise;
 let visitsSchemaPromise;
+let resetSchemaPromise;
 
 const base64url = (value) => Buffer.from(value).toString('base64url');
 const parseJson = (value) => { try { return JSON.parse(value); } catch { return null; } };
@@ -102,6 +103,17 @@ async function db() {
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )`);
   await visitsSchemaPromise;
+  if (!resetSchemaPromise) resetSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    open_id VARCHAR(191) NOT NULL,
+    token_hash CHAR(64) NOT NULL UNIQUE,
+    expires_at DATETIME NOT NULL,
+    used_at DATETIME NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_reset_open_id (open_id),
+    INDEX idx_reset_expires_at (expires_at)
+  )`);
+  await resetSchemaPromise;
   return pool;
 }
 
@@ -129,7 +141,16 @@ async function currentUser(req) {
 const isAdmin = (user) => user?.role === 'admin' && user?.status === 'approved';
 const passwordHash = (password, salt = randomBytes(16).toString('hex')) => ({ salt, hash: scryptSync(password, salt, 64).toString('hex') });
 const passwordMatches = (password, salt, expected) => { if (!salt || !expected) return false; const actual = Buffer.from(passwordHash(password, salt).hash, 'hex'); const target = Buffer.from(expected, 'hex'); return actual.length === target.length && timingSafeEqual(actual, target); };
+const resetTokenHash = (token) => createHmac('sha256', jwtSecret || 'local-reset-token').update(token).digest('hex');
 const validEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+async function sendResetEmail(to, link) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!apiKey || !from) return false;
+  const response = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from, to: [to], subject: 'Khôi phục mật khẩu — Hệ thống phần mềm TAND', text: `Bạn đã yêu cầu khôi phục mật khẩu. Mở liên kết sau trong vòng 30 phút: ${link}\n\nNếu không phải bạn, hãy bỏ qua email này.`, html: `<p>Bạn đã yêu cầu khôi phục mật khẩu cho Hệ thống phần mềm TAND.</p><p><a href="${link}">Đặt lại mật khẩu</a></p><p>Liên kết có hiệu lực trong 30 phút. Nếu không phải bạn, hãy bỏ qua email này.</p>` }) });
+  return response.ok;
+}
 
 
 async function exchangeCode(code, redirectUri) {
@@ -161,6 +182,30 @@ async function api(req, res, url) {
     if (!user || !passwordMatches(password, user.passwordSalt, user.passwordHash)) return json(res, 401, { error: 'Email hoặc mật khẩu không đúng.' });
     if (user.status !== 'approved' && user.status !== 'admin') return json(res, 403, { pending: true, error: 'Tài khoản đang chờ quản trị viên phê duyệt.' });
     await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setCookie(res, 'webdev_app_session', session, SESSION_MAX_AGE); return json(res, 200, { ok: true, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
+  }
+  if (url.pathname === '/api/auth/forgot-password' && req.method === 'POST') {
+    const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase();
+    if (!validEmail(email)) return json(res, 400, { error: 'Vui lòng nhập email hợp lệ.' });
+    const connection = await db(); if (!connection) return json(res, 503, { error: 'Máy chủ chưa sẵn sàng cho chức năng khôi phục mật khẩu.' });
+    const [rows] = await connection.execute('SELECT open_id AS openId, email FROM app_users WHERE email=? LIMIT 1', [email]);
+    if (!rows.length) return json(res, 200, { ok: true, message: 'Nếu email đã đăng ký, hướng dẫn khôi phục sẽ được gửi đến hộp thư.' });
+    const token = randomBytes(32).toString('hex'); const tokenHash = resetTokenHash(token);
+    await connection.execute('UPDATE password_reset_tokens SET used_at=CURRENT_TIMESTAMP WHERE open_id=? AND used_at IS NULL', [rows[0].openId]);
+    await connection.execute('INSERT INTO password_reset_tokens (open_id, token_hash, expires_at) VALUES (?,?,DATE_ADD(NOW(), INTERVAL 30 MINUTE))', [rows[0].openId, tokenHash]);
+    const delivered = await sendResetEmail(email, `${originFor(req)}/dang-nhap?reset=${token}`);
+    if (!delivered) return json(res, 503, { error: 'Hệ thống chưa cấu hình email gửi đi. Vui lòng liên hệ quản trị viên để đặt lại mật khẩu.' });
+    return json(res, 200, { ok: true, message: 'Nếu email đã đăng ký, hướng dẫn khôi phục sẽ được gửi đến hộp thư.' });
+  }
+  if (url.pathname === '/api/auth/reset-password' && req.method === 'POST') {
+    const body = await readBody(req); const token = String(body.token || '').trim(); const password = String(body.password || '');
+    if (!token || password.length < 8) return json(res, 400, { error: 'Liên kết không hợp lệ hoặc mật khẩu mới chưa đủ 8 ký tự.' });
+    const connection = await db(); if (!connection) return json(res, 503, { error: 'Máy chủ chưa sẵn sàng. Vui lòng thử lại sau.' });
+    const [rows] = await connection.execute('SELECT open_id AS openId FROM password_reset_tokens WHERE token_hash=? AND used_at IS NULL AND expires_at > NOW() LIMIT 1', [resetTokenHash(token)]);
+    if (!rows.length) return json(res, 400, { error: 'Liên kết đã hết hạn hoặc đã được sử dụng. Vui lòng yêu cầu liên kết mới.' });
+    const hashed = passwordHash(password); await connection.execute('UPDATE app_users SET password_hash=?, password_salt=? WHERE open_id=?', [hashed.hash, hashed.salt, rows[0].openId]); await connection.execute('UPDATE password_reset_tokens SET used_at=CURRENT_TIMESTAMP WHERE token_hash=?', [resetTokenHash(token)]);
+    const [users] = await connection.execute('SELECT open_id AS openId, email, display_name AS name, role, status FROM app_users WHERE open_id=? LIMIT 1', [rows[0].openId]); const user = users[0];
+    const session = sign({ appId: projectId, openId: user.openId, email: user.email, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setCookie(res, 'webdev_app_session', session, SESSION_MAX_AGE);
+    return json(res, 200, { ok: true });
   }
   if (url.pathname === '/api/auth/me' && req.method === 'GET') {
     const user = await currentUser(req);

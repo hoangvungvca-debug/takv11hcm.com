@@ -8,13 +8,65 @@ type SessionUser = { email: string; name: string; role: string; status: string; 
 type Letter = { id: number; incomingNumber: string; receivedDate: string; sender: string; documentNumber?: string; documentDate?: string; summary: string; handler?: string; deadline?: string; status: string; createdBy?: string };
 
 function LoginPage({ message = 'Đăng nhập bằng tài khoản email đã đăng ký để truy cập khu vực nội bộ.' }: { message?: string }) {
+  const params = new URLSearchParams(window.location.search);
+  const pending = params.get('login') === 'pending';
+  const resetToken = params.get('reset') || '';
   const [mode, setMode] = useState<'login' | 'register'>('login');
-  const [email, setEmail] = useState(() => window.localStorage.getItem('tand_saved_email') || ''); const [password, setPassword] = useState(''); const [name, setName] = useState(''); const [error, setError] = useState(''); const [notice, setNotice] = useState(''); const [checkingSession, setCheckingSession] = useState(true);
-  const pending = new URLSearchParams(window.location.search).get('login') === 'pending';
-  useEffect(() => { if (pending) { setCheckingSession(false); return; } fetch('/api/auth/me', { credentials: 'include', cache: 'no-store' }).then((response) => response.json()).then((data) => { if (data.authenticated) window.location.replace('/'); else setCheckingSession(false); }).catch(() => setCheckingSession(false)); }, [pending]);
-  const submit = async (event: React.FormEvent) => { event.preventDefault(); setError(''); setNotice(''); try { const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/register'; const response = await fetch(endpoint, { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, name }) }); const data = await response.json(); if (!response.ok) return setError(data.error || 'Không thể xử lý tài khoản.'); window.localStorage.setItem('tand_saved_email', email.trim().toLowerCase()); if (data.pending) return setNotice(data.message || 'Tài khoản đã đăng ký và đang chờ quản trị viên phê duyệt.'); window.location.replace('/'); } catch { setError('Không kết nối được máy chủ. Vui lòng thử lại sau ít giây.'); } };
+  const [forgotMode, setForgotMode] = useState(false);
+  const [resetMode, setResetMode] = useState(Boolean(resetToken));
+  const [newPassword, setNewPassword] = useState('');
+  const [email, setEmail] = useState(() => window.localStorage.getItem('tand_saved_email') || '');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const [checkingSession, setCheckingSession] = useState(true);
+
+  useEffect(() => {
+    if (pending || resetToken) { setCheckingSession(false); return; }
+    fetch('/api/auth/me', { credentials: 'include', cache: 'no-store' }).then((response) => response.json()).then((data) => {
+      if (data.authenticated) window.location.replace('/'); else setCheckingSession(false);
+    }).catch(() => setCheckingSession(false));
+  }, [pending]);
+
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault(); setError(''); setNotice('');
+    try {
+      const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/register';
+      const response = await fetch(endpoint, { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password, name }) });
+      const data = await response.json();
+      if (!response.ok) return setError(data.error || 'Không thể xử lý tài khoản.');
+      window.localStorage.setItem('tand_saved_email', email.trim().toLowerCase());
+      if (data.pending) return setNotice(data.message || 'Tài khoản đã đăng ký và đang chờ quản trị viên phê duyệt.');
+      window.location.replace('/');
+    } catch { setError('Không kết nối được máy chủ. Vui lòng thử lại sau ít giây.'); }
+  };
+
+  const requestReset = async (event: React.FormEvent) => {
+    event.preventDefault(); setError(''); setNotice('');
+    try {
+      const response = await fetch('/api/auth/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: email.trim().toLowerCase() }) });
+      const data = await response.json();
+      if (!response.ok) return setError(data.error || 'Chưa thể gửi yêu cầu khôi phục.');
+      setNotice(data.message || 'Nếu email tồn tại, hướng dẫn khôi phục đã được gửi.');
+    } catch { setError('Không kết nối được máy chủ. Vui lòng thử lại sau ít giây.'); }
+  };
+
+  const resetPassword = async (event: React.FormEvent) => {
+    event.preventDefault(); setError(''); setNotice('');
+    try {
+      const response = await fetch('/api/auth/reset-password', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: resetToken, password: newPassword }) });
+      const data = await response.json();
+      if (!response.ok) return setError(data.error || 'Không thể đặt lại mật khẩu.');
+      setNotice('Mật khẩu đã được cập nhật. Đang chuyển vào hệ thống…'); window.setTimeout(() => window.location.replace('/'), 500);
+    } catch { setError('Không kết nối được máy chủ. Vui lòng thử lại sau ít giây.'); }
+  };
+
   if (checkingSession) return <div className="login-shell"><div className="login-card"><p>Đang kiểm tra phiên đăng nhập đã lưu...</p></div></div>;
-  return <div className="login-shell"><div className="login-card"><section className="login-brand"><div className="brand-orbit"><span /><span /><span /></div><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="brand-kicker">CỔNG TRUY CẬP NỘI BỘ</p><h1>Hệ thống phần mềm<br /><strong>nội bộ TAND</strong></h1><p className="brand-subtitle">TAND khu vực 11 - Thành phố Hồ Chí Minh</p><div className="brand-rule" /><p className="brand-caption">Kết nối nghiệp vụ · Điều hành · Chuyển đổi số</p></section><section className="login-form-panel"><div className="form-heading"><p className="eyebrow">XIN CHÀO</p><h2>{pending ? 'Đang chờ phê duyệt' : mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản'}</h2><p>{pending ? 'Tài khoản đã được ghi nhận. Vui lòng chờ quản trị viên phê duyệt quyền truy cập.' : message}</p></div>{!pending && <form className="auth-form" onSubmit={submit}>{mode === 'register' && <label>Họ và tên<input value={name} onChange={(e) => setName(e.target.value)} required /></label>}<label>Email<input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="tenban@example.com" /></label><label>Mật khẩu riêng của website<input type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Tối thiểu 8 ký tự" /></label><button className="admin-login-button" type="submit">{mode === 'login' ? 'Đăng nhập vào hệ thống' : 'Đăng ký tài khoản'}</button><small className="auth-remember">Sau lần đầu đăng nhập thành công, hệ thống sẽ tự nhận phiên trong 30 ngày. Chỉ ghi nhớ email, không lưu mật khẩu.</small></form>}{error && <p className="auth-error">{error}</p>}{notice && <p className="auth-notice">{notice}</p>}{!pending && <button className="auth-switch" onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); setNotice(''); }}>{mode === 'login' ? 'Chưa có tài khoản? Đăng ký ngay' : 'Đã có tài khoản? Đăng nhập'}</button>}<a className="admin-back" href="/">← Quay về trang chủ</a></section><footer className="login-footer">Phần mềm được thiết kế bởi <strong>Hoàng Vững</strong></footer></div></div>;
+  const heading = resetMode ? 'Đặt lại mật khẩu' : forgotMode ? 'Quên mật khẩu' : pending ? 'Đang chờ phê duyệt' : mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản';
+  const description = resetMode ? 'Tạo mật khẩu mới tối thiểu 8 ký tự cho tài khoản của bạn.' : forgotMode ? 'Nhập email đã đăng ký. Hệ thống sẽ gửi hướng dẫn đặt lại mật khẩu nếu email tồn tại.' : pending ? 'Tài khoản đã được ghi nhận. Vui lòng chờ quản trị viên phê duyệt quyền truy cập.' : message;
+  return <div className="login-shell"><div className="login-card"><section className="login-brand"><div className="brand-orbit"><span /><span /><span /></div><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="brand-kicker">CỔNG TRUY CẬP NỘI BỘ</p><h1>Hệ thống phần mềm<br /><strong>nội bộ TAND</strong></h1><p className="brand-subtitle">TAND khu vực 11 - Thành phố Hồ Chí Minh</p><div className="brand-rule" /><p className="brand-caption">Kết nối nghiệp vụ · Điều hành · Chuyển đổi số</p></section><section className="login-form-panel"><div className="form-heading"><p className="eyebrow">XIN CHÀO</p><h2>{heading}</h2><p>{description}</p></div>{resetMode && <form className="auth-form" onSubmit={resetPassword}><label>Mật khẩu mới<div className="password-field"><input type={showPassword ? 'text' : 'password'} autoComplete="new-password" minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required placeholder="Tối thiểu 8 ký tự" /><button type="button" className="password-toggle" onClick={() => setShowPassword((current) => !current)}>{showPassword ? 'Ẩn' : 'Hiện'}</button></div></label><button className="admin-login-button" type="submit">Cập nhật mật khẩu</button></form>}{forgotMode && <form className="auth-form" onSubmit={requestReset}><label>Email<input type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="tenban@example.com" /></label><button className="admin-login-button" type="submit">Gửi hướng dẫn khôi phục</button><small className="auth-remember">Liên kết khôi phục chỉ dùng một lần và có thời hạn ngắn.</small></form>}{!forgotMode && !pending && <form className="auth-form" onSubmit={submit}>{mode === 'register' && <label>Họ và tên<input value={name} onChange={(e) => setName(e.target.value)} required /></label>}<label>Email<input type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="tenban@example.com" /></label><label>Mật khẩu riêng của website<div className="password-field"><input type={showPassword ? 'text' : 'password'} autoComplete={mode === 'login' ? 'current-password' : 'new-password'} minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Tối thiểu 8 ký tự" /><button type="button" className="password-toggle" onClick={() => setShowPassword((current) => !current)} aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}>{showPassword ? 'Ẩn' : 'Hiện'}</button></div></label><button className="admin-login-button" type="submit">{mode === 'login' ? 'Đăng nhập vào hệ thống' : 'Đăng ký tài khoản'}</button><small className="auth-remember">Sau lần đầu đăng nhập thành công, hệ thống sẽ tự nhận phiên trong 30 ngày. Chỉ ghi nhớ email, không lưu mật khẩu.</small></form>}{error && <p className="auth-error">{error}</p>}{notice && <p className="auth-notice">{notice}</p>}{!pending && !resetMode && <div className="auth-links">{!forgotMode && mode === 'login' && <button className="auth-forgot" onClick={() => { setForgotMode(true); setError(''); setNotice(''); }}>Quên mật khẩu?</button>}{forgotMode && <button className="auth-forgot" onClick={() => { setForgotMode(false); setError(''); setNotice(''); }}>← Quay lại đăng nhập</button>}{!forgotMode && <button className="auth-switch" onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); setNotice(''); }}>{mode === 'login' ? 'Chưa có tài khoản? Đăng ký ngay' : 'Đã có tài khoản? Đăng nhập'}</button>}</div>}<a className="admin-back" href="/">← Quay về trang chủ</a></section><footer className="login-footer">Phần mềm được thiết kế bởi <strong>Hoàng Vững</strong></footer></div></div>;
 }
 
 function LedgerPage() {

@@ -4,3 +4,6 @@
 - [x] Hiển thị thông báo lỗi kết nối rõ ràng thay vì để form không phản hồi.
 - [x] Chat chung nội bộ cho tài khoản đã được duyệt, lưu tin nhắn tập trung, giới hạn 1.000 ký tự/tin.
 - [x] Footer hiển thị tổng lượt truy cập và lượt truy cập trong ngày từ thống kê server, không lưu IP.
+- [x] Thêm nút hiện/ẩn mật khẩu trên trang đăng nhập.
+- [x] Thêm luồng yêu cầu khôi phục mật khẩu, token một lần hết hạn sau 30 phút và không tiết lộ email có tồn tại hay không.
+- [ ] Cấu hình email gửi đi chính thức (`RESEND_API_KEY` và địa chỉ người gửi đã xác minh) để liên kết khôi phục được gửi đến hộp thư.
