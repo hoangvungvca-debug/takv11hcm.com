@@ -5,6 +5,7 @@
 - [x] Tập hợp các hệ thống nghiệp vụ, công cụ và kênh hỗ trợ từ trang tham khảo.
 - [x] Có bộ lọc theo nhóm chức năng và tìm kiếm nhanh tên phần mềm.
 - [x] Liên kết mở sang các hệ thống nghiệp vụ bên ngoài trong tab mới.
+- [x] Hiển thị đồng hồ ngày giờ Việt Nam theo thời gian thực ở thanh thông tin trên cùng.
 - [x] Hiển thị khu vực hỗ trợ với địa chỉ, số điện thoại và giờ làm việc.
 - [x] Responsive cho máy tính, máy tính bảng và điện thoại.
 - [x] Cập nhật metadata và route manifest theo phiên bản thiết kế mới.

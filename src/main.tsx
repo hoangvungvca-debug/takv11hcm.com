@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
@@ -26,6 +26,24 @@ function App() {
   const [query, setQuery] = useState('');
   const [activeTag, setActiveTag] = useState('Tất cả');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [now, setNow] = useState(() => new Date());
+
+  const clock = new Intl.DateTimeFormat('vi-VN', {
+    timeZone: 'Asia/Ho_Chi_Minh',
+    weekday: 'long',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).format(now);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
 
   const tags = ['Tất cả', ...Array.from(new Set(modules.map((item) => item.tag)))];
   const filtered = useMemo(() => modules.filter((item) => {
@@ -41,7 +59,7 @@ function App() {
 
   return (
     <div className="portal">
-      <div className="top-ribbon"><div className="wrap ribbon-inner"><span>TÒA ÁN NHÂN DÂN KHU VỰC 11 — THÀNH PHỐ HỒ CHÍ MINH</span><span className="ribbon-right">Cổng phần mềm nội bộ <b>●</b> 2026</span></div></div>
+      <div className="top-ribbon"><div className="wrap ribbon-inner"><span>TÒA ÁN NHÂN DÂN KHU VỰC 11 — THÀNH PHỐ HỒ CHÍ MINH</span><span className="ribbon-right">Cổng phần mềm nội bộ <b>●</b> {clock}</span></div></div>
       <header className="header"><div className="wrap header-inner"><button className="wordmark" onClick={() => go('top')}><span className="mark"><img src="/court-seal.svg" alt="" /></span><span><strong>PHẦN MỀM NỘI BỘ</strong><small>TAND KHU VỰC 11</small></span></button><button className="mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Mở menu">{menuOpen ? '×' : '☰'}</button><nav className={menuOpen ? 'open' : ''}><button className="selected" onClick={() => go('top')}>Trang chủ</button><button onClick={() => go('modules')}>Danh mục phần mềm</button><button onClick={() => go('contact')}>Liên hệ hỗ trợ</button></nav><button className="help-btn" onClick={() => go('contact')}>Trợ giúp <span>?</span></button></div></header>
 
       <main id="top">
