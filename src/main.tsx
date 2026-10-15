@@ -33,23 +33,6 @@ const sidebarGroups = [
 
 
 
-function LoginPage() {
-  const pending = new URLSearchParams(window.location.search).get('login') === 'pending';
-  return <div className="login-shell"><div className="login-card"><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="eyebrow">HỆ THỐNG PHẦN MỀM TAND</p><h1>Đăng nhập hệ thống</h1><p>{pending ? 'Tài khoản của bạn đã được ghi nhận và đang chờ quản trị viên phê duyệt.' : 'Sử dụng tài khoản Manus của bạn để gửi yêu cầu truy cập khu vực nội bộ.'}</p>{!pending && <a className="admin-login-button" href="/auth/login">Đăng nhập bằng Manus</a>}<a className="admin-back" href="/">← Quay về trang chủ</a></div></div>;
-}
-
-function AdminPage() {
-  const [me, setMe] = useState<{ email: string; isAdmin: boolean; status: string } | null>(null);
-  const [users, setUsers] = useState<Array<{ openId: string; email: string; name: string; role: string; status: string }>>([]);
-  const [loading, setLoading] = useState(true);
-  const load = () => fetch('/api/admin/users').then((response) => response.ok ? response.json() : Promise.reject(response)).then((data) => setUsers(data.users || [])).finally(() => setLoading(false));
-  useEffect(() => { fetch('/api/auth/me').then((response) => response.json()).then((data) => { setMe(data.user || null); if (data.user?.isAdmin) load(); else setLoading(false); }).catch(() => setLoading(false)); }, []);
-  const updateStatus = (openId: string, action: string) => fetch(`/api/admin/users/${encodeURIComponent(openId)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) }).then(load);
-  if (loading) return <div className="admin-loading">Đang tải khu vực quản trị…</div>;
-  if (!me?.isAdmin) return <div className="admin-gate"><img src="/court-logo.png" alt="Logo Tòa án nhân dân" /><p className="eyebrow">KHU VỰC NỘI BỘ</p><h1>Đăng nhập để tiếp tục</h1><p>Tài khoản Manus của bạn cần được quản trị viên duyệt trước khi truy cập khu vực này.</p><a className="admin-login-button" href="/auth/login">Đăng nhập bằng Manus</a><a className="admin-back" href="/">Quay về trang chủ</a></div>;
-  return <div className="admin-shell"><header className="admin-header"><div><p className="eyebrow">QUẢN TRỊ HỆ THỐNG</p><h1>Duyệt tài khoản</h1><p>Đang đăng nhập: <strong>{me.email}</strong></p></div><a className="admin-back" href="/">← Về trang chủ</a></header><main className="admin-content"><div className="admin-summary"><strong>{users.filter((user) => user.status === 'pending').length}</strong><span>tài khoản chờ duyệt</span></div><div className="admin-user-list">{users.map((user) => <article className="admin-user" key={user.openId}><div><strong>{user.name || 'Người dùng Manus'}</strong><span>{user.email}</span></div><span className={`user-status ${user.status}`}>{user.status === 'approved' ? 'Đã duyệt' : user.status === 'pending' ? 'Chờ duyệt' : user.status === 'disabled' ? 'Đã khóa' : 'Từ chối'}</span><div className="user-actions">{user.status === 'pending' && <><button onClick={() => updateStatus(user.openId, 'approve')}>Duyệt</button><button className="reject" onClick={() => updateStatus(user.openId, 'reject')}>Từ chối</button></>}{user.status === 'approved' && user.email !== 'hoangvungvca@gmail.com' && <button className="reject" onClick={() => updateStatus(user.openId, 'disable')}>Khóa</button>}</div></article>)}</div></main></div>;
-}
-
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -58,11 +41,9 @@ function App() {
   const [documentFolder, setDocumentFolder] = useState('Tất cả');
   const [openDocumentFolder, setOpenDocumentFolder] = useState<string | null>(null);
   const [now, setNow] = useState(() => new Date());
-  const [authUser, setAuthUser] = useState<{ email: string; isAdmin: boolean; status: string } | null>(null);
 
   const clock = new Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(now);
   useEffect(() => { const timer = window.setInterval(() => setNow(new Date()), 1000); return () => window.clearInterval(timer); }, []);
-  useEffect(() => { fetch('/api/auth/me').then((response) => response.ok ? response.json() : null).then((data) => setAuthUser(data?.user || null)).catch(() => undefined); }, []);
 
   const tags = ['Tất cả', ...Array.from(new Set(modules.map((item) => item.tag)))];
   const filtered = useMemo(() => modules.filter((item) => {
@@ -91,14 +72,13 @@ function App() {
           {sidebarGroups.map((group) => <div className="side-group" key={group.label}><p>{group.label}</p>{group.items.length === 0 ? <button className="side-link current" onClick={closeSidebar}><span className="side-icon">⌂</span>Trang chủ</button> : group.items.map((item) => <a className="side-link" href={item.href} target="_blank" rel="noreferrer" key={`${group.label}-${item.title}`} onClick={closeSidebar}><span className={`side-icon ${item.tone}`}>{item.icon}</span><span>{item.title}</span><b>↗</b></a>)}</div>)}
         </nav>
         <div className="side-group side-document-link"><p>Tài liệu</p><button className="side-link" onClick={() => { closeSidebar(); openDocuments(); }}><span className="side-icon">▤</span><span>Tài liệu công khai</span><b>↓</b></button></div>
-        <div className="side-group side-login-link"><p>Tài khoản</p><a className="side-link" href="/dang-nhap" onClick={closeSidebar}><span className="side-icon">◉</span><span>Đăng nhập quản trị</span><b>↗</b></a></div>
         <div className="sidebar-bottom"><div className="online-dot" /><span>Hệ thống đang hoạt động</span></div>
       </aside>
       {sidebarOpen && <button className="sidebar-overlay" onClick={closeSidebar} aria-label="Đóng menu" />}
 
       <div className="main-area">
         <div className="topbar"><div className="topbar-left"><button className="mobile-toggle" onClick={() => setSidebarOpen(true)} aria-label="Mở sidebar">☰</button><span className="breadcrumb">Trang chủ <b>/</b> Hệ thống phần mềm</span></div><div className="topbar-right"><span className="system-status"><i /> Hệ thống nội bộ</span><span className="clock"><b className="clock-label">Thời gian</b>{clock}</span></div></div>
-        <header className="main-header"><div><p className="eyebrow">CỔNG KẾT NỐI NGHIỆP VỤ</p><h1>Hệ thống phần mềm TAND</h1><p className="subtitle">TAND KHU VỰC 11 - TP HỒ CHÍ MINH</p></div><div className="header-actions"><a className="auth-link" href={authUser?.isAdmin ? "/admin" : "/dang-nhap"}>{authUser?.isAdmin ? "Quản trị" : "Đăng nhập"}</a><button className="support-button" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Hỗ trợ hệ thống <span>?</span></button></div></header>
+        <header className="main-header"><div><p className="eyebrow">CỔNG KẾT NỐI NGHIỆP VỤ</p><h1>Hệ thống phần mềm TAND</h1><p className="subtitle">TAND KHU VỰC 11 - TP HỒ CHÍ MINH</p></div><button className="support-button" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>Hỗ trợ hệ thống <span>?</span></button></header>
 
         <main>
           <section className="digital-hero"><div className="hero-content"><span className="hero-badge">CHUYỂN ĐỔI SỐ TÒA ÁN</span><h2>Công cụ đúng lúc.<br /><em>Quy trình thông suốt.</em></h2><p>Một không gian tập trung cho các phần mềm nghiệp vụ, điều hành và tiện ích dùng chung của Tòa án nhân dân khu vực 11.</p><button className="hero-link" onClick={() => document.getElementById('all-apps')?.scrollIntoView({ behavior: 'smooth' })}>Xem tất cả ứng dụng <span>↓</span></button></div><div className="hero-scale" aria-label="Biểu tượng Tòa án nhân dân"><div className="hero-emblem"><img src="/court-logo.png" alt="Biểu trưng Tòa án nhân dân" /></div><div className="orbit orbit-a" /><div className="orbit orbit-b" /></div></section>
@@ -118,6 +98,6 @@ function App() {
   );
 }
 
-function Root() { if (window.location.pathname.startsWith('/admin')) return <AdminPage />; if (window.location.pathname.startsWith('/dang-nhap')) return <LoginPage />; return <App />; }
+function Root() { return <App />; }
 
 createRoot(document.getElementById('root')!).render(<Root />);
