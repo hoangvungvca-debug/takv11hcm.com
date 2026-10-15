@@ -7,3 +7,5 @@
 - [x] Thêm nút hiện/ẩn mật khẩu trên trang đăng nhập.
 - [x] Thêm luồng yêu cầu khôi phục mật khẩu, token một lần hết hạn sau 30 phút và không tiết lộ email có tồn tại hay không.
 - [ ] Cấu hình email gửi đi chính thức (`RESEND_API_KEY` và địa chỉ người gửi đã xác minh) để liên kết khôi phục được gửi đến hộp thư.
+- [x] Thêm checkbox Remember Me: phiên 30 ngày khi chọn, phiên tạm thời khi bỏ chọn.
+- [x] Tự điền email lần sau bằng localStorage; không lưu mật khẩu.
