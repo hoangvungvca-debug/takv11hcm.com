@@ -19,3 +19,8 @@ Giao diện viết HTML ngữ nghĩa bằng JSX React và CSS tách riêng, khô
 - `src/main.tsx`: các trang cũ giữ nguyên, thay App bằng Dashboard và truyền danh mục ứng dụng hiện có.
 - `public/manus-routes.json`: giữ bộ route hiện có, không thêm route bỏ qua đăng nhập.
 - Bản HTML/CSS minh họa độc lập được xuất riêng để người dùng xem mã; không chứa dữ liệu thật, secret hoặc backend xác thực.
+
+## Chat và thống kê
+Chat được giới hạn cho tài khoản `approved`/`admin`, lưu tên, email, nội dung và thời gian trong bảng `internal_chat_messages`; mỗi tin tối đa 1.000 ký tự. API trả tối đa 100 tin mới nhất và React escape nội dung khi hiển thị. Không hỗ trợ chat công khai.
+
+Footer hiển thị tổng lượt truy cập và lượt trong ngày từ bảng `site_visit_stats`. Chỉ ghi nhận khi người dùng đã đăng nhập mở trang chủ; không lưu IP hoặc dấu vân tay thiết bị. API thống kê cũng yêu cầu tài khoản được duyệt.

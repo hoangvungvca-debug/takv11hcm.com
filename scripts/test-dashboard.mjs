@@ -23,10 +23,10 @@ try {
   assert.equal(u.deadlineState({ deadline: '2026-10-15', status: 'Đã hoàn thành' }, now), 'normal');
   assert.equal(modules.length, 15);
   const source = await readFile('src/main.tsx', 'utf8');
-  const previous = execFileSync('git', ['show', 'dee362c:src/main.tsx'], { encoding: 'utf8' });
+  const previous = execFileSync('git', ['show', '3ec7aa7:src/main.tsx'], { encoding: 'utf8' });
   const loginBlock = text => text.slice(text.indexOf('function LoginPage('), text.indexOf('function LedgerPage('));
   assert.equal(loginBlock(source), loginBlock(previous), 'Không thay đổi phần đăng nhập đã chốt');
-  const oldApps = previous.slice(previous.indexOf('const modules:'), previous.indexOf('const sidebarGroups'));
+  const oldApps = execFileSync('git', ['show', 'cf2b6f2:src/dashboard/apps.ts'], { encoding: 'utf8' });
   for (const item of modules) assert(oldApps.includes(item.href), `Giữ URL ${item.title}`);
   const html = await readFile('/home/ubuntu/deliverables/tand-dashboard/index.html', 'utf8');
   assert.equal((html.match(/class="db-quick-card/g) || []).length, 4);
@@ -39,7 +39,7 @@ try {
   assert(!html.includes('0913 742 969'));
   assert(html.includes('aria-label="Hỗ trợ hệ thống"'));
   const routes = JSON.parse(await readFile('public/manus-routes.json', 'utf8'));
-  const oldRoutes = JSON.parse(execFileSync('git', ['show', 'dee362c:public/manus-routes.json'], { encoding: 'utf8' }));
+  const oldRoutes = JSON.parse(execFileSync('git', ['show', '3ec7aa7:public/manus-routes.json'], { encoding: 'utf8' }));
   assert.deepEqual(routes, oldRoutes, 'Không thêm route bỏ qua đăng nhập');
   console.log('PASS: tìm kiếm không dấu, ngày Việt Nam, phân công cá nhân, hạn công việc, 4 lối tắt, 15 URL, giữ đăng nhập/route, HTML minh họa.');
 } finally {

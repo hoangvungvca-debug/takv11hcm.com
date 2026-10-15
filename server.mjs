@@ -19,6 +19,8 @@ let pool;
 let schemaPromise;
 let lettersSchemaPromise;
 let passwordSchemaPromise;
+let chatSchemaPromise;
+let visitsSchemaPromise;
 
 const base64url = (value) => Buffer.from(value).toString('base64url');
 const parseJson = (value) => { try { return JSON.parse(value); } catch { return null; } };
@@ -85,6 +87,21 @@ async function db() {
     INDEX idx_incoming_letters_status (status)
   )`);
   await lettersSchemaPromise;
+  if (!chatSchemaPromise) chatSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS internal_chat_messages (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_email VARCHAR(255) NOT NULL,
+    user_name VARCHAR(255) NOT NULL,
+    message VARCHAR(1000) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_chat_created_at (created_at)
+  )`);
+  await chatSchemaPromise;
+  if (!visitsSchemaPromise) visitsSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS site_visit_stats (
+    visit_date DATE PRIMARY KEY,
+    visit_count BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  )`);
+  await visitsSchemaPromise;
   return pool;
 }
 
@@ -166,6 +183,26 @@ async function api(req, res, url) {
     const connection = await db(); const [result] = await connection.execute(`INSERT INTO incoming_letters (incoming_number, received_date, sender, document_number, document_date, summary, handler, deadline, status, created_by) VALUES (?,?,?,?,?,?,?,?,?,?)`, [body.incomingNumber, body.receivedDate, body.sender, body.documentNumber || null, body.documentDate || null, body.summary, body.handler || null, body.deadline || null, body.status || 'Chưa xử lý', user.email || user.openId]);
     return json(res, 201, { ok: true, id: result.insertId });
   }
+  if (url.pathname === '/api/chat' && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem khung chat.' });
+    const connection = await db(); if (!connection) return json(res, 503, { error: 'Chưa kết nối được cơ sở dữ liệu.' });
+    const [rows] = await connection.execute(`SELECT id, user_email AS userEmail, user_name AS userName, message, created_at AS createdAt FROM internal_chat_messages ORDER BY id DESC LIMIT 100`);
+    return json(res, 200, { messages: rows.reverse() });
+  }
+  if (url.pathname === '/api/chat' && req.method === 'POST') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để gửi tin nhắn.' });
+    const body = await readBody(req); const message = String(body.message || '').trim();
+    if (!message || message.length > 1000) return json(res, 400, { error: 'Tin nhắn không được để trống và tối đa 1.000 ký tự.' });
+    const connection = await db(); if (!connection) return json(res, 503, { error: 'Chưa kết nối được cơ sở dữ liệu.' });
+    const [result] = await connection.execute('INSERT INTO internal_chat_messages (user_email, user_name, message) VALUES (?,?,?)', [user.email || user.openId, user.name || user.email || 'Người dùng', message]);
+    return json(res, 201, { ok: true, id: result.insertId });
+  }
+  if (url.pathname === '/api/stats/visits' && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem thống kê.' });
+    const connection = await db(); if (!connection) return json(res, 503, { error: 'Chưa kết nối được cơ sở dữ liệu.' });
+    const [rows] = await connection.execute('SELECT COALESCE(SUM(visit_count), 0) AS totalVisits, COALESCE(SUM(CASE WHEN visit_date = CURRENT_DATE THEN visit_count ELSE 0 END), 0) AS todayVisits FROM site_visit_stats');
+    return json(res, 200, { totalVisits: Number(rows[0]?.totalVisits || 0), todayVisits: Number(rows[0]?.todayVisits || 0) });
+  }
   const actionMatch = url.pathname.match(/^\/api\/admin\/users\/([^/]+)$/);
   if (actionMatch && req.method === 'POST') {
     const user = await currentUser(req); if (!isAdmin(user)) return json(res, 403, { error: 'Bạn không có quyền quản trị.' });
@@ -185,6 +222,10 @@ async function handle(req, res) {
       const user = await currentUser(req);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }
+      if (url.pathname === '/' && user) {
+        const connection = await db();
+        if (connection) await connection.execute('INSERT INTO site_visit_stats (visit_date, visit_count) VALUES (CURRENT_DATE, 1) ON DUPLICATE KEY UPDATE visit_count = visit_count + 1');
+      }
     }
     return null;
   } catch (error) { console.error(error); return json(res, 500, { error: 'Có lỗi máy chủ. Vui lòng thử lại.' }); }

@@ -7,7 +7,7 @@ export type DashboardModule = {
   title: string; description: string; href: string; tag: string;
 };
 type IconName = 'home' | 'file' | 'calendar' | 'forms' | 'users' | 'pin' | 'shield' |
-  'bell' | 'apps' | 'search' | 'arrow' | 'external' | 'logout' | 'clock' | 'help' | 'check';
+  'bell' | 'apps' | 'search' | 'arrow' | 'external' | 'logout' | 'clock' | 'help' | 'check' | 'chat';
 
 function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
   const paths: Record<IconName, ReactNode> = {
@@ -27,6 +27,7 @@ function Icon({ name, size = 20 }: { name: IconName; size?: number }) {
     clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
     help: <><circle cx="12" cy="12" r="9" /><path d="M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5M12 17h.01" /></>,
     check: <path d="m5 12 4 4L19 6" />,
+    chat: <><path d="M20 11.5a7 7 0 0 1-7.5 7L7 21v-3.2A7 7 0 1 1 20 11.5Z" /><path d="M8 11h.01M12 11h.01M16 11h.01" /></>,
   };
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
@@ -46,6 +47,8 @@ const templateGroups = [
   { title: 'Nghiệp vụ & hội thẩm', description: 'Biểu mẫu phục vụ công tác xét xử', icon: 'users' as const },
   { title: 'Báo cáo & danh bạ', description: 'Mẫu tổng hợp, báo cáo phối hợp', icon: 'forms' as const },
 ];
+type ChatMessage = { id: number; userEmail: string; userName: string; message: string; createdAt: string };
+type VisitStats = { totalVisits: number; todayVisits: number };
 
 export default function Dashboard({ modules, preview = false }: { modules: DashboardModule[]; preview?: boolean }) {
   const [now, setNow] = useState(() => new Date());
@@ -54,6 +57,11 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
   const [authState, setAuthState] = useState<'loading' | 'ready' | 'error'>(preview ? 'ready' : 'loading');
   const [letters, setLetters] = useState<DashboardLetter[]>([]);
   const [letterState, setLetterState] = useState<'loading' | 'ready' | 'error'>(preview ? 'ready' : 'loading');
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
+  const [chatState, setChatState] = useState<'loading' | 'ready' | 'error'>(preview ? 'ready' : 'loading');
+  const [chatDraft, setChatDraft] = useState('');
+  const [chatSending, setChatSending] = useState(false);
+  const [visitStats, setVisitStats] = useState<VisitStats | null>(preview ? { totalVisits: 0, todayVisits: 0 } : null);
   const [taskScope, setTaskScope] = useState<'mine' | 'all'>('mine');
   const [query, setQuery] = useState('');
   const [tag, setTag] = useState('Tất cả');
@@ -71,7 +79,7 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
     const controller = new AbortController();
     async function load() {
       try {
-        const response = await fetch('/api/auth/me', { signal: controller.signal, cache: 'no-store' });
+        const response = await fetch('/api/auth/me', { signal: controller.signal, credentials: 'include', cache: 'no-store' });
         if (!response.ok) throw new Error('session');
         const data = await response.json();
         if (!data.user || !['approved', 'admin'].includes(data.user.status)) {
@@ -85,17 +93,23 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
         return;
       }
       try {
-        const response = await fetch('/api/letters', { signal: controller.signal, cache: 'no-store' });
-        if (response.status === 403 || response.status === 401) {
+        const [letterResponse, chatResponse, statsResponse] = await Promise.all([
+          fetch('/api/letters', { signal: controller.signal, credentials: 'include', cache: 'no-store' }),
+          fetch('/api/chat', { signal: controller.signal, credentials: 'include', cache: 'no-store' }),
+          fetch('/api/stats/visits', { signal: controller.signal, credentials: 'include', cache: 'no-store' }),
+        ]);
+        if (letterResponse.status === 403 || letterResponse.status === 401 || chatResponse.status === 403 || statsResponse.status === 403) {
           window.location.replace('/dang-nhap');
           return;
         }
-        if (!response.ok) throw new Error('letters');
-        const data = await response.json();
-        setLetters(Array.isArray(data.letters) ? data.letters : []);
+        if (!letterResponse.ok) throw new Error('letters');
+        const letterData = await letterResponse.json();
+        setLetters(Array.isArray(letterData.letters) ? letterData.letters : []);
         setLetterState('ready');
+        if (chatResponse.ok) { const chatData = await chatResponse.json(); setChatMessages(Array.isArray(chatData.messages) ? chatData.messages : []); setChatState('ready'); } else setChatState('error');
+        if (statsResponse.ok) setVisitStats(await statsResponse.json());
       } catch {
-        if (!controller.signal.aborted) setLetterState('error');
+        if (!controller.signal.aborted) { setLetterState('error'); setChatState('error'); }
       }
     }
     void load();
@@ -107,13 +121,29 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
     setLoggingOut(true);
     setActionError('');
     try {
-      const response = await fetch('/api/auth/logout', { method: 'POST' });
+      const response = await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
       if (!response.ok) throw new Error('logout');
       window.location.replace('/dang-nhap');
     } catch {
       setActionError('Chưa thể đăng xuất. Vui lòng thử lại.');
       setLoggingOut(false);
     }
+  }
+
+  async function sendChat(event: React.FormEvent) {
+    event.preventDefault();
+    const message = chatDraft.trim();
+    if (!message || preview || chatSending) return;
+    setChatSending(true); setActionError('');
+    try {
+      const response = await fetch('/api/chat', { method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Không thể gửi tin nhắn.');
+      setChatDraft('');
+      const refreshed = await fetch('/api/chat', { credentials: 'include', cache: 'no-store' });
+      if (refreshed.ok) { const chatData = await refreshed.json(); setChatMessages(Array.isArray(chatData.messages) ? chatData.messages : []); }
+    } catch (error) { setActionError(error instanceof Error ? error.message : 'Không thể gửi tin nhắn.'); }
+    finally { setChatSending(false); }
   }
 
   const personalLetters = useMemo(() => letters.filter((letter) => assignedToUser(letter, user)), [letters, user]);
@@ -163,6 +193,7 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
         <div className="db-nav-group"><p>Tổng quan</p>
           <a href="/" className="db-nav-link db-nav-current" aria-current="page" aria-label="Trang chủ" title="Trang chủ"><Icon name="home" /><span className="db-nav-label">Trang chủ</span><span className="db-nav-short">Trang chủ</span></a>
           {navLink('Thông báo nội bộ', 'Tin mới', 'bell', '#db-notices')}
+          {navLink('Chat nội bộ', 'Chat', 'chat', '#db-chat')}
           {navLink('Lịch làm việc', 'Lịch', 'calendar', weeklyUrl, true)}
         </div>
         <div className="db-nav-group"><p>Nghiệp vụ</p>
@@ -210,6 +241,16 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
           <section className="db-panel db-notice-panel" id="db-notices" aria-labelledby="db-notice-title"><div className="db-panel-head"><div><p className="db-kicker">THÔNG TIN ĐƠN VỊ</p><h2 id="db-notice-title">Thông báo mới</h2></div><span className="db-icon-soft"><Icon name="bell" /></span></div><div className="db-empty db-notice-empty"><Icon name="bell" size={28} /><strong>Chưa có thông báo nội bộ</strong><p>Khu vực dành cho lịch họp, hạn báo cáo và các cập nhật từ đơn vị. Chờ kết nối nguồn thông báo.</p></div><div className="db-calendar-card"><div className="db-icon-tile"><Icon name="calendar" /></div><div><strong>Lịch làm việc tuần</strong><p>Xem lịch công tác hiện có của đơn vị.</p><a href={weeklyUrl} target="_blank" rel="noopener noreferrer" className="db-text-link">Mở lịch làm việc <Icon name="external" size={13} /></a></div></div></section>
         </div>
 
+        <section className="db-panel db-chat-panel" id="db-chat" aria-labelledby="db-chat-title">
+          <div className="db-panel-head"><div><p className="db-kicker">TRAO ĐỔI NỘI BỘ</p><h2 id="db-chat-title">Chat chung của đơn vị</h2></div><span className="db-chat-private"><Icon name="shield" size={14} /> Chỉ tài khoản đã duyệt</span></div>
+          {chatState === 'loading' && <div className="db-chat-empty" role="status"><Icon name="chat" size={26} /><p>Đang tải cuộc trò chuyện…</p></div>}
+          {chatState === 'error' && <div className="db-chat-empty" role="alert"><Icon name="help" size={26} /><strong>Chưa kết nối được khung chat</strong><p>Vui lòng thử lại sau hoặc liên hệ quản trị viên.</p></div>}
+          {chatState === 'ready' && <>
+            <div className="db-chat-log" aria-live="polite">{chatMessages.length ? chatMessages.slice(-30).map((item) => <article className={`db-chat-message ${item.userEmail === user?.email ? 'is-own' : ''}`} key={item.id}><div className="db-chat-avatar">{(item.userName || 'ND').split(' ').filter(Boolean).slice(-2).map((value) => value[0]).join('').toUpperCase()}</div><div><div className="db-chat-meta"><strong>{item.userName}</strong><time>{new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(item.createdAt))}</time></div><p>{item.message}</p></div></article>) : <div className="db-chat-empty"><Icon name="chat" size={26} /><strong>Chưa có tin nhắn</strong><p>Hãy gửi lời chào hoặc trao đổi công việc đầu tiên.</p></div>}</div>
+            <form className="db-chat-form" onSubmit={sendChat}><label htmlFor="db-chat-input" className="db-sr-only">Nội dung tin nhắn</label><textarea id="db-chat-input" value={chatDraft} onChange={(event) => setChatDraft(event.target.value)} maxLength={1000} rows={2} placeholder={preview ? 'Bản minh họa không gửi dữ liệu.' : 'Viết tin nhắn cho mọi người…'} disabled={preview || chatSending} /><div><small>{chatDraft.length}/1000</small><button type="submit" disabled={preview || chatSending || !chatDraft.trim()}><Icon name="chat" size={15} /> {chatSending ? 'Đang gửi…' : 'Gửi tin nhắn'}</button></div></form>
+          </>}
+        </section>
+
         <section className="db-directory-section" id="db-directories"><PanelHeading label="KẾT NỐI NGHIỆP VỤ" title="Danh bạ phối hợp"><span className="db-muted-note"><Icon name="shield" size={14} /> Chỉ dùng nội bộ</span></PanelHeading><div className="db-directory-grid">{directories.map((item) => <a href={item.href} className="db-directory-card" key={item.title}><span className="db-icon-tile"><Icon name={item.icon} size={22} /></span><div><h3>{item.title}</h3><p>{item.description}</p><small>Chờ danh sách chính thức</small></div><Icon name="arrow" size={17} /></a>)}</div></section>
 
         <section className="db-panel db-forms-panel" id="db-forms"><PanelHeading label="TÀI NGUYÊN DÙNG CHUNG" title="Hệ thống biểu mẫu"><a href="/bieu-mau" className="db-text-link">Mở thư viện <Icon name="arrow" size={16} /></a></PanelHeading><div className="db-form-groups">{templateGroups.map((item) => <a href="/bieu-mau" key={item.title}><Icon name={item.icon} /><div><strong>{item.title}</strong><small>{item.description}</small></div><Icon name="arrow" size={15} /></a>)}</div><p className="db-form-note">Danh mục hiện là minh họa. File Word, Excel và PDF sẽ bổ sung khi đơn vị cung cấp.</p></section>
@@ -220,6 +261,6 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
       </main>
     </div>
 
-    <footer className="db-footer"><div><strong>TAND KHU VỰC 11 - TP HỒ CHÍ MINH</strong><span>Hệ thống phần mềm nội bộ</span></div><p>Phần mềm được thiết kế bởi <strong>Hoàng Vững</strong><span>Bản quyền: Hoàng Vững · © {now.getFullYear()}</span></p></footer>
+    <footer className="db-footer"><div><strong>TAND KHU VỰC 11 - TP HỒ CHÍ MINH</strong><span>Hệ thống phần mềm nội bộ</span></div><div className="db-visit-stats"><span><Icon name="apps" size={13} /> Tổng lượt truy cập <strong>{visitStats ? visitStats.totalVisits.toLocaleString('vi-VN') : '—'}</strong></span><span>Hôm nay <strong>{visitStats ? visitStats.todayVisits.toLocaleString('vi-VN') : '—'}</strong></span></div><p>Phần mềm được thiết kế bởi <strong>Hoàng Vững</strong><span>Bản quyền: Hoàng Vững · © {now.getFullYear()}</span></p></footer>
   </div>;
 }
