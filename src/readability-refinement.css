@@ -1,0 +1,59 @@
+/* Scope all typography changes to the requested login and home pages. */
+.login-shell,.login-shell input,.login-shell button{font-family:Arial,'Helvetica Neue',sans-serif;text-rendering:optimizeLegibility}
+.login-shell .login-brand h1{font-family:Arial,sans-serif;font-size:18px;line-height:1.5;font-weight:700;color:#fff;letter-spacing:0;white-space:nowrap;margin:0;text-align:left}
+.login-shell .login-brand .brand-kicker{font-size:11px;font-weight:700;color:#fff;letter-spacing:.08em}
+.login-shell .login-brand .brand-subtitle{font-family:Arial,sans-serif;font-size:12px;line-height:1.65;font-weight:600;color:#fff;letter-spacing:0;text-transform:none;max-width:none;text-align:left}
+.login-shell .login-brand .brand-caption{color:#ffe4b4;font-size:11px;line-height:1.6;letter-spacing:0;text-align:left}
+.login-shell .form-heading h2{font-family:Arial,sans-serif;font-size:30px;line-height:1.4;font-weight:700;color:#8f1218}
+.login-shell .form-heading .eyebrow{font-family:Arial,sans-serif;font-size:11px;color:#8f1218}
+.login-shell .form-heading p:not(.eyebrow){font-size:14px;line-height:1.65;color:#544349;text-align:left}
+.login-shell .auth-form label{font-family:Arial,sans-serif;font-size:13px;font-weight:600;line-height:1.5;color:#33272b;text-align:left}
+.login-shell .auth-form input:not([type=checkbox]){font-family:Arial,sans-serif;font-size:16px;line-height:1.4;width:100%;min-width:0;min-height:44px;background:#fff;color:#241b1e;border-color:#c9b4b8;padding:10px 12px}
+.login-shell input::placeholder{color:#75646a;opacity:1}
+.login-shell .password-toggle{font-family:Arial,sans-serif;font-size:12px;color:#8f1218}
+.login-shell .auth-form .remember-row{font-size:12px!important;color:#4d3b42!important;line-height:1.5}
+.login-shell .remember-row input{padding:0;width:16px!important;height:16px!important;margin:0}
+.login-shell .admin-login-button{font-family:Arial,sans-serif;font-size:14px;line-height:1.45;color:#fff;letter-spacing:0;min-height:46px}
+.login-shell .auth-remember{font-size:12px;line-height:1.6;color:#67545a;text-align:left}
+.login-shell .auth-links{flex-wrap:wrap;align-items:flex-start;gap:12px}
+.login-shell .auth-switch,.login-shell .auth-forgot{font-family:Arial,sans-serif;font-size:12px;line-height:1.6;color:#8f1218}
+.login-shell .admin-back{font-family:Arial,sans-serif;font-size:12px;color:#67545a}
+.login-shell .auth-error,.login-shell .auth-notice{font-size:13px;line-height:1.6;text-align:left}
+.login-shell .login-footer{font-family:Arial,sans-serif;font-size:12px;line-height:1.5;color:#67545a;letter-spacing:0}
+.login-shell .login-footer strong{color:#8f1218}
+.app-shell .main-header h1{font-size:31px;line-height:1.2}
+.app-shell .subtitle{font-size:12px;line-height:1.5}
+.app-shell .eyebrow{font-size:11px}
+.app-shell .side-link{font-size:12px;line-height:1.45}
+.app-shell .side-group>p{font-size:10px}
+.app-shell .sidebar-brand strong{font-size:12px}
+.app-shell .section-title h2{font-size:29px}
+.app-shell .section-note,.app-shell .app-count{font-size:12px}
+.app-shell .quick-card strong{font-size:16px;line-height:1.4}
+.app-shell .quick-desc{font-size:11px;line-height:1.5}
+.app-shell .app-card h3{font-size:19px;line-height:1.35}
+.app-shell .app-card p{font-size:12px;line-height:1.5}
+.app-shell .app-tag{font-size:10px}
+.app-shell .filter-pills button,.app-shell .search-box input{font-size:11px}
+.app-shell .digital-hero p{font-size:13px;line-height:1.55}
+.app-shell .shortcut-grid a strong{font-size:14px}
+.app-shell .shortcut-grid a small{font-size:11px}
+.app-shell .notice-panel p:not(.eyebrow),.app-shell .contact-items strong,.app-shell .contact-items a{font-size:12px}
+.app-shell .contact-items small{font-size:10px}
+.app-shell .footer{font-size:11px}
+.app-shell .footer div strong{font-size:12px}
+@media(max-width:760px){.app-shell .side-link{font-size:12px}.app-shell .side-group>p{font-size:9px}.app-shell .sidebar-brand strong{font-size:10px}.app-shell .main-header h1{font-size:29px}.app-shell .subtitle{font-size:10px}.app-shell .quick-card strong{font-size:12px}.app-shell .quick-desc{font-size:10px}.app-shell .app-card h3{font-size:17px}.app-shell .app-card p{font-size:11px}.app-shell .section-title h2{font-size:26px}.app-shell .footer,.app-shell .footer p,.app-shell .footer>span{font-size:9px}}
+@media(max-width:420px){.login-shell{padding:16px}.login-shell .login-brand{padding-left:22px;padding-right:22px}.login-shell .login-brand h1{font-size:14px}.login-shell .login-form-panel{padding:28px 22px}.login-shell .login-footer{font-size:11px}.app-shell .main-header h1{font-size:26px}.app-shell .app-card h3{font-size:16px}}
+
+/* Requested account controls and statistics; keep the existing full-width footer. */
+.app-shell .sidebar-logout{padding:12px 10px 0;border-top:1px solid #f0dfe0;margin-top:12px}
+.app-shell .sidebar-logout button{display:flex;gap:8px;align-items:center;justify-content:center;width:100%;min-height:40px;border:1px solid #ddb5b9;border-radius:4px;background:#fff0f1;color:#9a1b27;font-size:12px;font-weight:700;line-height:1.5;padding:8px}
+.app-shell .sidebar-logout button:hover{background:#ffe1e4}
+.app-shell .sidebar-logout button:disabled{opacity:.6;cursor:wait}
+.app-shell .sidebar-logout small{display:block;color:#a01820;line-height:1.5;margin-top:8px}
+.app-shell .footer{flex-wrap:wrap;gap:10px;padding-top:12px;padding-bottom:12px}
+.app-shell .footer .home-visit-stats{display:flex;align-items:center;gap:16px;flex-wrap:wrap;color:#66545a;font-size:11px}
+.app-shell .footer .home-visit-stats span{display:inline-block;margin:0}
+.app-shell .footer .home-visit-stats strong{display:inline;color:#8f1218;font-size:12px;letter-spacing:0}
+.app-shell .home-visit-stats i{display:inline-block;width:7px;height:7px;background:#24854d;border-radius:50%;margin-right:6px}
+@media(max-width:760px){.app-shell .sidebar-logout{padding:10px 4px 0}.app-shell .sidebar-logout button{font-size:11px}.app-shell .footer .home-visit-stats{grid-column:1/-1;gap:10px;font-size:10px}}

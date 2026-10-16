@@ -254,13 +254,28 @@ async function api(req, res, url) {
     const user = await currentUser(req, res);
     return json(res, 200, { authenticated: Boolean(user), user: user ? { ...user, isAdmin: isAdmin(user) } : null });
   }
-  if (url.pathname === '/api/auth/logout' && req.method === 'POST') { clearCookie(res, 'webdev_app_session'); return json(res, 200, { ok: true }); }
+  if (url.pathname === '/api/auth/logout' && req.method === 'POST') {
+    try {
+      const user = await currentUser(req);
+      if (user) { const connection = await db(); await connection.execute('DELETE FROM site_online_users WHERE open_id=?', [user.openId]); }
+    } catch { console.warn('Không cập nhật được trạng thái online lúc đăng xuất.'); }
+    clearCookie(res, 'webdev_app_session');
+    return json(res, 200, { ok: true });
+  }
   if (url.pathname === '/api/admin/users' && req.method === 'GET') {
     const user = await currentUser(req); if (!isAdmin(user)) return json(res, 403, { error: 'Bạn không có quyền quản trị.' });
     const connection = await db();
     const [rows] = await connection.execute(`SELECT ${accountFields} FROM app_users ORDER BY status="pending" DESC, created_at DESC`);
     const users = rows.map(({ sessionVersion, ...account }) => ({ ...account, isOwner: account.email.trim().toLowerCase() === adminEmail }));
     return json(res, 200, { users });
+  }
+  if (['/api/directories/jurors', '/api/directories/neighborhoods'].includes(url.pathname) && req.method === 'GET') {
+    const user = await currentUser(req, res);
+    if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt để xem danh bạ.' });
+    const category = url.pathname.endsWith('/jurors') ? 'jurors' : 'neighborhoods';
+    const connection = await db();
+    const [rows] = await connection.execute('SELECT payload FROM directory_contacts WHERE category=?', [category]);
+    return json(res, 200, { entries: rows.map((row) => typeof row.payload === 'string' ? JSON.parse(row.payload) : row.payload) });
   }
   if (url.pathname === '/api/letters' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem sổ công văn.' });
@@ -301,10 +316,22 @@ async function api(req, res, url) {
     const [result] = await connection.execute('INSERT INTO internal_chat_messages (user_email, user_name, message) VALUES (?,?,?)', [user.email || user.openId, user.name || user.email || 'Người dùng', message]);
     return json(res, 201, { ok: true, id: result.insertId });
   }
+  if (url.pathname === '/api/presence' && req.method === 'POST') {
+    const user = await currentUser(req, res);
+    if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt.' });
+    const connection = await db();
+    await connection.execute('INSERT INTO site_online_users (open_id, last_seen) VALUES (?, UTC_TIMESTAMP()) ON DUPLICATE KEY UPDATE last_seen=UTC_TIMESTAMP()', [user.openId]);
+    const [rows] = await connection.execute(`SELECT
+      (SELECT COUNT(*) FROM site_online_users presence JOIN app_users users ON users.open_id=presence.open_id
+        WHERE presence.last_seen >= UTC_TIMESTAMP() - INTERVAL 2 MINUTE AND users.status IN ('approved','admin')) AS onlineUsers,
+      (SELECT COALESCE(SUM(visit_count),0) FROM site_visit_stats) AS totalVisits,
+      (SELECT COALESCE(SUM(visit_count),0) FROM site_visit_stats WHERE visit_date=DATE(UTC_TIMESTAMP() + INTERVAL 7 HOUR)) AS todayVisits`);
+    return json(res, 200, { onlineUsers: Number(rows[0]?.onlineUsers || 0), totalVisits: Number(rows[0]?.totalVisits || 0), todayVisits: Number(rows[0]?.todayVisits || 0) });
+  }
   if (url.pathname === '/api/stats/visits' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem thống kê.' });
     const connection = await db(); if (!connection) return json(res, 503, { error: 'Chưa kết nối được cơ sở dữ liệu.' });
-    const [rows] = await connection.execute('SELECT COALESCE(SUM(visit_count), 0) AS totalVisits, COALESCE(SUM(CASE WHEN visit_date = CURRENT_DATE THEN visit_count ELSE 0 END), 0) AS todayVisits FROM site_visit_stats');
+    const [rows] = await connection.execute('SELECT COALESCE(SUM(visit_count), 0) AS totalVisits, COALESCE(SUM(CASE WHEN visit_date = DATE(UTC_TIMESTAMP() + INTERVAL 7 HOUR) THEN visit_count ELSE 0 END), 0) AS todayVisits FROM site_visit_stats');
     return json(res, 200, { totalVisits: Number(rows[0]?.totalVisits || 0), todayVisits: Number(rows[0]?.todayVisits || 0) });
   }
   const actionMatch = url.pathname.match(/^\/api\/admin\/users\/([^/]+)$/);
@@ -340,6 +367,10 @@ async function api(req, res, url) {
 async function handle(req, res) {
   const url = new URL(req.url, originFor(req));
   try {
+    const requestedPath = decodeURIComponent(url.pathname).replace(/\\/g, '/').toLowerCase();
+    if (['/server/', '/scripts/', '/upload/'].some((prefix) => requestedPath.includes(prefix))) {
+      return json(res, 404, { error: 'Không tìm thấy tài nguyên.' });
+    }
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
     if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/admin'].includes(url.pathname)) {
       const user = await currentUser(req, res);
@@ -347,7 +378,7 @@ async function handle(req, res) {
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }
       if (url.pathname === '/' && user) {
         const connection = await db();
-        if (connection) await connection.execute('INSERT INTO site_visit_stats (visit_date, visit_count) VALUES (CURRENT_DATE, 1) ON DUPLICATE KEY UPDATE visit_count = visit_count + 1');
+        if (connection) await connection.execute('INSERT INTO site_visit_stats (visit_date, visit_count) VALUES (DATE(UTC_TIMESTAMP() + INTERVAL 7 HOUR), 1) ON DUPLICATE KEY UPDATE visit_count = visit_count + 1');
       }
     }
     return null;

@@ -1,0 +1,893 @@
+{
+  "entries": [
+    {
+      "id": "dbfa714c54ec0d3b568840a6",
+      "sourceOrder": 1,
+      "name": "Phạm Tuấn Anh",
+      "ward": "Phường Phước Thắng",
+      "neighborhood": "",
+      "area": "Phường Phước Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0909195676",
+      "phones": [
+        "0909195676"
+      ],
+      "birthDate": "01/10/1974",
+      "address": "34/7 Bắc Sơn, phường Phước Thắng, TP.HCM",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Phó CT HĐND phường Phước Thắng",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 1"
+    },
+    {
+      "id": "e69f33889de853b8bfe565ac",
+      "sourceOrder": 2,
+      "name": "Hồ Sĩ Tiến",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0908174386",
+      "phones": [
+        "0908174386"
+      ],
+      "birthDate": "11/11/1964",
+      "address": "12 Biệt Chính, phường Rạch Dừa, TP.HCM",
+      "qualification": "Cử nhân Kinh tế",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 2"
+    },
+    {
+      "id": "ce163d84d00f46cd5d5e7a8e",
+      "sourceOrder": 3,
+      "name": "Vũ Văn Chương",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0983266237",
+      "phones": [
+        "0983266237"
+      ],
+      "birthDate": "8/10/1968",
+      "address": "23/6A Hoàng Việt, phường Vũng Tàu, TP.HCM",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 3"
+    },
+    {
+      "id": "ec3daf2bb60878d99fce6298",
+      "sourceOrder": 4,
+      "name": "Lê Văn Khoe",
+      "ward": "Xã Long Sơn",
+      "neighborhood": "",
+      "area": "Xã Long Sơn",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0798829968",
+      "phones": [
+        "0798829968"
+      ],
+      "birthDate": "04/10/1969",
+      "address": "Thôn 3, xã Long Sơn,",
+      "qualification": "Cử nhân Công tác Xã hội",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 4"
+    },
+    {
+      "id": "83751651e0cdd45ec3d7fa31",
+      "sourceOrder": 5,
+      "name": "Nguyễn Thị Hoa",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0909012485",
+      "phones": [
+        "0909012485"
+      ],
+      "birthDate": "02/9/1974",
+      "address": "21 Phạm Văn Tráng, phường Rạch Dừa,",
+      "qualification": "Thạc sỹ Quản lý Giáo dục",
+      "occupation": "Hiệu trưởng Trường THCS Thắng Nhất",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 5"
+    },
+    {
+      "id": "f09c06e05cb3308a491527fc",
+      "sourceOrder": 6,
+      "name": "Văn Thị Ngọc Hà",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0978106627",
+      "phones": [
+        "0978106627"
+      ],
+      "birthDate": "11/11/1964",
+      "address": "87/5 Phạm Cự Lạng, phường Rạch Dừa",
+      "qualification": "Trung cấp Hành chính Văn thư",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 6"
+    },
+    {
+      "id": "520e415ddd65e2e336513d56",
+      "sourceOrder": 7,
+      "name": "Nguyễn Thị Mỹ Hạnh",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0919086407",
+      "phones": [
+        "0919086407"
+      ],
+      "birthDate": "01/8/1964",
+      "address": "29/6A Xô Viết Nghệ Tĩnh, phường Vũng Tàu",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 7"
+    },
+    {
+      "id": "58b9938400c357c09e93da9a",
+      "sourceOrder": 8,
+      "name": "Phan Thị Mỹ Hạnh",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "",
+      "area": "Phường Tam Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0902647358",
+      "phones": [
+        "0902647358"
+      ],
+      "birthDate": "18/12/1977",
+      "address": "62/5 Trần Bình Trọng, phường Tam Thắng",
+      "qualification": "Thạc sỹ Văn Học",
+      "occupation": "Phó HT Trường THPT Trần Nguyên Hãn",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 8"
+    },
+    {
+      "id": "cfc840646878351ba81cd383",
+      "sourceOrder": 9,
+      "name": "Ngô Thị Thúy Hảo",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0972929678",
+      "phones": [
+        "0972929678"
+      ],
+      "birthDate": "26/6/1976",
+      "address": "573/8 Bình Giã, phường Rạch Dừa, TP.HCM",
+      "qualification": "Cử nhân Luật",
+      "occupation": "UBMTTQ Khu dân cư phường Rạch Dừa,",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 9"
+    },
+    {
+      "id": "9061cf044ce78f3a51f24539",
+      "sourceOrder": 10,
+      "name": "Trịnh Thị Thu Hằng",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "",
+      "area": "Phường Tam Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0917184616",
+      "phones": [
+        "0917184616"
+      ],
+      "birthDate": "19/12/1977",
+      "address": "170/15/14 Bình Giã, P.Tam Thắng, TP.HCM",
+      "qualification": "Cử nhân Công tác xã hội",
+      "occupation": "Chủ tịch Hội phụ nữ phường Vũng Tàu,",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 10"
+    },
+    {
+      "id": "3e0e447ca0c0cca96f31191a",
+      "sourceOrder": 11,
+      "name": "Nguyễn Thị Minh",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0335145297",
+      "phones": [
+        "0335145297"
+      ],
+      "birthDate": "06/11/1979",
+      "address": "01 Trần Nguyên Hãn, phường Vũng Tàu",
+      "qualification": "Cử nhân Công tác XH",
+      "occupation": "Chủ tịch công đoàn phường Vũng Tàu",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 11"
+    },
+    {
+      "id": "c98376c645b9f821ceacd660",
+      "sourceOrder": 12,
+      "name": "Nguyễn Thị Phương",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "",
+      "area": "Phường Tam Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0983184116",
+      "phones": [
+        "0983184116"
+      ],
+      "birthDate": "19/7/1964",
+      "address": "378/1/10 Trương Công Định, phường Tam Thắng",
+      "qualification": "ĐH Ngữ Văn",
+      "occupation": "Hưu trí (Giáo viên nghỉ hưu)",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 12"
+    },
+    {
+      "id": "aed4e295b2ced0efed195089",
+      "sourceOrder": 13,
+      "name": "Nguyễn Thanh Sơn",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0918004403",
+      "phones": [
+        "0918004403"
+      ],
+      "birthDate": "28/8/1964",
+      "address": "65 Tiền Cảng, phường Rạch Dừa, TP.HCM",
+      "qualification": "Trung cấp quân sự",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 13"
+    },
+    {
+      "id": "36cb80982c71ca67f9f90730",
+      "sourceOrder": 14,
+      "name": "Trần Thị Bích Trang",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0989361844",
+      "phones": [
+        "0989361844"
+      ],
+      "birthDate": "31/12/1966",
+      "address": "126/1 Nguyễn Thiện Thuật, phường Rạch Dừa,",
+      "qualification": "Cử nhân sư phạm Ngữ văn",
+      "occupation": "Hưu trí (Giáo viên nghỉ hưu)",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 14"
+    },
+    {
+      "id": "a80de0cc6920acc1b8e5a611",
+      "sourceOrder": 15,
+      "name": "Ngô Thị Bảy",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0375951599",
+      "phones": [
+        "0375951599"
+      ],
+      "birthDate": "10/9/1973",
+      "address": "87/6 Phạm Cự Lạng, phường Rạch Dừa,",
+      "qualification": "Trung cấp Công tác phụ nữ",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 15"
+    },
+    {
+      "id": "c6adb50d9bdfa5c80ff06d12",
+      "sourceOrder": 16,
+      "name": "Nguyễn Đức Ý",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0983672265",
+      "phones": [
+        "0983672265"
+      ],
+      "birthDate": "28/8/1964",
+      "address": "D603 Nhà ở Xã Hội, phường Rạch Dừa",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 16"
+    },
+    {
+      "id": "bedf7d092917ecd74a7a66af",
+      "sourceOrder": 17,
+      "name": "Trịnh Đình Cường",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0837666666",
+      "phones": [
+        "0837666666"
+      ],
+      "birthDate": "29/7/1982",
+      "address": "Chung cư Vũng Tàu Center, 93 Lê Lợi, P. Vũng Tàu,",
+      "qualification": "Cử nhân kế toán, TS quản trị KD",
+      "occupation": "Phó trưởng khoa kinh tế Luật – ĐH BR-VT",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 17"
+    },
+    {
+      "id": "eec20069c23761a8745cbcfd",
+      "sourceOrder": 18,
+      "name": "Đỗ Hồng Hà",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0908187365",
+      "phones": [
+        "0908187365"
+      ],
+      "birthDate": "10/11/1973",
+      "address": "Số 40 đường Nguyễn Kim, Phường Vũng Tàu",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Cán bộ hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 18"
+    },
+    {
+      "id": "740f4ac483d708f6b028c4e9",
+      "sourceOrder": 19,
+      "name": "Phạm Ngọc Thắng",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "",
+      "area": "Phường Tam Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0909904555",
+      "phones": [
+        "0909904555"
+      ],
+      "birthDate": "25/02/1979",
+      "address": "Số 60/40 đường Phạm Hồng Thái, P.Tam Thắng",
+      "qualification": "Thạc sỹ quản lý tổ chức vận tải",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 19"
+    },
+    {
+      "id": "348714520788dc071689e454",
+      "sourceOrder": 20,
+      "name": "Nguyễn Xuân Tôn",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0908608839",
+      "phones": [
+        "0908608839"
+      ],
+      "birthDate": "29/3/1966",
+      "address": "Số 79/9 Xô Viết nghệ Tĩnh, Phường Vũng Tàu,",
+      "qualification": "Đại học Y khoa, Cử nhân Luật",
+      "occupation": "Cán bộ hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 20"
+    },
+    {
+      "id": "8e71f5cb499186cf285211dd",
+      "sourceOrder": 21,
+      "name": "Đặng Thị Sâm",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0985217785",
+      "phones": [
+        "0985217785"
+      ],
+      "birthDate": "02/6/1985",
+      "address": "Số 55 Lê Thánh Tông, phường Rạch Dừa",
+      "qualification": "Đại học chuyên ngành QL-XH",
+      "occupation": "Chủ tịch Hội LHPN phường Tam Thắng",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 21"
+    },
+    {
+      "id": "28b5353b940d118ece1ee6d5",
+      "sourceOrder": 22,
+      "name": "Nguyễn Công Thành",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0982632463",
+      "phones": [
+        "0982632463"
+      ],
+      "birthDate": "08/10/1985",
+      "address": "22/34 Nam Kỳ Khởi Nghĩa, phường Vũng Tàu",
+      "qualification": "Đại học Chính trị",
+      "occupation": "CT UBMTTQVN phường Tam Thắng",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 22"
+    },
+    {
+      "id": "a786d7915d6984548e4f032a",
+      "sourceOrder": 23,
+      "name": "Hoàng Việt Trung",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0399153801",
+      "phones": [
+        "0399153801"
+      ],
+      "birthDate": "21/02/1993",
+      "address": "B302 Chung cư OSC 110 Võ Thị Sáu, P.Vũng Tàu,",
+      "qualification": "Đại học Tài chính Ngân hàng",
+      "occupation": "Bí thư Đoàn TN phường Tam Thắng",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 23"
+    },
+    {
+      "id": "3c548727afd5b3549f82cde8",
+      "sourceOrder": 24,
+      "name": "Hoàng Kiều Anh",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0784668288",
+      "phones": [
+        "0784668288"
+      ],
+      "birthDate": "16/7/1994",
+      "address": "217/1 Nguyễn Hữu Cảnh, phường Rạch Dừa",
+      "qualification": "Cử nhân Luật quốc tế",
+      "occupation": "Bí thư Đoàn TN phường Phước Thắng",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 24"
+    },
+    {
+      "id": "1e2c5acc6170806feae55ac0",
+      "sourceOrder": 25,
+      "name": "Hoàng Thị Lê Dung",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0775773544",
+      "phones": [
+        "0775773544"
+      ],
+      "birthDate": "06/01/1980",
+      "address": "192 Trần Phú, phường Vũng Tàu, TP.HCM",
+      "qualification": "Kỹ sư bảo hộ lao động",
+      "occupation": "CT UBMTTQVN phường Phước Thắng",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 25"
+    },
+    {
+      "id": "8b78ef9a73c0f49228b271a3",
+      "sourceOrder": 26,
+      "name": "Lê Thị Kim Ngân",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0937383450",
+      "phones": [
+        "0937383450"
+      ],
+      "birthDate": "11/05/1983",
+      "address": "86/4/7B Hải Thưỡng Lãn Ông, phường Rạch Dừa",
+      "qualification": "Cử nhân Công tác Xã hội",
+      "occupation": "Chủ tịch Công đoàn phường Rạch Dừa",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 26"
+    },
+    {
+      "id": "3b21e64a2ba432fa679e40c8",
+      "sourceOrder": 27,
+      "name": "Vũ Đăng Khoa",
+      "ward": "Phường Phước Thắng",
+      "neighborhood": "",
+      "area": "Phường Phước Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0369040488",
+      "phones": [
+        "0369040488"
+      ],
+      "birthDate": "11/5/1971",
+      "address": "32/12 Nguyễn Gia Thiều Phường Phước Thắng,",
+      "qualification": "Cử nhân Luật,",
+      "occupation": "Chủ tịch UB MTTQ phường Vũng Tàu",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 27"
+    },
+    {
+      "id": "3bf1c759fdf55786b26ea54d",
+      "sourceOrder": 28,
+      "name": "Nguyễn Tiến Hoàng",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0936877995",
+      "phones": [
+        "0936877995"
+      ],
+      "birthDate": "29/10/1992",
+      "address": "290/30/1/10 Nguyễn Hữu Cảnh, phường Rạch Dừa",
+      "qualification": "Thạc sĩ Chính trị học",
+      "occupation": "Bí thư Đoàn TN phường Rạch Dừa,",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 28"
+    },
+    {
+      "id": "f28c0ba14e9e4a1c4af7c0bc",
+      "sourceOrder": 29,
+      "name": "Lê Đức Hiếu",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0974005879",
+      "phones": [
+        "0974005879"
+      ],
+      "birthDate": "18/12/1973",
+      "address": "75 Hàn Thuyên, phường Rạch Dừa, TP.HCM",
+      "qualification": "Thạc sỹ luật",
+      "occupation": "Phó Giám đốc",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 29"
+    },
+    {
+      "id": "5aa0a1c1b9078f8dde49928c",
+      "sourceOrder": 30,
+      "name": "Trần Văn Trìu",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0908974567",
+      "phones": [
+        "0908974567"
+      ],
+      "birthDate": "22/08/1973",
+      "address": "767A Bình Giã, phường Rạch Dừa, TP.HCM",
+      "qualification": "Quản lý nhà nước",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 30"
+    },
+    {
+      "id": "d6585600337d97e2ef84ea73",
+      "sourceOrder": 31,
+      "name": "Nguyễn Văn Hiến",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0989020227",
+      "phones": [
+        "0989020227"
+      ],
+      "birthDate": "20/6/1966",
+      "address": "37/42 Trần Xuân Độ, phường Vũng Tàu,",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 31"
+    },
+    {
+      "id": "ccf1121ab509cb7ce2c6b04f",
+      "sourceOrder": 32,
+      "name": "Vũ Văn Hùng",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0918010963",
+      "phones": [
+        "0918010963"
+      ],
+      "birthDate": "10/02/1968",
+      "address": "146/15A Xô Viết Ngệ Tĩnh, phường Vũng Tàu",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 32"
+    },
+    {
+      "id": "f960e05f935e96e6d87d5d17",
+      "sourceOrder": 33,
+      "name": "Nguyễn Thị Đào Mai",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "",
+      "area": "Phường Vũng Tàu",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0933614878",
+      "phones": [
+        "0933614878"
+      ],
+      "birthDate": "01/09/1964",
+      "address": "250/4B Lê Hồng Phong, phường Vũng Tàu,",
+      "qualification": "Cử nhân khoa học",
+      "occupation": "Hưu trí (Giáo viên nghỉ hưu)",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 33"
+    },
+    {
+      "id": "76d4a600b9d044e811239281",
+      "sourceOrder": 34,
+      "name": "Trương Minh Nghị",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "",
+      "area": "Phường Tam Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0983449036",
+      "phones": [
+        "0983449036"
+      ],
+      "birthDate": "10/12/1963",
+      "address": "41 Hoàng Văn Thụ, phường Tam Thắng, TP.HCM",
+      "qualification": "Cử nhân luật",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 34"
+    },
+    {
+      "id": "32c1bf08612b8e7c21ebe4d5",
+      "sourceOrder": 35,
+      "name": "Huỳnh Tuấn Dũng",
+      "ward": "Phường Phước Thắng",
+      "neighborhood": "",
+      "area": "Phường Phước Thắng",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0913616396",
+      "phones": [
+        "0913616396"
+      ],
+      "birthDate": "5/4/1971",
+      "address": "976 đường 30/4 phường Phước Thắng",
+      "qualification": "Cử nhân Luật KT- Quản trị",
+      "occupation": "CT UBMTTQVN xã Long Sơn",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 35"
+    },
+    {
+      "id": "bbcd33865d7de66309f9d178",
+      "sourceOrder": 36,
+      "name": "Nguyễn Thị Xuân Mỹ",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "",
+      "area": "Phường Rạch Dừa",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0909646943",
+      "phones": [
+        "0909646943"
+      ],
+      "birthDate": "23/7/1980",
+      "address": "780/8/11/26 Bình giã, phương Rạch Dừa,",
+      "qualification": "Cử nhân Luật",
+      "occupation": "Chủ tịch Hội LHPN xã Long Sơn",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 36"
+    },
+    {
+      "id": "9b92950158ddc8f047001d20",
+      "sourceOrder": 37,
+      "name": "Lê Đình Tuyến",
+      "ward": "Đặc khu Côn Đảo",
+      "neighborhood": "",
+      "area": "Đặc khu Côn Đảo",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0937012008",
+      "phones": [
+        "0937012008"
+      ],
+      "birthDate": "01/02/1976",
+      "address": "Khu dân cư số 7, Đặc khu Côn Đảo, TP.HCM",
+      "qualification": "Cử nhân sư phạm Lý",
+      "occupation": "Phó HT Trường THPT Võ Thị Sáu",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 37"
+    },
+    {
+      "id": "cd6025ecddfa14a45c76f188",
+      "sourceOrder": 38,
+      "name": "Đỗ Phi Phúc",
+      "ward": "Đặc khu Côn Đảo",
+      "neighborhood": "",
+      "area": "Đặc khu Côn Đảo",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0393643785",
+      "phones": [
+        "0393643785"
+      ],
+      "birthDate": "5/10/1991",
+      "address": "Khu dân cư số 5, Đặc khu Côn Đảo, TP.HCM",
+      "qualification": "Kỹ sư Môi trường",
+      "occupation": "Bí thư Đoàn Đặc Khu Côn Đảo,",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 38"
+    },
+    {
+      "id": "6a6f4437566c193df3ea284f",
+      "sourceOrder": 39,
+      "name": "Đoàn Thị Lan",
+      "ward": "Đặc khu Côn Đảo",
+      "neighborhood": "",
+      "area": "Đặc khu Côn Đảo",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0919628099",
+      "phones": [
+        "0919628099"
+      ],
+      "birthDate": "23/8/1962",
+      "address": "Khu dân cư số 9, Đặc khu Côn Đảo, TP.HCM",
+      "qualification": "Cử nhân ngoại ngữ",
+      "occupation": "Hưu trí (Giáo viên nghỉ hưu)",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 39"
+    },
+    {
+      "id": "72446816a00ed9b6ea85ba48",
+      "sourceOrder": 40,
+      "name": "Đoàn Thị Diệu Hiền",
+      "ward": "Đặc khu Côn Đảo",
+      "neighborhood": "",
+      "area": "Đặc khu Côn Đảo",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0917696369",
+      "phones": [
+        "0917696369"
+      ],
+      "birthDate": "30/3/1971",
+      "address": "Khu dân cư số 3, Đặc khu Côn Đảo, TP.HCM",
+      "qualification": "ĐH văn hóa chuyên ngành Bảo tàng",
+      "occupation": "Hưu trí",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 40"
+    },
+    {
+      "id": "7de8fb1df12d0df75c7e3652",
+      "sourceOrder": 41,
+      "name": "Nguyễn Thị Thu Thảo",
+      "ward": "Đặc khu Côn Đảo",
+      "neighborhood": "",
+      "area": "Đặc khu Côn Đảo",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0944021933",
+      "phones": [
+        "0944021933"
+      ],
+      "birthDate": "19/5/1982",
+      "address": "Khu dân cư số 9, Đặc khu Côn Đảo, TP.HCM",
+      "qualification": "Cử nhân luật",
+      "occupation": "Chủ tịch Hội phụ nữ Đặc Khu Côn Đảo",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 41"
+    },
+    {
+      "id": "f02da1fb40f2d8932118c78f",
+      "sourceOrder": 42,
+      "name": "Cao Thị Dung",
+      "ward": "Đặc khu Côn Đảo",
+      "neighborhood": "",
+      "area": "Đặc khu Côn Đảo",
+      "detail": "Hội thẩm nhân dân",
+      "phone": "0987152619",
+      "phones": [
+        "0987152619"
+      ],
+      "birthDate": "19/6/1991",
+      "address": "Khu dân cư số 7, Đặc khu Côn Đảo, TP.HCM",
+      "qualification": "ĐH cử nhân xã hội học",
+      "occupation": "Chủ tịch Liên đoàn lao động Đặc Khu Côn Đảo",
+      "note": "Nhiệm kỳ 2026–2031",
+      "needsReview": false,
+      "source": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "sourceLocation": "Table 1 / STT 42"
+    }
+  ],
+  "sources": [
+    {
+      "file": "DanhsáchHTNDKhuvực11,nhiệmkỳ2026-2031.docx",
+      "category": "jurors",
+      "count": 42
+    }
+  ]
+}

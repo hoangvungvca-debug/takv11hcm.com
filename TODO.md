@@ -39,3 +39,12 @@
 - [x] Tìm nhanh theo số công văn đi, hỗ trợ một phần số và kết hợp lọc từ ngày–đến ngày (ngày biên được tính, một đầu mốc tùy chọn).
 - [x] Đổi điều kiện về trang 1, phân trang 10 dòng theo kết quả, có xóa lọc và thông báo không tìm thấy/ngày không hợp lệ.
 - [x] Nút xuất dùng toàn bộ kết quả lọc, không đổi sổ đến, bố cục trang chủ/sidebar hay dữ liệu đã lưu.
+
+## Danh bạ người dùng cung cấp và chữ đăng nhập
+- [x] Nhập đầy đủ 42 Hội thẩm nhân dân nhiệm kỳ 2026–2031, hiển thị STT, họ tên, ngày sinh, nơi ở, chuyên môn, nghề nghiệp/chức vụ, điện thoại; có tìm kiếm.
+- [x] Nhập liên hệ Phước Thắng, Rạch Dừa, Tam Thắng, Vũng Tàu đúng nguồn; sắp theo phường/khu phố, lọc phường/khu phố/chức danh, tìm kiếm và xóa lọc; giữ các chức danh không phải khu phố trưởng để không bỏ dữ liệu.
+- [x] Danh bạ chỉ xem được với tài khoản đã duyệt; không đặt dữ liệu/số điện thoại trong tài nguyên công khai.
+- [x] Chữ đăng nhập rõ nét, dễ đọc, đồng nhất font/màu và nhãn cùng dòng; giữ nguyên các chức năng đăng nhập, trang chủ, sidebar, công văn, biểu mẫu và quản trị.
+- [ ] Xuất bản bản cập nhật lên website chính thức và xác minh deployment.
+- [x] Tăng nhẹ cỡ chữ trang chủ để dễ đọc, giữ nguyên bố cục và thứ tự ứng dụng.
+- [x] Nút Đăng xuất cuối sidebar xóa phiên trên trình duyệt, không xóa tài khoản; footer có số người online (tài khoản đã duyệt hoạt động 2 phút gần nhất), lượt hôm nay và tổng lượt mở trang chủ.

@@ -54,3 +54,10 @@ Tái sử dụng vùng giao diện sổ nội bộ, thêm bảng `outgoing_lette
 
 ## Tìm nhanh Sổ công văn đi
 Thêm tìm số công văn một phần, không phân biệt hoa/thường hoặc dấu (CVĐ/CVD); lọc ngày gửi từ ngày–đến ngày, bao gồm cả hai ngày biên, cho phép chỉ chọn một đầu mốc và kết hợp với số. Ngày JSON có múi giờ được đối chiếu theo Việt Nam. Thay bộ lọc trở về trang 1, giữ phân trang 10 dòng và hiển thị số kết quả. Có xóa bộ lọc, thông báo khoảng ngày không hợp lệ/không có kết quả. Xuất toàn bộ kết quả đang lọc. Không đổi backend, dữ liệu, sidebar hoặc các trang khác.
+
+## Nhập danh bạ HTND và khu phố trưởng từ hồ sơ người dùng
+Nhập đầy đủ Hội thẩm nhiệm kỳ 2026–2031 và các liên hệ địa phương của bốn phường từ tài liệu gửi ngày 16/10/2026. API chỉ trả danh bạ cho người đã đăng nhập được duyệt; dữ liệu nguồn lưu riêng phía server, không đóng gói vào JavaScript hay thư mục public. Mục HTND hiển thị toàn bộ trường trong bảng gốc và tìm kiếm có/không dấu. Mục khu phố sắp theo phường, số khu phố tự nhiên, có lọc phường/khu phố/chức danh và tìm kiếm; giữ phân biệt khu phố cũ–mới của Vũng Tàu theo cột KP mới, không suy đoán phường theo địa chỉ. Số điện thoại thiếu/sai định dạng giữ nguyên nguồn kèm cảnh báo cần đối chiếu. Sửa font đăng nhập thành Arial hỗ trợ tiếng Việt, tăng độ tương phản, hiển thị nhãn trên một dòng, không thay cơ chế xác thực hay bố cục các trang khác.
+
+Bổ sung theo yêu cầu: tăng nhẹ cỡ chữ trang chủ bằng CSS có phạm vi .app-shell; giữ nguyên bố cục, thứ tự sidebar và các trang nghiệp vụ khác. Danh bạ lưu tập trung trong bảng MySQL directory_contacts, script nhập theo mã nguồn ổn định; không tự chạy nhập lại lúc khởi động.
+
+Bổ sung: Đăng xuất tài khoản ở cuối sidebar, xóa cookie phiên và trạng thái online (không xóa tài khoản). Theo dõi online cho tài khoản đã được duyệt trên các trang nội bộ bằng heartbeat 60 giây khi tab hiển thị; mỗi tài khoản một dòng, hết hoạt động sau 2 phút. Footer hiển thị số online, lượt hôm nay theo giờ Việt Nam và tổng lượt mở trang chủ; lỗi kết nối hiển thị dấu — thay vì số giả.
