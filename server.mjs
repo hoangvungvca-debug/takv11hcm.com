@@ -269,10 +269,10 @@ async function api(req, res, url) {
     const users = rows.map(({ sessionVersion, ...account }) => ({ ...account, isOwner: account.email.trim().toLowerCase() === adminEmail }));
     return json(res, 200, { users });
   }
-  if (['/api/directories/jurors', '/api/directories/neighborhoods'].includes(url.pathname) && req.method === 'GET') {
+  if (['/api/directories/jurors', '/api/directories/neighborhoods', '/api/directories/police'].includes(url.pathname) && req.method === 'GET') {
     const user = await currentUser(req, res);
     if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt để xem danh bạ.' });
-    const category = url.pathname.endsWith('/jurors') ? 'jurors' : 'neighborhoods';
+    const category = url.pathname.endsWith('/jurors') ? 'jurors' : url.pathname.endsWith('/police') ? 'police' : 'neighborhoods';
     const connection = await db();
     const [rows] = await connection.execute('SELECT payload FROM directory_contacts WHERE category=?', [category]);
     return json(res, 200, { entries: rows.map((row) => typeof row.payload === 'string' ? JSON.parse(row.payload) : row.payload) });

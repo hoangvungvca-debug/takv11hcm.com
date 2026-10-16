@@ -2,7 +2,10 @@ import mysql from 'mysql2/promise';
 import { readFile } from 'node:fs/promises';
 
 if (!process.env.DATABASE_URL) throw new Error('Thiếu cấu hình cơ sở dữ liệu.');
-const groups = await Promise.all(['jurors', 'neighborhoods'].map(async (category) => ({ category,
+const selected = process.argv.slice(2);
+const categories = selected.length ? selected : ['jurors', 'neighborhoods', 'police'];
+if (categories.some((category) => !['jurors', 'neighborhoods', 'police'].includes(category))) throw new Error('Loại danh bạ không hợp lệ.');
+const groups = await Promise.all(categories.map(async (category) => ({ category,
   ...JSON.parse(await readFile(new URL(`../server/data/${category}.json`, import.meta.url), 'utf8')),
 })));
 for (const group of groups) {

@@ -3,10 +3,11 @@ import { filterDirectory, isNeighborhoodLeader, sortedDirectoryOptions } from '.
 import type { Contact, DirectoryFilters } from './directory-utils';
 import './directories.css';
 
-export default function ImportedDirectoryPage({ category }: { category: 'jurors' | 'neighborhoods' }) {
+export default function ImportedDirectoryPage({ category }: { category: 'jurors' | 'neighborhoods' | 'police' }) {
   const jurors = category === 'jurors';
-  const title = jurors ? 'Hội thẩm nhân dân' : 'Danh sách khu phố trưởng';
-  const initialFilters: DirectoryFilters = { query: '', ward: '', neighborhood: '', role: jurors ? 'all' : 'leaders' };
+  const police = category === 'police';
+  const title = jurors ? 'Hội thẩm nhân dân' : police ? 'Cảnh sát khu vực các phường' : 'Danh sách khu phố trưởng';
+  const initialFilters: DirectoryFilters = { query: '', ward: '', neighborhood: '', role: jurors || police ? 'all' : 'leaders' };
   const [entries, setEntries] = useState<Contact[]>([]);
   const [filters, setFilters] = useState<DirectoryFilters>(initialFilters);
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ export default function ImportedDirectoryPage({ category }: { category: 'jurors'
   }, [category, reload]);
   const filtered = useMemo(() => filterDirectory(entries, filters, jurors), [entries, filters, jurors]);
   const wards = useMemo(() => sortedDirectoryOptions(entries.map((entry) => entry.ward)), [entries]);
-  const neighborhoods = useMemo(() => sortedDirectoryOptions(entries.filter((entry) => !filters.ward || entry.ward === filters.ward).map((entry) => entry.neighborhood)), [entries, filters.ward]);
+  const neighborhoods = useMemo(() => sortedDirectoryOptions(entries.filter((entry) => !filters.ward || entry.ward === filters.ward).flatMap((entry) => entry.neighborhoods || [entry.neighborhood])), [entries, filters.ward]);
   const leaderCount = entries.filter(isNeighborhoodLeader).length;
   const change = (key: keyof DirectoryFilters, value: string) => setFilters((current) => ({ ...current, [key]: value, ...(key === 'ward' ? { neighborhood: '' } : {}) }));
   const hasFilters = Boolean(filters.query || filters.ward || filters.neighborhood || filters.role !== initialFilters.role);
@@ -38,11 +39,12 @@ export default function ImportedDirectoryPage({ category }: { category: 'jurors'
   return <div className="internal-shell directory-shell imported-directory">
     <header className="internal-header"><div><p className="eyebrow">HỆ THỐNG PHẦN MỀM TAND</p><h1>{title}</h1><span>TAND KHU VỰC 11 - TP HỒ CHÍ MINH</span></div><div className="internal-user">Danh bạ nội bộ<a href="/">← Trang chủ</a></div></header>
     <main className="directory-main">
-      <div className="directory-hero"><div className="directory-icon">{jurors ? '♙' : '⌖'}</div><div><p className="eyebrow">{jurors ? 'NHIỆM KỲ 2026–2031' : 'DANH BẠ PHỐI HỢP ĐỊA PHƯƠNG'}</p><h2>{title}</h2><p>{jurors ? 'Danh sách đầy đủ theo thứ tự của tài liệu đã cung cấp.' : 'Sắp xếp theo phường và số khu phố, đối chiếu khu phố cũ–mới theo tài liệu nguồn.'}</p></div><span className="secure-badge">● Nội bộ</span></div>
+      <div className="directory-hero"><div className="directory-icon">{jurors ? '♙' : police ? '◈' : '⌖'}</div><div><p className="eyebrow">{jurors ? 'NHIỆM KỲ 2026–2031' : 'DANH BẠ PHỐI HỢP ĐỊA PHƯƠNG'}</p><h2>{title}</h2><p>{jurors ? 'Danh sách đầy đủ theo thứ tự của tài liệu đã cung cấp.' : police ? 'Danh sách phường Tam Thắng theo ảnh sau sắp xếp ngày 01/07/2026; ghi rõ địa bàn kiêm nhiệm.' : 'Sắp xếp theo phường và số khu phố, đối chiếu khu phố cũ–mới theo tài liệu nguồn.'}</p></div><span className="secure-badge">● Nội bộ</span></div>
       <div className="data-note"><strong>Dữ liệu đã nhập</strong><span>Chỉ tài khoản đã được duyệt mới xem được. Số điện thoại thiếu hoặc bất thường được giữ theo nguồn và đánh dấu cần đối chiếu.</span></div>
-      {!jurors && <div className="directory-role-tabs" aria-label="Nhóm chức danh">
+      {!jurors && !police && <div className="directory-role-tabs" aria-label="Nhóm chức danh">
         {[['leaders', `Trưởng khu phố (${leaderCount})`], ['groups', 'Tổ trưởng dân cư'], ['other', 'Bí thư / Mặt trận'], ['all', `Toàn bộ (${entries.length})`]].map(([value, label]) => <button type="button" key={value} className={filters.role === value ? 'active' : ''} aria-pressed={filters.role === value} onClick={() => change('role', value)}>{label}</button>)}
       </div>}
+      {police && entries[0]?.office && <div className="data-note"><strong>Tổ Cảnh sát khu vực</strong><span>{entries[0].office.address}<br />Trực ban Công an phường: <a href={`tel:${entries[0].office.dutyPhone}`}>{entries[0].office.dutyPhone}</a></span></div>}
       <form className="directory-toolbar imported-toolbar" role="search" onSubmit={(event) => { event.preventDefault(); }}>
         <label className="directory-search"><span aria-hidden="true">⌕</span><input type="search" value={filters.query} onChange={(event) => change('query', event.target.value)} placeholder={jurors ? 'Tìm tên, điện thoại, chuyên môn…' : 'Tìm tên, điện thoại, khu phố…'} aria-label="Tìm kiếm danh bạ" /></label>
         <select aria-label="Lọc phường hoặc khu vực" value={filters.ward} onChange={(event) => change('ward', event.target.value)}><option value="">Tất cả phường / khu vực</option>{wards.map((ward) => <option key={ward} value={ward}>{ward}</option>)}</select>
@@ -53,11 +55,11 @@ export default function ImportedDirectoryPage({ category }: { category: 'jurors'
       {loading && <p className="empty" role="status">Đang tải danh bạ…</p>}
       {error && <div className="directory-error" role="alert">{error}<button onClick={() => setReload((value) => value + 1)}>Thử lại</button></div>}
       {!loading && !error && <div className="directory-table-wrap"><table className={`directory-table ${jurors ? 'juror-table' : 'neighborhood-table'}`}>
-        <caption className="directory-caption">{jurors ? 'HỘI THẨM NHÂN DÂN — NHIỆM KỲ 2026–2031' : 'DANH BẠ KHU PHỐ — PHƯỚC THẮNG, RẠCH DỪA, TAM THẮNG, VŨNG TÀU'}</caption>
-        <thead><tr>{jurors ? <><th>STT</th><th>Họ và tên</th><th>Ngày sinh</th><th>Nơi ở hiện nay</th><th>Chuyên môn, nghiệp vụ</th><th>Nghề nghiệp, chức vụ</th><th>Số điện thoại</th></> : <><th>Phường / khu phố</th><th>Họ và tên</th><th>Chức danh</th><th>Ngày / năm sinh</th><th>Địa chỉ</th><th>Số điện thoại</th><th>Ghi chú / địa bàn</th></>}</tr></thead>
-        <tbody>{filtered.map((entry) => <tr key={entry.id}>{jurors ? <><td>{entry.sourceOrder}</td><td><strong>{entry.name || 'Chưa ghi trong nguồn'}</strong></td><td>{entry.birthDate || '—'}</td><td>{entry.address || '—'}</td><td>{entry.qualification || '—'}</td><td>{entry.occupation || '—'}</td><td>{phoneCell(entry)}</td></> : <><td><strong>{entry.ward}</strong><span className="contact-area">{entry.neighborhood}</span></td><td><strong>{entry.name || 'Chưa ghi trong nguồn'}</strong></td><td>{entry.detail || '—'}</td><td>{entry.birthDate || '—'}</td><td>{entry.address || '—'}</td><td>{phoneCell(entry)}</td><td><span className="contact-note">{entry.note || '—'}</span></td></>}</tr>)}</tbody>
+        <caption className="directory-caption">{jurors ? 'HỘI THẨM NHÂN DÂN — NHIỆM KỲ 2026–2031' : police ? 'CẢNH SÁT KHU VỰC PHƯỜNG TAM THẮNG — SAU SẮP XẾP 01/07/2026' : 'DANH BẠ KHU PHỐ — PHƯỚC THẮNG, RẠCH DỪA, TAM THẮNG, VŨNG TÀU'}</caption>
+        <thead><tr>{jurors ? <><th>STT</th><th>Họ và tên</th><th>Ngày sinh</th><th>Nơi ở hiện nay</th><th>Chuyên môn, nghiệp vụ</th><th>Nghề nghiệp, chức vụ</th><th>Số điện thoại</th></> : police ? <><th>STT</th><th>Họ và tên</th><th>Phường</th><th>Địa bàn phụ trách</th><th>Số điện thoại</th><th>Ghi chú</th></> : <><th>Phường / khu phố</th><th>Họ và tên</th><th>Chức danh</th><th>Ngày / năm sinh</th><th>Địa chỉ</th><th>Số điện thoại</th><th>Ghi chú / địa bàn</th></>}</tr></thead>
+        <tbody>{filtered.map((entry) => <tr key={entry.id}>{jurors ? <><td>{entry.sourceOrder}</td><td><strong>{entry.name || 'Chưa ghi trong nguồn'}</strong></td><td>{entry.birthDate || '—'}</td><td>{entry.address || '—'}</td><td>{entry.qualification || '—'}</td><td>{entry.occupation || '—'}</td><td>{phoneCell(entry)}</td></> : police ? <><td>{entry.sourceOrder}</td><td><strong>{entry.name}</strong></td><td>{entry.ward}</td><td>{(entry.neighborhoods || [entry.neighborhood]).map((area, index) => <span className="contact-area" key={area}>{area}{index > 0 ? " (Kiêm nhiệm)" : ""}</span>)}</td><td>{phoneCell(entry)}</td><td><span className="contact-note">{entry.note || "—"}</span></td></> : <><td><strong>{entry.ward}</strong><span className="contact-area">{entry.neighborhood}</span></td><td><strong>{entry.name || 'Chưa ghi trong nguồn'}</strong></td><td>{entry.detail || '—'}</td><td>{entry.birthDate || '—'}</td><td>{entry.address || '—'}</td><td>{phoneCell(entry)}</td><td><span className="contact-note">{entry.note || '—'}</span></td></>}</tr>)}</tbody>
       </table>{!filtered.length && <p className="empty">Không tìm thấy liên hệ phù hợp. Hãy đổi điều kiện hoặc xóa lọc.</p>}</div>}
-      <p className="directory-source-note">Nguồn: tài liệu do quản trị viên cung cấp. {jurors ? 'Hiển thị toàn bộ danh sách, không chia trang.' : 'Tab Trưởng khu phố hiển thị danh sách chính; các chức danh khác được giữ ở tab tương ứng.'}</p>
+      <p className="directory-source-note">Nguồn: tài liệu do quản trị viên cung cấp. {jurors ? 'Hiển thị toàn bộ danh sách, không chia trang.' : police ? 'Hiển thị đủ 22 cán bộ; lọc khu phố tìm được cả địa bàn kiêm nhiệm. Chưa có dữ liệu các phường khác.' : 'Tab Trưởng khu phố hiển thị danh sách chính; các chức danh khác được giữ ở tab tương ứng.'}</p>
     </main>
   </div>;
 }

@@ -1,0 +1,52 @@
+/* Legibility only for internal subpages. Keep their existing layout and behavior. */
+.internal-shell{font-size:15px;line-height:1.55}
+.internal-shell .internal-header{gap:16px;flex-wrap:wrap}
+.internal-shell .internal-header h1{font-size:29px;line-height:1.25}
+.internal-shell .internal-header>div>span{font-size:12px;line-height:1.5}
+.internal-shell .internal-user{font-size:13px;line-height:1.5;max-width:100%;overflow-wrap:anywhere}
+.internal-shell .internal-user a{font-size:14px;line-height:1.5}
+.internal-shell .eyebrow{font-size:12px;line-height:1.5}
+.internal-shell .ledger-heading h2{font-size:29px;line-height:1.3}
+.internal-shell .ledger-heading p:not(.eyebrow){font-size:14px;line-height:1.6}
+.internal-shell .secure-badge{font-size:12px;line-height:1.5}
+.internal-shell .ledger-form label,.internal-shell .outgoing-filters label{font-size:14px;line-height:1.5;min-width:0}
+.internal-shell .ledger-form input,.internal-shell .ledger-form select,.internal-shell .ledger-form textarea,.internal-shell .outgoing-filters input{font-size:16px;line-height:1.5;min-width:0}
+.internal-shell .primary-button,.internal-shell .outgoing-actions button,.internal-shell .outgoing-filters button{font-size:14px;line-height:1.5}
+.internal-shell .ledger-table-heading h3{font-size:20px;line-height:1.4}
+.internal-shell .ledger-table-heading span{font-size:13px;line-height:1.5}
+.internal-shell .ledger-table-scroll table{font-size:15px;line-height:1.55}
+.internal-shell .ledger-table-scroll th{font-size:13px;line-height:1.5}
+.internal-shell .ledger-table-scroll td{font-size:15px;line-height:1.55}
+.internal-shell .status-pill{font-size:12px;line-height:1.5}
+.internal-shell .table-action{font-size:13px;line-height:1.5}
+.internal-shell .pagination,.internal-shell .pagination button{font-size:14px;line-height:1.5}
+.internal-shell .form-notice,.internal-shell .outgoing-filter-error{font-size:14px;line-height:1.6}
+.internal-shell .outgoing-export-note{font-size:13px;line-height:1.6}
+.internal-shell .directory-hero h2{font-size:32px;line-height:1.3}
+.internal-shell .directory-hero p:not(.eyebrow),.internal-shell .data-note{font-size:14px;line-height:1.6}
+.internal-shell .directory-search input,.internal-shell .directory-toolbar select{font-size:16px;line-height:1.5}
+.internal-shell .directory-role-tabs button,.internal-shell .directory-find-button,.internal-shell .directory-clear-button,.internal-shell .forms-toolbar .filter-pills button{font-size:14px;line-height:1.5}
+.internal-shell .result-count{font-size:14px;line-height:1.5}
+.internal-shell .directory-table{font-size:15px;line-height:1.6}
+.internal-shell .directory-table th{font-size:13px;line-height:1.5}
+.internal-shell .directory-table td{font-size:15px;line-height:1.6}
+.internal-shell .contact-area,.internal-shell .contact-note{font-size:14px;line-height:1.6}
+.internal-shell .contact-review,.internal-shell .directory-source-note{font-size:13px;line-height:1.6}
+.internal-shell .directory-caption{font-size:14px;line-height:1.5}
+.internal-shell .demo-badge{font-size:12px;line-height:1.5}
+.internal-shell .form-card h3{font-size:21px;line-height:1.35}
+.internal-shell .form-card-top,.internal-shell .form-category{font-size:12px;line-height:1.5}
+.internal-shell .form-card>p:not(.form-category){font-size:14px;line-height:1.6}
+.internal-shell .form-card-bottom small{font-size:12px;line-height:1.5}
+.internal-shell .form-card-bottom button,.internal-shell .form-toast{font-size:14px;line-height:1.5}
+.internal-shell .empty{font-size:14px;line-height:1.6}
+.internal-shell.account-admin .aa-intro p:not(.eyebrow),.internal-shell.account-admin .aa-hint,.internal-shell.account-admin .aa-toolbar>span{font-size:14px;line-height:1.6}
+.internal-shell.account-admin .aa-button,.internal-shell.account-admin .aa-tabs button,.internal-shell.account-admin .aa-row-actions .aa-button{font-size:14px;line-height:1.5}
+.internal-shell.account-admin .aa-tabs span,.internal-shell.account-admin .aa-status{font-size:12px;line-height:1.5}
+.internal-shell.account-admin .aa-toolbar label,.internal-shell.account-admin .aa-dialog label{font-size:14px;line-height:1.5}
+.internal-shell.account-admin .aa-toolbar input,.internal-shell.account-admin .aa-dialog input{font-size:16px;line-height:1.5}
+.internal-shell.account-admin .aa-owner{font-size:12px;line-height:1.5}
+.internal-shell.account-admin .aa-notice,.internal-shell.account-admin .aa-error,.internal-shell.account-admin .aa-state,.internal-shell.account-admin .aa-empty,.internal-shell.account-admin .aa-modal-note{font-size:14px;line-height:1.6}
+.internal-shell.account-admin .aa-target strong{font-size:16px;line-height:1.5}
+.internal-shell.account-admin .aa-target span{font-size:14px;line-height:1.5}
+@media(max-width:600px){.internal-shell .internal-header h1{font-size:26px}.internal-shell .ledger-heading h2,.internal-shell .directory-hero h2{font-size:28px}.internal-shell .internal-user{align-items:flex-start}.internal-shell .ledger-form input,.internal-shell .ledger-form select,.internal-shell .ledger-form textarea,.internal-shell .directory-search input,.internal-shell .directory-toolbar select{font-size:16px}}

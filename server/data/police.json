@@ -1,0 +1,653 @@
+{
+  "entries": [
+    {
+      "id": "police-tam-thang-01",
+      "sourceOrder": 1,
+      "name": "Ngô Duy Tân",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 1",
+      "neighborhoods": [
+        "Khu phố 1"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 1",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0984536373",
+      "phones": [
+        "0984536373"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 1",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-02",
+      "sourceOrder": 2,
+      "name": "Phan Tiến Việt",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 2",
+      "neighborhoods": [
+        "Khu phố 2"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 2",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0345180297",
+      "phones": [
+        "0345180297"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 2",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-03",
+      "sourceOrder": 3,
+      "name": "Trần Trọng Tâm",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 4",
+      "neighborhoods": [
+        "Khu phố 4"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 4",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0986577272",
+      "phones": [
+        "0986577272"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 3",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-04",
+      "sourceOrder": 4,
+      "name": "Lê Minh Dũng",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 5",
+      "neighborhoods": [
+        "Khu phố 5"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 5",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0908157400",
+      "phones": [
+        "0908157400"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 4",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-05",
+      "sourceOrder": 5,
+      "name": "Ngô Anh Thắng",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 6",
+      "neighborhoods": [
+        "Khu phố 6"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 6",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0979195228",
+      "phones": [
+        "0979195228"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 5",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-06",
+      "sourceOrder": 6,
+      "name": "Phạm Anh Tuấn",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 7",
+      "neighborhoods": [
+        "Khu phố 7"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 7",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0983404407",
+      "phones": [
+        "0983404407"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 6",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-07",
+      "sourceOrder": 7,
+      "name": "Phan Công Dương",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 8",
+      "neighborhoods": [
+        "Khu phố 8"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 8",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0963921919",
+      "phones": [
+        "0963921919"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 7",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-08",
+      "sourceOrder": 8,
+      "name": "Đinh Bá Vỹ",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 9",
+      "neighborhoods": [
+        "Khu phố 9"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 9",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0938897279",
+      "phones": [
+        "0938897279"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 8",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-09",
+      "sourceOrder": 9,
+      "name": "Phan Anh Tuấn",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 10",
+      "neighborhoods": [
+        "Khu phố 10",
+        "Khu phố 3"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 10 · Khu phố 3",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0937955586",
+      "phones": [
+        "0937955586"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Kiêm nhiệm Khu phố 3",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 9",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-10",
+      "sourceOrder": 10,
+      "name": "Nguyễn Vũ Quang Huy",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 11",
+      "neighborhoods": [
+        "Khu phố 11"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 11",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0762125009",
+      "phones": [
+        "0762125009"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 10",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-11",
+      "sourceOrder": 11,
+      "name": "Trịnh Mạnh Hùng",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 12",
+      "neighborhoods": [
+        "Khu phố 12"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 12",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0939717248",
+      "phones": [
+        "0939717248"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 11",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-12",
+      "sourceOrder": 12,
+      "name": "Trần Văn Chiến",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 13",
+      "neighborhoods": [
+        "Khu phố 13"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 13",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0906393575",
+      "phones": [
+        "0906393575"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 12",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-13",
+      "sourceOrder": 13,
+      "name": "Nguyễn Hồng Thắng",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 14",
+      "neighborhoods": [
+        "Khu phố 14"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 14",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0945767778",
+      "phones": [
+        "0945767778"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 13",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-14",
+      "sourceOrder": 14,
+      "name": "Nguyễn Hữu Tuấn Linh",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 15",
+      "neighborhoods": [
+        "Khu phố 15"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 15",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0901555304",
+      "phones": [
+        "0901555304"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 14",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-15",
+      "sourceOrder": 15,
+      "name": "Điều Mạnh Tuấn",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 16",
+      "neighborhoods": [
+        "Khu phố 16"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 16",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0909202787; 0909625720",
+      "phones": [
+        "0909202787",
+        "0909625720"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 15",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-16",
+      "sourceOrder": 16,
+      "name": "Lê Anh Tuấn",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 18",
+      "neighborhoods": [
+        "Khu phố 18"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 18",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0866232066",
+      "phones": [
+        "0866232066"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 16",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-17",
+      "sourceOrder": 17,
+      "name": "Nguyễn Hoàng Thanh Vũ",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 19",
+      "neighborhoods": [
+        "Khu phố 19",
+        "Khu phố 20"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 19 · Khu phố 20",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0933842626",
+      "phones": [
+        "0933842626"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Kiêm nhiệm Khu phố 20",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 17",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-18",
+      "sourceOrder": 18,
+      "name": "Nguyễn Thị Quỳnh",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 21",
+      "neighborhoods": [
+        "Khu phố 21"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 21",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0859388824",
+      "phones": [
+        "0859388824"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 18",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-19",
+      "sourceOrder": 19,
+      "name": "Nguyễn Văn Huy",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 22",
+      "neighborhoods": [
+        "Khu phố 22"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 22",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0927682345",
+      "phones": [
+        "0927682345"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 19",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-20",
+      "sourceOrder": 20,
+      "name": "Phạm Văn Luận",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 23",
+      "neighborhoods": [
+        "Khu phố 23"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 23",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0972972972",
+      "phones": [
+        "0972972972"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 20",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-21",
+      "sourceOrder": 21,
+      "name": "Nguyễn Thị Hải Yến",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 24",
+      "neighborhoods": [
+        "Khu phố 24"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 24",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0982974526",
+      "phones": [
+        "0982974526"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 21",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    },
+    {
+      "id": "police-tam-thang-22",
+      "sourceOrder": 22,
+      "name": "Đặng Tuấn Anh",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 25",
+      "neighborhoods": [
+        "Khu phố 25",
+        "Khu phố 17"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 25 · Khu phố 17",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0987847823",
+      "phones": [
+        "0987847823"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Kiêm nhiệm Khu phố 17",
+      "needsReview": false,
+      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "sourceLocation": "STT 22",
+      "office": {
+        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
+        "dutyPhone": "02543585995",
+        "effectiveDate": "01/07/2026"
+      }
+    }
+  ],
+  "sources": [
+    {
+      "file": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
+      "category": "police",
+      "count": 22
+    }
+  ]
+}

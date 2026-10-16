@@ -51,3 +51,9 @@
 
 ## Hai thanh rõ chữ và cân đối
 - [x] Tăng cỡ chữ thanh ngày giờ và footer, căn lại chữ/thống kê theo vùng rõ ràng, tự xuống dòng trên điện thoại; giữ nội dung, màu nền, phạm vi chiều ngang và các chức năng khác.
+
+## Chữ mục con dễ nhìn
+- [x] Tăng nhẹ chữ các mục con (sổ công văn đến/đi, danh bạ, biểu mẫu, quản trị), đặc biệt nhãn nhập, ô nhập, bảng và nút của sổ công văn; giữ nguyên bố cục, dữ liệu, trang chủ, đăng nhập và mọi chức năng.
+
+## Cảnh sát khu vực từ ảnh
+- [x] Nhập đúng 22 Cảnh sát phường Tam Thắng, 25 địa bàn gồm 3 kiêm nhiệm, đủ số điện thoại (1 cán bộ có 2 số), địa chỉ và trực ban; có tìm kiếm/lọc phường-khu phố, chỉ tài khoản được duyệt truy cập; giữ nguyên danh bạ khác.

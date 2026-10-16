@@ -64,3 +64,9 @@ Bổ sung: Đăng xuất tài khoản ở cuối sidebar, xóa cookie phiên và
 
 ## Cỡ chữ và căn chỉnh hai thanh
 Chỉ tăng chữ thanh ngày giờ/điều hướng trên cùng và chân trang, dùng Arial 14–15px desktop, tối thiểu 12px mobile. Giữ nền đỏ/chữ trắng trên cùng; breadcrumb bên trái, trạng thái và ngày giờ bên phải. Footer giữ chiều ngang hiện tại, sắp tên hệ thống và bản quyền bên trái, năm ở giữa, thống kê bên phải; tự xuống hàng hợp lý khi hẹp. Không đổi sidebar, thứ tự ứng dụng, danh bạ, đăng nhập, API hay dữ liệu.
+
+## Tăng chữ các trang mục con
+Chỉ bổ sung CSS có phạm vi .internal-shell cho sổ công văn đến/đi, danh bạ, biểu mẫu và quản trị. Nội dung bảng 15px, nhãn/nút/bộ lọc 14px, ô nhập 16px, chú thích 12–13px, tiêu đề tăng nhẹ. Giữ nguyên trang chủ, đăng nhập, hai thanh vừa chốt, thứ tự, phân trang 10 dòng, lọc/tìm kiếm, xuất PDF/Word/Excel, API và dữ liệu. Trên điện thoại ô nhập không nhỏ hơn 16px, bảng vẫn cuộn ngang trong khung.
+
+## Cảnh sát khu vực Tam Thắng từ ảnh
+Nhập 22 cán bộ, 25 khu phố (3 trường hợp kiêm nhiệm), 23 số di động, địa chỉ tổ CSKV và số trực ban đúng ảnh. Tái sử dụng bảng MySQL directory_contacts, API chỉ tài khoản được duyệt; danh bạ tìm không dấu/tên/số, lọc phường và tất cả địa bàn kể cả kiêm nhiệm. Giữ nguyên các danh bạ đã nhập, không tự sửa số hoặc bổ sung các phường chưa gửi.
