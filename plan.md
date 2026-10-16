@@ -27,3 +27,6 @@ Footer hiển thị tổng lượt truy cập và lượt trong ngày từ bản
 
 ## Quyết định cập nhật sau nghiệm thu
 Trang chủ chính thức sử dụng lại component App và cách sắp xếp ứng dụng của phiên bản cũ theo yêu cầu người dùng. Dashboard nghiệp vụ mới chỉ giữ lại như mã tham khảo/demonstration, không thay thế trang chủ mặc định. Các thay đổi tiếp theo chỉ thực hiện ở đúng mục được yêu cầu.
+
+## Sidebar theo yêu cầu mới
+Giữ nhận diện trắng–đỏ và sidebar cố định hiện có; dùng lại nhóm ứng dụng của bản trước dashboard, ghim E-QLTA ở đầu danh sách. Không thay đổi danh mục/thứ tự thẻ ở nội dung trang chủ, form đăng nhập, cookie, route hay dữ liệu. Các mục nội bộ hiện có được giữ lại.
