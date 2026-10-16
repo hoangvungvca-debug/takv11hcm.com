@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
+import AccountAdminPage from './admin/AccountAdminPage';
 
 type SessionUser = { email: string; name: string; role: string; status: string; isAdmin?: boolean };
 type Letter = { id: number; incomingNumber: string; receivedDate: string; sender: string; documentNumber?: string; documentDate?: string; summary: string; handler?: string; deadline?: string; status: string; createdBy?: string };
@@ -83,13 +84,7 @@ function LedgerPage() {
 }
 
 function AdminPage() {
-  const [user, setUser] = useState<SessionUser | null | undefined>(undefined); const [users, setUsers] = useState<SessionUser[]>([]);
-  const load = async () => { const response = await fetch('/api/admin/users'); if (response.ok) setUsers((await response.json()).users || []); };
-  useEffect(() => { fetch('/api/auth/me').then((response) => response.json()).then((data) => { setUser(data.user || null); if (data.user?.isAdmin) load(); }).catch(() => setUser(null)); }, []);
-  const act = async (openId: string, action: string) => { await fetch(`/api/admin/users/${encodeURIComponent(openId)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action }) }); load(); };
-  if (user === undefined) return <div className="login-shell"><div className="login-card"><p>Đang kiểm tra quyền quản trị...</p></div></div>;
-  if (!user?.isAdmin) return <LoginPage message="Khu vực này chỉ dành cho quản trị viên đã được cấp quyền." />;
-  return <div className="internal-shell"><header className="internal-header"><div><p className="eyebrow">QUẢN TRỊ HỆ THỐNG</p><h1>Duyệt tài khoản</h1></div><a className="internal-user" href="/so-cong-van">Sổ công văn đến →</a></header><main className="ledger-main"><div className="ledger-table-wrap"><div className="ledger-table-heading"><h3>Tài khoản người dùng</h3><span>{users.length} tài khoản</span></div><div className="ledger-table-scroll"><table><thead><tr><th>Họ tên</th><th>Email</th><th>Vai trò</th><th>Trạng thái</th><th>Thao tác</th></tr></thead><tbody>{users.map((item: any) => <tr key={item.openId}><td>{item.name}</td><td>{item.email}</td><td>{item.role}</td><td>{item.status}</td><td>{item.status === 'pending' && <><button className="table-action" onClick={() => act(item.openId, 'approve')}>Duyệt</button><button className="table-action danger" onClick={() => act(item.openId, 'reject')}>Từ chối</button></>}</td></tr>)}</tbody></table></div></div></main></div>;
+  return <AccountAdminPage />;
 }
 
 type DirectoryEntry = { name: string; area: string; phone: string; detail: string; note: string };

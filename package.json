@@ -7,6 +7,8 @@
     "dev": "node server.mjs",
     "build": "tsc && vite build",
     "start": "NODE_ENV=production node server.mjs",
+    "test:accounts": "node --test scripts/test-account-management.mjs",
+    "db:migrate:accounts": "node scripts/migrate-account-management.mjs",
     "preview": "vite preview --host 0.0.0.0 --port 3000"
   },
   "dependencies": {

@@ -30,3 +30,11 @@ Trang chủ chính thức sử dụng lại component App và cách sắp xếp 
 
 ## Sidebar theo yêu cầu mới
 Giữ nhận diện trắng–đỏ và sidebar cố định hiện có; dùng lại nhóm ứng dụng của bản trước dashboard, ghim E-QLTA ở đầu danh sách. Không thay đổi danh mục/thứ tự thẻ ở nội dung trang chủ, form đăng nhập, cookie, route hay dữ liệu. Các mục nội bộ hiện có được giữ lại.
+
+## Quản trị tài khoản — bổ sung
+Chỉ mở rộng trang `/admin`: quản trị viên đã được duyệt có thể phê duyệt, sửa họ tên/email, chuyển tài khoản vào thùng rác và khôi phục. Giữ nguyên giao diện trang chủ, sidebar, thứ tự E-QLTA, form đăng nhập và dữ liệu nghiệp vụ.
+Xóa là xóa mềm: giữ bản ghi, lưu thời điểm xóa và trạng thái trước khi xóa; ngăn đăng nhập ngay, hủy hiệu lực các phiên cũ. Khôi phục trả lại trạng thái trước đó, không tự duyệt tài khoản đang chờ; người dùng phải đăng nhập lại. Không xóa hoặc vô hiệu hóa chính mình hay tài khoản quản trị chủ hệ thống, không thay email của tài khoản chủ hệ thống. Sửa không cho phép tự nâng vai trò; email phải hợp lệ và không trùng kể cả tài khoản trong thùng rác.
+Các thao tác có hộp xác nhận với tên/email và tác động chính xác, lỗi được hiển thị rõ; danh sách chia tab chờ duyệt, đang hoạt động, tài khoản khác và thùng rác, có tìm kiếm. Backend kiểm tra quyền trên mọi API, chặn nguồn yêu cầu khác website và ghi nhật ký thao tác trong cùng giao dịch. Không thử xóa/sửa/duyệt tài khoản người dùng thật.
+Tách `src/admin/AccountAdminPage.tsx` và CSS có phạm vi `.account-admin`; `server/account-management.mjs` xử lý chuyển trạng thái, validation, giao dịch và nhật ký; migration cộng thêm cột qua script dùng lịch sử migration. Kiểm thử với kho dữ liệu giả lập, không ghi vào database dùng chung. Bản bổ sung được lưu và gửi Preview; không tự xuất bản nếu chưa có yêu cầu mới.
+
+Migration quản trị đã chạy riêng thành công, không thay trạng thái hay xóa tài khoản. Runtime chỉ kiểm tra lịch sử migration. Kiểm thử giả lập và kiểm tra HTTP chưa đăng nhập đạt; không thực hiện thao tác quản trị với tài khoản thật.
