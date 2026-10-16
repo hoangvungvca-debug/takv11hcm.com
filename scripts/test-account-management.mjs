@@ -171,7 +171,19 @@ test('Giữ nguyên trang chủ, sidebar, danh bạ, biểu mẫu, CSS và route
     .replace(/function AdminPage\(\)[\s\S]*?(?=type DirectoryEntry)/, '');
   assert.equal(withoutAdmin(before).slice(withoutAdmin(before).indexOf('type DirectoryEntry')), withoutAdmin(after).slice(withoutAdmin(after).indexOf('type DirectoryEntry')));
   const styles = await readFile(new URL('../src/styles.css', import.meta.url));
-  assert.deepEqual(styles, execFileSync('git', ['show', '25053ba:src/styles.css']));
+  const originalStyles = execFileSync('git', ['show', '25053ba:src/styles.css']);
+  const withoutMobileNavigation = (value) => {
+    const css = value.toString();
+    const marker = css.indexOf('/* Mobile');
+    const start = css.indexOf('  .topbar{height:auto', marker);
+    return (css.slice(0, marker) + css.slice(start))
+      .replace(/  \.footer\{margin-left:(?:-72px|calc\(-1 \* var\(--mobile-sidebar-width\)\));width:calc\(100% \+ (?:72px|var\(--mobile-sidebar-width\))\)/,
+        '  .footer{margin-left:MOBILE_SIDEBAR;width:MOBILE_SIDEBAR');
+  };
+  assert.equal(withoutMobileNavigation(styles), withoutMobileNavigation(originalStyles));
+  assert.ok(styles.toString().includes('.side-link>span:not(.side-icon){display:block;'));
+  assert.ok(styles.toString().includes('white-space:normal;overflow-wrap:anywhere'));
+  assert.ok(!styles.toString().includes('.side-link>span:not(.side-icon),.side-link>b,.sidebar-bottom span{display:none}'));
   const routes = await readFile(new URL('../public/manus-routes.json', import.meta.url));
   assert.deepEqual(routes, execFileSync('git', ['show', '25053ba:public/manus-routes.json']));
 });

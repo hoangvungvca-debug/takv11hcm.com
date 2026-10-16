@@ -44,3 +44,6 @@ Bổ sung nút Đặt lại mật khẩu tại quản trị: quản trị viên 
 Ghi nhớ mặc định bật. Phiên Remember Me hợp lệ tự vào hệ thống, được gia hạn thêm 30 ngày khi gần hết hạn và người dùng vẫn truy cập. Giữ lựa chọn bỏ ghi nhớ cho máy dùng chung. Không đăng nhập dựa vào email localStorage: thiết bị mới, cookie bị xóa, đăng xuất, phiên hết hạn/thu hồi vẫn phải xác thực. Kiểm tra cookie sau đăng nhập trước chuyển trang để tránh vòng lặp. Chỉ sửa các chức năng xác thực được yêu cầu, không đổi HTML/CSS trang chủ hoặc sidebar. Bản mới giữ Preview, không tự xuất bản.
 
 Kiểm tra bản mật khẩu/ghi nhớ: 22 kiểm thử giả lập đạt, kiểm tra độc lập không phát hiện lỗi trong phạm vi. Preview chặn reset quản trị chưa xác thực (403), liên kết sai (400); không thử đổi mật khẩu tài khoản thật. Địa chỉ gửi RESEND_FROM_EMAIL chưa cấu hình nên email Quên mật khẩu chưa gửi được; quản trị đặt lại trực tiếp không phụ thuộc email.
+
+## Sidebar hiện tên trên mọi thiết bị
+Giữ sidebar cố định và thứ tự E-QLTA ở đầu. Bỏ chế độ thanh chỉ biểu tượng trên mobile: hiện biểu tượng, tên ứng dụng tự xuống dòng và tên nhóm. Chiều rộng trên mobile dùng clamp(132px,38vw,180px), đồng bộ khoảng lề nội dung và footer toàn chiều ngang; desktop giữ kích thước cũ. Không sửa component trang chủ, đăng nhập, quản trị hoặc dữ liệu.

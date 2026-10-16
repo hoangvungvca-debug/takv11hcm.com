@@ -25,3 +25,5 @@
 - [x] Đổi mật khẩu chính mình yêu cầu mật khẩu hiện tại; quản trị viên khác không được đổi mật khẩu chủ hệ thống; tài khoản trong thùng rác không được đặt lại trước khi khôi phục.
 - [x] Mặc định ghi nhớ; cùng trình duyệt với phiên hợp lệ tự vào trang chủ, gia hạn phiên sắp hết hạn; bỏ ghi nhớ không gia hạn, không tự đăng nhập chỉ dựa vào email đã lưu; kiểm tra phiên sau đăng nhập để tránh chuyển trang lặp.
 - [x] Giữ nguyên trang chủ, sidebar, CSS và dữ liệu nghiệp vụ; kiểm thử không đặt lại mật khẩu tài khoản thật.
+
+- [x] Sidebar luôn hiện cả biểu tượng và tên ứng dụng, kể cả điện thoại; tên dài xuống dòng, không cần chạm/hover mới thấy. Giữ E-QLTA đầu danh sách, sidebar cố định, footer toàn chiều ngang và các phần khác.
