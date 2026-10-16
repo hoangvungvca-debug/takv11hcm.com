@@ -1,0 +1,22 @@
+/* Only the two home-page bars; no change to content, side navigation or data. */
+.app-shell .topbar{height:auto;min-height:54px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 24px;padding:12px 32px;font-family:Arial,sans-serif;font-size:14px;line-height:1.5;letter-spacing:0;background:#a8141b;color:#fff}
+.app-shell .topbar-left{display:flex;align-items:center;gap:12px;min-width:0}
+.app-shell .topbar-right{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:12px 24px;margin-left:auto;min-width:0;max-width:none;text-align:right}
+.app-shell .breadcrumb{font-size:14px;line-height:1.5;color:#fff}
+.app-shell .breadcrumb b{margin:0 9px;color:#ffd9dc}
+.app-shell .system-status{font-size:13px;line-height:1.5;color:#fff;white-space:nowrap}
+.app-shell .clock{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;color:#fff;font-family:Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.5;max-width:none;white-space:normal}
+.app-shell .clock-label{display:inline-block;margin:0;color:#fff0d5;font-size:13px;font-weight:700;letter-spacing:0;line-height:1.5}
+.app-shell .footer{display:grid;grid-template-columns:minmax(220px,1fr) auto minmax(360px,1fr);grid-template-areas:'identity year stats' 'copyright year stats';align-items:center;column-gap:24px;row-gap:5px;min-height:86px;padding:16px 32px;font-family:Arial,sans-serif;font-size:14px;line-height:1.5;background:#fff;color:#59454b}
+.app-shell .footer>div:not(.home-visit-stats){grid-area:identity;text-align:left;min-width:0}
+.app-shell .footer>div:not(.home-visit-stats) strong{display:block;font-size:14px;line-height:1.5;font-weight:700;color:#8f1218;letter-spacing:0}
+.app-shell .footer>div:not(.home-visit-stats) span{display:block;font-size:12px;line-height:1.5;margin:2px 0 0;color:#6b555d}
+.app-shell .footer>p{grid-area:copyright;margin:0;font-size:14px;line-height:1.5;font-weight:700;color:#8f1218;text-align:left;align-self:center}
+.app-shell .footer>span{grid-area:year;margin:0;font-size:14px;line-height:1.5;text-align:center;align-self:center;color:#6b555d}
+.app-shell .footer .home-visit-stats{grid-area:stats;display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px 18px;font-size:14px;line-height:1.5;min-width:0;align-self:center}
+.app-shell .footer .home-visit-stats span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;margin:0;font-size:14px;line-height:1.5}
+.app-shell .footer .home-visit-stats strong{display:inline;font-size:15px;line-height:1.5;color:#8f1218;font-weight:700;letter-spacing:0;font-variant-numeric:tabular-nums}
+.app-shell .home-visit-stats i{width:8px;height:8px;margin-right:3px;flex:none}
+@media(max-width:1000px){.app-shell .footer{grid-template-columns:1fr auto;grid-template-areas:'identity year' 'copyright year' 'stats stats';row-gap:8px}.app-shell .footer .home-visit-stats{justify-content:flex-start}.app-shell .topbar{padding-left:24px;padding-right:24px}.app-shell .topbar-right{gap:10px 16px}}
+@media(max-width:760px){.app-shell .topbar{min-height:58px;padding:12px 16px;gap:8px}.app-shell .topbar-left{display:none}.app-shell .topbar-right{width:100%;margin:0;justify-content:flex-start;text-align:left}.app-shell .system-status{display:none}.app-shell .clock{display:flex;gap:4px 8px;font-size:13px;line-height:1.6}.app-shell .clock-label{font-size:12px}.app-shell .footer{padding:16px 20px}.app-shell .footer>span,.app-shell .footer>p{font-size:13px}.app-shell .footer .home-visit-stats,.app-shell .footer .home-visit-stats span{font-size:13px}.app-shell .footer .home-visit-stats strong{font-size:14px}}
+@media(max-width:560px){.app-shell .footer{grid-template-columns:1fr;grid-template-areas:'identity' 'copyright' 'year' 'stats';row-gap:8px}.app-shell .footer>span{text-align:left;font-size:12px}.app-shell .footer>div:not(.home-visit-stats) strong{font-size:13px}.app-shell .footer .home-visit-stats{gap:8px 14px}.app-shell .footer .home-visit-stats span{font-size:12px}.app-shell .footer .home-visit-stats strong{font-size:13px}}

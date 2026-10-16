@@ -48,3 +48,6 @@
 - [ ] Xuất bản bản cập nhật lên website chính thức và xác minh deployment.
 - [x] Tăng nhẹ cỡ chữ trang chủ để dễ đọc, giữ nguyên bố cục và thứ tự ứng dụng.
 - [x] Nút Đăng xuất cuối sidebar xóa phiên trên trình duyệt, không xóa tài khoản; footer có số người online (tài khoản đã duyệt hoạt động 2 phút gần nhất), lượt hôm nay và tổng lượt mở trang chủ.
+
+## Hai thanh rõ chữ và cân đối
+- [x] Tăng cỡ chữ thanh ngày giờ và footer, căn lại chữ/thống kê theo vùng rõ ràng, tự xuống dòng trên điện thoại; giữ nội dung, màu nền, phạm vi chiều ngang và các chức năng khác.

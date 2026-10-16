@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './readability-refinement.css';
+import './bars-refinement.css';
 import { HomePresenceStats, LogoutButton, SitePresenceTracker } from './home-status';
 import AccountAdminPage from './admin/AccountAdminPage';
 import ImportedDirectoryPage from './directories/ImportedDirectoryPage';

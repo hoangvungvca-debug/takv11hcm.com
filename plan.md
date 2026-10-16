@@ -61,3 +61,6 @@ Nhập đầy đủ Hội thẩm nhiệm kỳ 2026–2031 và các liên hệ đ
 Bổ sung theo yêu cầu: tăng nhẹ cỡ chữ trang chủ bằng CSS có phạm vi .app-shell; giữ nguyên bố cục, thứ tự sidebar và các trang nghiệp vụ khác. Danh bạ lưu tập trung trong bảng MySQL directory_contacts, script nhập theo mã nguồn ổn định; không tự chạy nhập lại lúc khởi động.
 
 Bổ sung: Đăng xuất tài khoản ở cuối sidebar, xóa cookie phiên và trạng thái online (không xóa tài khoản). Theo dõi online cho tài khoản đã được duyệt trên các trang nội bộ bằng heartbeat 60 giây khi tab hiển thị; mỗi tài khoản một dòng, hết hoạt động sau 2 phút. Footer hiển thị số online, lượt hôm nay theo giờ Việt Nam và tổng lượt mở trang chủ; lỗi kết nối hiển thị dấu — thay vì số giả.
+
+## Cỡ chữ và căn chỉnh hai thanh
+Chỉ tăng chữ thanh ngày giờ/điều hướng trên cùng và chân trang, dùng Arial 14–15px desktop, tối thiểu 12px mobile. Giữ nền đỏ/chữ trắng trên cùng; breadcrumb bên trái, trạng thái và ngày giờ bên phải. Footer giữ chiều ngang hiện tại, sắp tên hệ thống và bản quyền bên trái, năm ở giữa, thống kê bên phải; tự xuống hàng hợp lý khi hẹp. Không đổi sidebar, thứ tự ứng dụng, danh bạ, đăng nhập, API hay dữ liệu.
