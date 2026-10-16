@@ -34,3 +34,8 @@
 - [x] Biểu mẫu gồm ngày tháng gửi, số công văn cấp tự động, nội dung, nơi nhận, thẩm phán, thư ký và ghi chú.
 - [x] Cấp số sau khi lưu theo dạng CVĐ-năm-số thứ tự cơ sở dữ liệu.
 - [x] Có nút xuất PDF, Word và Excel; danh sách phân trang khi quá 10 dòng.
+
+## Bộ lọc công văn đi
+- [x] Tìm nhanh theo số công văn đi, hỗ trợ một phần số và kết hợp lọc từ ngày–đến ngày (ngày biên được tính, một đầu mốc tùy chọn).
+- [x] Đổi điều kiện về trang 1, phân trang 10 dòng theo kết quả, có xóa lọc và thông báo không tìm thấy/ngày không hợp lệ.
+- [x] Nút xuất dùng toàn bộ kết quả lọc, không đổi sổ đến, bố cục trang chủ/sidebar hay dữ liệu đã lưu.

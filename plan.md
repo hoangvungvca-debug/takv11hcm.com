@@ -51,3 +51,6 @@ Giữ sidebar cố định và thứ tự E-QLTA ở đầu. Bỏ chế độ th
 
 ## Sổ công văn đi — đã triển khai
 Tái sử dụng vùng giao diện sổ nội bộ, thêm bảng `outgoing_letters`, API GET/POST được bảo vệ, cấp số sau insert, xuất file phía trình duyệt và phân trang 10 dòng. “pqf” được hiểu là PDF. Không thay đổi sổ công văn đến.
+
+## Tìm nhanh Sổ công văn đi
+Thêm tìm số công văn một phần, không phân biệt hoa/thường hoặc dấu (CVĐ/CVD); lọc ngày gửi từ ngày–đến ngày, bao gồm cả hai ngày biên, cho phép chỉ chọn một đầu mốc và kết hợp với số. Ngày JSON có múi giờ được đối chiếu theo Việt Nam. Thay bộ lọc trở về trang 1, giữ phân trang 10 dòng và hiển thị số kết quả. Có xóa bộ lọc, thông báo khoảng ngày không hợp lệ/không có kết quả. Xuất toàn bộ kết quả đang lọc. Không đổi backend, dữ liệu, sidebar hoặc các trang khác.
