@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
-import { assertAccountSchema, buildAccountChange, hasCurrentSession, sameAdminOrigin, updateManagedAccount } from '../server/account-management.mjs';
+import { assertAccountSchema, buildAccountChange, hasCurrentSession, hashAccountPassword, rememberedSessionRenewal, sameAdminOrigin, updateManagedAccount } from '../server/account-management.mjs';
 
 const ownerEmail = 'owner@example.test';
 const actor = { openId: 'admin_test', email: ownerEmail, name: 'Quản trị giả lập', role: 'admin', status: 'approved', sessionVersion: 0 };
@@ -24,6 +24,11 @@ class MemoryPool {
       execute: async (sql, args) => {
         if (sql.includes('WHERE open_id IN')) return [[...self.accounts.values()].filter((user) => args.includes(user.openId))];
         if (sql.includes('LOWER(TRIM(email))')) return [[...self.accounts.values()].filter((user) => user.email.trim().toLowerCase() === args[0] && user.openId !== args[1])];
+        if (sql.startsWith('UPDATE app_users SET password_hash')) {
+          const [hash, salt, id] = args;
+          self.accounts.set(id, { ...self.accounts.get(id), passwordHash: hash, passwordSalt: salt });
+          return [{ affectedRows: 1 }];
+        }
         if (sql.startsWith('UPDATE app_users')) {
           const [name, email, status, deletedAt, previousStatus, sessionVersion, id] = args;
           self.accounts.set(id, { ...self.accounts.get(id), name, email, status, deletedAt, previousStatus, sessionVersion });
@@ -159,14 +164,76 @@ test('CSRF: chỉ chấp nhận Origin của chính website', () => {
   assert.equal(sameAdminOrigin(req('null')), false);
 });
 
-test('Thay đổi frontend chỉ trong mục quản trị; giữ nguyên CSS, sidebar, login và route', async () => {
+test('Giữ nguyên trang chủ, sidebar, danh bạ, biểu mẫu, CSS và route', async () => {
   const before = execFileSync('git', ['show', '25053ba:src/main.tsx'], { encoding: 'utf8' });
   const after = await readFile(new URL('../src/main.tsx', import.meta.url), 'utf8');
   const withoutAdmin = (source) => source.replace("import AccountAdminPage from './admin/AccountAdminPage';\n", '')
     .replace(/function AdminPage\(\)[\s\S]*?(?=type DirectoryEntry)/, '');
-  assert.equal(withoutAdmin(before), withoutAdmin(after));
+  assert.equal(withoutAdmin(before).slice(withoutAdmin(before).indexOf('type DirectoryEntry')), withoutAdmin(after).slice(withoutAdmin(after).indexOf('type DirectoryEntry')));
   const styles = await readFile(new URL('../src/styles.css', import.meta.url));
   assert.deepEqual(styles, execFileSync('git', ['show', '25053ba:src/styles.css']));
   const routes = await readFile(new URL('../public/manus-routes.json', import.meta.url));
   assert.deepEqual(routes, execFileSync('git', ['show', '25053ba:public/manus-routes.json']));
+});
+
+
+test('Đặt lại mật khẩu người dùng: băm với salt, hủy phiên/token cũ, không tự duyệt và không ghi mật khẩu vào nhật ký', async () => {
+  const pool = new MemoryPool();
+  const newPassword = 'Fixture-New-Password-9!';
+  const result = await updateManagedAccount(pool, actor, target.openId, { action: 'resetPassword', newPassword, passwordConfirmation: newPassword }, ownerEmail);
+  const saved = pool.accounts.get(target.openId);
+  assert.equal(saved.status, 'pending'); assert.equal(saved.role, 'viewer'); assert.equal(saved.sessionVersion, 1);
+  assert.equal(saved.passwordHash, hashAccountPassword(newPassword, saved.passwordSalt).hash);
+  assert.notEqual(saved.passwordHash, newPassword); assert.equal(pool.invalidated.length, 1);
+  assert.equal(JSON.stringify(pool.audit).includes(newPassword), false);
+  assert.equal(Object.hasOwn(result, 'passwordHash'), false);
+});
+
+test('Mật khẩu không khớp/quá ngắn/quá dài bị từ chối; không reset tài khoản đã xóa', () => {
+  fail(() => buildAccountChange(actor, target, { action: 'resetPassword', newPassword: 'short', passwordConfirmation: 'short' }, ownerEmail), 400);
+  fail(() => buildAccountChange(actor, target, { action: 'resetPassword', newPassword: 'Fixture-Password-8', passwordConfirmation: 'Other-Password-8' }, ownerEmail), 400);
+  fail(() => buildAccountChange(actor, target, { action: 'resetPassword', newPassword: 'a'.repeat(129), passwordConfirmation: 'a'.repeat(129) }, ownerEmail), 400);
+  fail(() => buildAccountChange(actor, { ...target, status: 'deleted' }, { action: 'resetPassword' }, ownerEmail), 409);
+  fail(() => buildAccountChange({ ...actor, role: 'viewer' }, target, { action: 'resetPassword' }, ownerEmail), 403);
+});
+
+test('Chính chủ đổi mật khẩu yêu cầu mật khẩu cũ; quản trị khác không được reset chủ hệ thống', async () => {
+  const old = hashAccountPassword('Fixture-Old-Password-9!');
+  const account = { ...actor, passwordHash: old.hash, passwordSalt: old.salt };
+  const pool = new MemoryPool([account, target]);
+  const body = { action: 'resetPassword', newPassword: 'Fixture-New-Password-9!', passwordConfirmation: 'Fixture-New-Password-9!' };
+  await assert.rejects(updateManagedAccount(pool, actor, actor.openId, { ...body, currentPassword: 'incorrect' }, ownerEmail), (error) => error.status === 401);
+  assert.equal(pool.accounts.get(actor.openId).sessionVersion, 0);
+  const result = await updateManagedAccount(pool, actor, actor.openId, { ...body, currentPassword: 'Fixture-Old-Password-9!' }, ownerEmail);
+  assert.equal(result.sessionVersion, 1); assert.equal(Object.hasOwn(result, 'passwordHash'), false);
+  fail(() => buildAccountChange({ ...actor, openId: 'another_admin' }, actor, body, ownerEmail), 403);
+});
+
+test('Đặt lại mật khẩu lỗi nhật ký rollback cả hash và phiên', async () => {
+  const old = hashAccountPassword('Fixture-Old-Password-9!');
+  const pool = new MemoryPool([actor, { ...target, passwordHash: old.hash, passwordSalt: old.salt }]); pool.failAudit = true;
+  await assert.rejects(updateManagedAccount(pool, actor, target.openId, { action: 'resetPassword', newPassword: 'Fixture-New-Password-9!', passwordConfirmation: 'Fixture-New-Password-9!' }, ownerEmail));
+  assert.equal(pool.accounts.get(target.openId).passwordHash, old.hash); assert.equal(pool.accounts.get(target.openId).sessionVersion, 0);
+  assert.equal(pool.audit.length, 0);
+});
+
+test('Chỉ gia hạn phiên ghi nhớ còn hiệu lực và gần hết hạn; không khôi phục phiên hết hạn/bỏ ghi nhớ', () => {
+  const now = 1000000;
+  const renewal = rememberedSessionRenewal({ openId: target.openId, sessionVersion: 3, exp: now + 60, remember: true }, now);
+  assert.equal(renewal.exp, now + 30 * 24 * 60 * 60); assert.equal(renewal.sessionVersion, 3);
+  assert.equal(rememberedSessionRenewal({ exp: now + 60, remember: false }, now), null);
+  assert.equal(rememberedSessionRenewal({ exp: now - 1, remember: true }, now), null);
+  assert.equal(rememberedSessionRenewal({ exp: now + 30 * 24 * 60 * 60, remember: true }, now), null);
+  assert.equal(rememberedSessionRenewal({ remember: true }, now), null);
+  assert.ok(rememberedSessionRenewal({ exp: now + 60 }, now));
+});
+
+test('Luồng đăng nhập kiểm tra phiên máy chủ, không dùng email đã lưu để cấp quyền', async () => {
+  const main = await readFile(new URL('../src/main.tsx', import.meta.url), 'utf8');
+  const server = await readFile(new URL('../server.mjs', import.meta.url), 'utf8');
+  assert.ok(main.includes('const [rememberMe, setRememberMe] = useState(true)'));
+  assert.ok(main.includes('!sessionResponse.ok || !sessionData.authenticated'));
+  assert.ok(main.includes('!forgotMode && !pending && !resetMode'));
+  assert.ok(server.indexOf('if (!hasCurrentSession(payload, rows[0])) return null') < server.indexOf('rememberedSessionRenewal(payload)'));
+  assert.ok(server.includes('const user = await currentUser(req, res)'));
 });

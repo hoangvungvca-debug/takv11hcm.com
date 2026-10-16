@@ -1,3 +1,5 @@
+import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
+
 export class AccountError extends Error {
   constructor(status, message) {
     super(message);
@@ -63,7 +65,7 @@ export function buildAccountChange(actor, target, body, ownerEmail) {
   if (!canAdminister(actor)) throw new AccountError(403, 'Bạn không có quyền quản trị.');
   if (!target) throw new AccountError(404, 'Không tìm thấy tài khoản.');
   const action = body.action;
-  if (!['approve', 'reject', 'disable', 'edit', 'delete', 'restore'].includes(action)) {
+  if (!['approve', 'reject', 'disable', 'edit', 'delete', 'restore', 'resetPassword'].includes(action)) {
     throw new AccountError(400, 'Thao tác không hợp lệ.');
   }
   const owner = normalizeEmail(target.email) === normalizeEmail(ownerEmail);
@@ -81,7 +83,14 @@ export function buildAccountChange(actor, target, body, ownerEmail) {
     next.sessionVersion = Number(target.sessionVersion || 0) + 1;
   } else {
     if (target.status === 'deleted') throw new AccountError(409, 'Cần khôi phục tài khoản trước khi chỉnh sửa hoặc phê duyệt.');
-    if (action === 'edit') {
+    if (action === 'resetPassword') {
+      if (owner && !self) throw new AccountError(403, 'Chỉ chủ hệ thống được đổi mật khẩu của chính mình.');
+      if (typeof body.newPassword !== 'string' || body.newPassword.length < 8 || body.newPassword.length > 128) {
+        throw new AccountError(400, 'Mật khẩu mới phải từ 8 đến 128 ký tự.');
+      }
+      if (body.newPassword !== body.passwordConfirmation) throw new AccountError(400, 'Hai mật khẩu mới chưa khớp.');
+      next.sessionVersion = Number(target.sessionVersion || 0) + 1;
+    } else if (action === 'edit') {
       if (['role', 'status', 'password', 'passwordHash', 'passwordSalt'].some((key) => Object.hasOwn(body, key))) {
         throw new AccountError(400, 'Biểu mẫu sửa chỉ cho phép đổi họ tên và email.');
       }
@@ -122,6 +131,22 @@ export function hasCurrentSession(payload, user) {
     && Number(payload?.sessionVersion || 0) === Number(user.sessionVersion || 0));
 }
 
+export const hashAccountPassword = (password, salt = randomBytes(16).toString('hex')) => ({
+  salt, hash: scryptSync(password, salt, 64).toString('hex'),
+});
+
+const checkAccountPassword = (password, salt, expected) => {
+  if (typeof password !== 'string' || !salt || !expected) return false;
+  const actual = Buffer.from(hashAccountPassword(password, salt).hash, 'hex');
+  const target = Buffer.from(expected, 'hex');
+  return actual.length === target.length && timingSafeEqual(actual, target);
+};
+
+export function rememberedSessionRenewal(payload, now = Math.floor(Date.now() / 1000)) {
+  if (!payload || !Number.isFinite(payload.exp) || payload.remember === false || payload.exp <= now || payload.exp - now > 7 * 24 * 60 * 60) return null;
+  return { ...payload, remember: true, exp: now + 30 * 24 * 60 * 60 };
+}
+
 export function sameAdminOrigin(req, allowedOrigins = []) {
   const origin = req.headers.origin;
   if (!origin || req.headers['sec-fetch-site'] === 'cross-site') return false;
@@ -136,7 +161,7 @@ export async function updateManagedAccount(pool, actor, targetId, body, ownerEma
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
-    const [rows] = await connection.execute(`SELECT ${accountFields} FROM app_users
+    const [rows] = await connection.execute(`SELECT ${accountFields}, password_hash AS passwordHash, password_salt AS passwordSalt FROM app_users
       WHERE open_id IN (?,?) ORDER BY open_id FOR UPDATE`, [actor.openId, targetId]);
     const freshActor = rows.find((row) => row.openId === actor.openId);
     if (!canAdminister(freshActor) || Number(freshActor.sessionVersion || 0) !== Number(actor.sessionVersion || 0)) {
@@ -144,6 +169,13 @@ export async function updateManagedAccount(pool, actor, targetId, body, ownerEma
     }
     const target = rows.find((row) => row.openId === targetId);
     const { action, next } = buildAccountChange(freshActor, target, body, ownerEmail);
+    let password;
+    if (action === 'resetPassword') {
+      if (targetId === freshActor.openId && !checkAccountPassword(body.currentPassword, target.passwordSalt, target.passwordHash)) {
+        throw new AccountError(401, 'Mật khẩu hiện tại chưa đúng.');
+      }
+      password = hashAccountPassword(body.newPassword);
+    }
     if (action === 'edit') {
       const [duplicates] = await connection.execute(
         'SELECT open_id FROM app_users WHERE LOWER(TRIM(email))=? AND open_id<>? LIMIT 1', [next.email, targetId]);
@@ -152,6 +184,7 @@ export async function updateManagedAccount(pool, actor, targetId, body, ownerEma
     await connection.execute(`UPDATE app_users SET display_name=?, email=?, status=?,
       deleted_at=?, previous_status=?, session_version=? WHERE open_id=?`, [next.name, next.email,
       next.status, next.deletedAt || null, next.previousStatus || null, Number(next.sessionVersion || 0), targetId]);
+    if (password) await connection.execute('UPDATE app_users SET password_hash=?, password_salt=? WHERE open_id=?', [password.hash, password.salt, targetId]);
     if (Number(next.sessionVersion || 0) !== Number(target.sessionVersion || 0)) {
       await connection.execute('UPDATE password_reset_tokens SET used_at=CURRENT_TIMESTAMP WHERE open_id=? AND used_at IS NULL', [targetId]);
     }
@@ -161,7 +194,8 @@ export async function updateManagedAccount(pool, actor, targetId, body, ownerEma
       (actor_id,target_id,action,before_data,after_data) VALUES (?,?,?,?,?)`,
     [freshActor.openId, targetId, action, audit(target), audit(next)]);
     await connection.commit();
-    return next;
+    const { passwordHash, passwordSalt, ...safeAccount } = next;
+    return safeAccount;
   } catch (error) {
     await connection.rollback();
     if (error.code === 'ER_DUP_ENTRY') throw new AccountError(409, 'Email đã được sử dụng bởi tài khoản khác.');

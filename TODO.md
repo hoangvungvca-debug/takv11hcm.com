@@ -19,3 +19,9 @@
 - [x] Xóa mềm có xác nhận rõ tên/email: giữ dữ liệu tài khoản và nghiệp vụ, đưa vào thùng rác, chặn đăng nhập và thu hồi phiên cũ. Không xóa chính mình hoặc quản trị chủ hệ thống.
 - [x] Khôi phục tài khoản từ thùng rác về trạng thái trước khi xóa; tài khoản chờ duyệt vẫn chờ duyệt, tài khoản được duyệt phải đăng nhập lại, không tái sử dụng phiên cũ.
 - [x] Phân quyền backend, chặn yêu cầu thao tác từ nguồn khác website, ghi nhật ký cùng giao dịch; kiểm thử không thao tác tài khoản thật. Giữ nguyên trang chủ, sidebar, form đăng nhập và dữ liệu khác.
+
+## Mật khẩu và tự đăng nhập
+- [x] Nút Đặt lại mật khẩu trong quản trị có nhập và xác nhận mật khẩu mới, nút hiện/ẩn, validation 8–128 ký tự; giữ trạng thái/vai trò, hủy hiệu lực phiên và token cũ, không lộ mật khẩu trong nhật ký.
+- [x] Đổi mật khẩu chính mình yêu cầu mật khẩu hiện tại; quản trị viên khác không được đổi mật khẩu chủ hệ thống; tài khoản trong thùng rác không được đặt lại trước khi khôi phục.
+- [x] Mặc định ghi nhớ; cùng trình duyệt với phiên hợp lệ tự vào trang chủ, gia hạn phiên sắp hết hạn; bỏ ghi nhớ không gia hạn, không tự đăng nhập chỉ dựa vào email đã lưu; kiểm tra phiên sau đăng nhập để tránh chuyển trang lặp.
+- [x] Giữ nguyên trang chủ, sidebar, CSS và dữ liệu nghiệp vụ; kiểm thử không đặt lại mật khẩu tài khoản thật.

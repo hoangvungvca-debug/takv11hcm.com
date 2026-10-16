@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { URL } from 'node:url';
 import mysql from 'mysql2/promise';
 import { createServer as createViteServer } from 'vite';
-import { AccountError, accountFields, assertAccountSchema, hasCurrentSession, sameAdminOrigin, updateManagedAccount } from './server/account-management.mjs';
+import { AccountError, accountFields, assertAccountSchema, hasCurrentSession, rememberedSessionRenewal, sameAdminOrigin, updateManagedAccount } from './server/account-management.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = Number(process.env.PORT || 3000);
@@ -134,13 +134,16 @@ async function upsertUser(identity) {
   return rows[0];
 }
 
-async function currentUser(req) {
+async function currentUser(req, res) {
   const payload = verify(cookies(req).webdev_app_session);
   if (!payload?.openId) return null;
   const connection = await db();
   if (!connection) return null;
   const [rows] = await connection.execute(`SELECT ${accountFields} FROM app_users WHERE open_id=?`, [payload.openId]);
-  return hasCurrentSession(payload, rows[0]) ? rows[0] : null;
+  if (!hasCurrentSession(payload, rows[0])) return null;
+  const renewal = res ? rememberedSessionRenewal(payload) : null;
+  if (renewal) setSessionCookie(res, 'webdev_app_session', sign(renewal), true);
+  return rows[0];
 }
 
 const isAdmin = (user) => user?.role === 'admin' && user?.status === 'approved';
@@ -180,13 +183,13 @@ async function api(req, res, url) {
     const identityId = `local_${randomBytes(12).toString('hex')}`; const admin = email === adminEmail; const hashed = passwordHash(password); const status = admin ? 'approved' : 'pending'; const role = admin ? 'admin' : 'viewer';
     await connection.execute('INSERT INTO app_users (open_id,email,display_name,password_hash,password_salt,role,status,last_login_at) VALUES (?,?,?,?,?,?,?,CURRENT_TIMESTAMP)', [identityId, email, name, hashed.hash, hashed.salt, role, status]);
     if (!admin) return json(res, 201, { ok: true, pending: true, message: 'Tài khoản đã đăng ký và đang chờ quản trị viên phê duyệt.' });
-    const remember = body.remember !== false; const session = sign({ appId: projectId, openId: identityId, email, sessionVersion: 0, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setSessionCookie(res, 'webdev_app_session', session, remember); return json(res, 201, { ok: true, pending: false });
+    const remember = body.remember !== false; const session = sign({ appId: projectId, openId: identityId, email, remember, sessionVersion: 0, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setSessionCookie(res, 'webdev_app_session', session, remember); return json(res, 201, { ok: true, pending: false });
   }
   if (url.pathname === '/api/auth/login' && req.method === 'POST') {
     const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase(); const password = String(body.password || ''); const connection = await db(); const [rows] = await connection.execute('SELECT open_id AS openId, email, display_name AS name, password_hash AS passwordHash, password_salt AS passwordSalt, role, status, session_version AS sessionVersion FROM app_users WHERE email=? LIMIT 1', [email]); const user = rows[0];
     if (!user || !passwordMatches(password, user.passwordSalt, user.passwordHash)) return json(res, 401, { error: 'Email hoặc mật khẩu riêng của website không đúng. Mật khẩu Gmail/Manus không dùng được ở đây.' });
     if (!['approved', 'admin'].includes(user.status)) return json(res, 403, { pending: user.status === 'pending', error: user.status === 'deleted' ? 'Tài khoản đã bị xóa. Vui lòng liên hệ quản trị viên để khôi phục.' : user.status === 'pending' ? 'Tài khoản đang chờ quản trị viên phê duyệt.' : 'Tài khoản chưa được phép truy cập. Vui lòng liên hệ quản trị viên.' });
-    const remember = body.remember !== false; await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, sessionVersion: Number(user.sessionVersion || 0), exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setSessionCookie(res, 'webdev_app_session', session, remember); return json(res, 200, { ok: true, remember, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
+    const remember = body.remember !== false; await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, remember, sessionVersion: Number(user.sessionVersion || 0), exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setSessionCookie(res, 'webdev_app_session', session, remember); return json(res, 200, { ok: true, remember, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
   }
   if (url.pathname === '/api/auth/forgot-password' && req.method === 'POST') {
     const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase();
@@ -202,18 +205,37 @@ async function api(req, res, url) {
     return json(res, 200, { ok: true, message: 'Nếu email đã đăng ký, hướng dẫn khôi phục sẽ được gửi đến hộp thư.' });
   }
   if (url.pathname === '/api/auth/reset-password' && req.method === 'POST') {
-    const body = await readBody(req); const token = String(body.token || '').trim(); const password = String(body.password || '');
-    if (!token || password.length < 8) return json(res, 400, { error: 'Liên kết không hợp lệ hoặc mật khẩu mới chưa đủ 8 ký tự.' });
-    const connection = await db(); if (!connection) return json(res, 503, { error: 'Máy chủ chưa sẵn sàng. Vui lòng thử lại sau.' });
-    const [rows] = await connection.execute('SELECT open_id AS openId FROM password_reset_tokens WHERE token_hash=? AND used_at IS NULL AND expires_at > NOW() LIMIT 1', [resetTokenHash(token)]);
-    if (!rows.length) return json(res, 400, { error: 'Liên kết đã hết hạn hoặc đã được sử dụng. Vui lòng yêu cầu liên kết mới.' });
-    const hashed = passwordHash(password); await connection.execute('UPDATE app_users SET password_hash=?, password_salt=? WHERE open_id=?', [hashed.hash, hashed.salt, rows[0].openId]); await connection.execute('UPDATE password_reset_tokens SET used_at=CURRENT_TIMESTAMP WHERE token_hash=?', [resetTokenHash(token)]);
-    const [users] = await connection.execute('SELECT open_id AS openId, email, display_name AS name, role, status, session_version AS sessionVersion FROM app_users WHERE open_id=? LIMIT 1', [rows[0].openId]); const user = users[0];
-    const session = sign({ appId: projectId, openId: user.openId, email: user.email, sessionVersion: Number(user.sessionVersion || 0), exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setCookie(res, 'webdev_app_session', session, SESSION_MAX_AGE);
+    const body = await readBody(req);
+    const token = String(body.token || '').trim();
+    const password = String(body.password || '');
+    if (!token || password.length < 8 || password.length > 128) return json(res, 400, { error: 'Liên kết không hợp lệ hoặc mật khẩu mới chưa đủ từ 8 đến 128 ký tự.' });
+    const database = await db();
+    if (!database) return json(res, 503, { error: 'Máy chủ chưa sẵn sàng. Vui lòng thử lại sau.' });
+    const connection = await database.getConnection();
+    let user;
+    try {
+      await connection.beginTransaction();
+      const [rows] = await connection.execute(`SELECT u.open_id AS openId, u.email, u.display_name AS name,
+        u.role, u.status, u.session_version AS sessionVersion FROM password_reset_tokens t
+        JOIN app_users u ON u.open_id=t.open_id
+        WHERE t.token_hash=? AND t.used_at IS NULL AND t.expires_at > NOW() AND u.status<>"deleted" LIMIT 1 FOR UPDATE`, [resetTokenHash(token)]);
+      if (!rows.length) throw new AccountError(400, 'Liên kết đã hết hạn hoặc đã được sử dụng. Vui lòng yêu cầu liên kết mới.');
+      user = rows[0];
+      const hashed = passwordHash(password);
+      user.sessionVersion = Number(user.sessionVersion || 0) + 1;
+      await connection.execute('UPDATE app_users SET password_hash=?, password_salt=?, session_version=? WHERE open_id=?', [hashed.hash, hashed.salt, user.sessionVersion, user.openId]);
+      await connection.execute('UPDATE password_reset_tokens SET used_at=CURRENT_TIMESTAMP WHERE open_id=? AND used_at IS NULL', [user.openId]);
+      await connection.commit();
+    } catch (error) { await connection.rollback(); throw error; }
+    finally { connection.release(); }
+    if (!['approved', 'admin'].includes(user.status)) return json(res, 200, { ok: true, pending: true, message: 'Mật khẩu đã cập nhật. Tài khoản vẫn cần được quản trị viên phê duyệt để truy cập.' });
+    const session = sign({ appId: projectId, openId: user.openId, email: user.email,
+      sessionVersion: user.sessionVersion, remember: true, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE });
+    setSessionCookie(res, 'webdev_app_session', session, true);
     return json(res, 200, { ok: true });
   }
   if (url.pathname === '/api/auth/me' && req.method === 'GET') {
-    const user = await currentUser(req);
+    const user = await currentUser(req, res);
     return json(res, 200, { authenticated: Boolean(user), user: user ? { ...user, isAdmin: isAdmin(user) } : null });
   }
   if (url.pathname === '/api/auth/logout' && req.method === 'POST') { clearCookie(res, 'webdev_app_session'); return json(res, 200, { ok: true }); }
@@ -270,7 +292,15 @@ async function api(req, res, url) {
       disable: 'Tài khoản đã được vô hiệu hóa.', edit: 'Thông tin tài khoản đã được cập nhật.',
       delete: 'Đã chuyển tài khoản vào thùng rác. Các phiên cũ đã hết hiệu lực.',
       restore: 'Đã khôi phục trạng thái trước khi xóa. Người dùng cần đăng nhập lại.',
+      resetPassword: 'Mật khẩu đã được đặt lại. Các phiên và liên kết khôi phục cũ đã hết hiệu lực.',
     };
+    if (body.action === 'resetPassword' && account.openId === user.openId) {
+      const prior = verify(cookies(req).webdev_app_session);
+      const remember = prior?.remember !== false;
+      const session = sign({ appId: projectId, openId: account.openId, email: account.email,
+        sessionVersion: Number(account.sessionVersion || 0), remember, exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE });
+      setSessionCookie(res, 'webdev_app_session', session, remember);
+    }
     return json(res, 200, { ok: true, message: messages[body.action], user: { openId: account.openId,
       name: account.name, email: account.email, role: account.role, status: account.status } });
   }
@@ -282,7 +312,7 @@ async function handle(req, res) {
   try {
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
     if (req.method === 'GET' && ['/', '/so-cong-van', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/admin'].includes(url.pathname)) {
-      const user = await currentUser(req);
+      const user = await currentUser(req, res);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }
       if (url.pathname === '/' && user) {

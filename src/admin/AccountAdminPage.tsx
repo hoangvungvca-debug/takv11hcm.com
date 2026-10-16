@@ -15,7 +15,7 @@ type Account = {
   deletedAt?: string | null;
   previousStatus?: string | null;
 };
-type Action = 'approve' | 'reject' | 'edit' | 'delete' | 'restore';
+type Action = 'approve' | 'reject' | 'edit' | 'delete' | 'restore' | 'resetPassword';
 type Tab = 'pending' | 'active' | 'other' | 'deleted';
 type Selection = { account: Account; action: Action };
 const statuses: Record<string, string> = {
@@ -24,7 +24,7 @@ const statuses: Record<string, string> = {
 };
 const actions: Record<Action, string> = {
   approve: 'Phê duyệt', reject: 'Từ chối', edit: 'Sửa tài khoản',
-  delete: 'Xóa tài khoản', restore: 'Khôi phục tài khoản',
+  delete: 'Xóa tài khoản', restore: 'Khôi phục tài khoản', resetPassword: 'Đặt lại mật khẩu',
 };
 const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   .replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
@@ -52,6 +52,10 @@ export default function AccountAdminPage() {
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
   const [modalError, setModalError] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [showResetPassword, setShowResetPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -92,9 +96,11 @@ export default function AccountAdminPage() {
     setSelected({ account, action });
     setEditName(account.name);
     setEditEmail(account.email);
+    setCurrentPassword(''); setNewPassword(''); setPasswordConfirmation(''); setShowResetPassword(false);
     setModalError('');
   };
-  const close = () => { if (!busy) { dialog.current?.close(); setSelected(null); } };
+  const clearPasswords = () => { setCurrentPassword(''); setNewPassword(''); setPasswordConfirmation(''); };
+  const close = () => { if (!busy) { dialog.current?.close(); setSelected(null); clearPasswords(); } };
   const refresh = async () => {
     setRefreshing(true); setError('');
     try { await fetchAccounts(); }
@@ -110,7 +116,7 @@ export default function AccountAdminPage() {
     try {
       const payload = action === 'edit'
         ? { action, name: editName.trim(), email: editEmail.trim().toLowerCase() }
-        : { action };
+        : action === 'resetPassword' ? { action, currentPassword, newPassword, passwordConfirmation } : { action };
       const response = await fetch(`/api/admin/users/${encodeURIComponent(account.openId)}`, {
         method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -118,7 +124,7 @@ export default function AccountAdminPage() {
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || 'Không thể thực hiện thao tác.');
       setNotice(result.message || `Đã ${actions[action].toLowerCase()}: ${account.email}.`);
-      dialog.current?.close(); setSelected(null);
+      dialog.current?.close(); setSelected(null); clearPasswords();
       if (action === 'edit' && account.openId === me?.openId
           && editEmail.trim().toLowerCase() !== account.email.toLowerCase()) {
         setNotice('Email đã được cập nhật. Vui lòng đăng nhập lại bằng email mới.');
@@ -191,6 +197,9 @@ export default function AccountAdminPage() {
                     : <>
                       {['pending', 'rejected', 'disabled'].includes(account.status) && <button className="aa-button" onClick={() => openAction(account, 'approve')} disabled={busy}>Phê duyệt</button>}
                       <button className="aa-button aa-secondary" onClick={() => openAction(account, 'edit')} disabled={busy}>Sửa</button>
+                      <button className="aa-button aa-secondary" onClick={() => openAction(account, 'resetPassword')}
+                        disabled={busy || (account.isOwner && account.openId !== me?.openId)}
+                        title={account.isOwner && account.openId !== me?.openId ? 'Chỉ chủ hệ thống được đổi mật khẩu của mình' : 'Đặt mật khẩu mới'}>Đặt lại mật khẩu</button>
                       {account.status === 'pending' && <button className="aa-button aa-secondary" onClick={() => openAction(account, 'reject')} disabled={busy || protectedAccount}>Từ chối</button>}
                       <button className="aa-button aa-danger" onClick={() => openAction(account, 'delete')} disabled={busy || protectedAccount}
                         title={protectedAccount ? 'Không xóa chính mình hoặc chủ hệ thống' : 'Chuyển vào thùng rác'}>Xóa</button>
@@ -215,6 +224,25 @@ export default function AccountAdminPage() {
             maxLength={255} readOnly={selected.account.isOwner} /></label>
           <p className="aa-modal-note">{selected.account.isOwner ? 'Email của chủ hệ thống được giữ cố định.'
             : 'Đổi email không đổi mật khẩu hoặc vai trò. Các phiên cũ sẽ hết hiệu lực; người dùng phải đăng nhập lại bằng email mới.'}</p>
+        </> : selected.action === 'resetPassword' ? <>
+          {selected.account.openId === me?.openId && <label>Mật khẩu hiện tại
+            <input type={showResetPassword ? 'text' : 'password'} value={currentPassword}
+              onChange={(event) => setCurrentPassword(event.target.value)} autoComplete="current-password" required maxLength={128} />
+          </label>}
+          <label>Mật khẩu mới
+            <input type={showResetPassword ? 'text' : 'password'} value={newPassword}
+              onChange={(event) => setNewPassword(event.target.value)} autoComplete="new-password" required minLength={8} maxLength={128} />
+          </label>
+          <label>Xác nhận mật khẩu mới
+            <input type={showResetPassword ? 'text' : 'password'} value={passwordConfirmation}
+              onChange={(event) => setPasswordConfirmation(event.target.value)} autoComplete="new-password" required minLength={8} maxLength={128} />
+          </label>
+          <button type="button" className="aa-button aa-secondary" style={{ marginTop: 12 }}
+            onClick={() => setShowResetPassword((value) => !value)} aria-pressed={showResetPassword}>
+            {showResetPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}</button>
+          <p className="aa-modal-note">Mật khẩu mới từ 8 đến 128 ký tự. Mật khẩu cũ và các phiên trước đó hết hiệu lực;
+            trạng thái phê duyệt và vai trò không thay đổi. Không gửi mật khẩu qua khung chat hoặc lưu trong nhật ký.
+            {selected.account.openId === me?.openId ? ' Phiên hiện tại của bạn sẽ được thay bằng phiên mới.' : ' Thông báo mật khẩu mới cho đúng chủ tài khoản qua kênh riêng an toàn.'}</p>
         </> : <p className="aa-modal-note">
           {selected.action === 'delete' && 'Tài khoản sẽ được chuyển vào thùng rác và mọi phiên hiện tại hết hiệu lực. Không xóa công văn hoặc tin nhắn. Có thể khôi phục sau.'}
           {selected.action === 'restore' && `Khôi phục về trạng thái “${statuses[restoredStatus]}”. Người dùng phải đăng nhập lại; phiên trước khi xóa không được sử dụng lại.`}
