@@ -19,6 +19,7 @@ const oauthApi = process.env.MANUS_OAUTH_API_URL || '';
 let pool;
 let schemaPromise;
 let lettersSchemaPromise;
+let outgoingLettersSchemaPromise;
 let passwordSchemaPromise;
 let chatSchemaPromise;
 let visitsSchemaPromise;
@@ -91,6 +92,21 @@ async function db() {
     INDEX idx_incoming_letters_status (status)
   )`);
   await lettersSchemaPromise;
+  if (!outgoingLettersSchemaPromise) outgoingLettersSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS outgoing_letters (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    outgoing_number VARCHAR(80) NOT NULL,
+    sent_date DATE NOT NULL,
+    content TEXT NOT NULL,
+    recipient VARCHAR(255) NOT NULL,
+    judge VARCHAR(255) NULL,
+    clerk VARCHAR(255) NULL,
+    note TEXT NULL,
+    created_by VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_outgoing_letters_date (sent_date),
+    INDEX idx_outgoing_letters_number (outgoing_number)
+  )`);
+  await outgoingLettersSchemaPromise;
   if (!chatSchemaPromise) chatSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS internal_chat_messages (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_email VARCHAR(255) NOT NULL,
@@ -257,6 +273,20 @@ async function api(req, res, url) {
     const connection = await db(); const [result] = await connection.execute(`INSERT INTO incoming_letters (incoming_number, received_date, sender, document_number, document_date, summary, handler, deadline, status, created_by) VALUES (?,?,?,?,?,?,?,?,?,?)`, [body.incomingNumber, body.receivedDate, body.sender, body.documentNumber || null, body.documentDate || null, body.summary, body.handler || null, body.deadline || null, body.status || 'Chưa xử lý', user.email || user.openId]);
     return json(res, 201, { ok: true, id: result.insertId });
   }
+  if (url.pathname === '/api/outgoing-letters' && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem sổ công văn đi.' });
+    const connection = await db(); const [rows] = await connection.execute(`SELECT id, outgoing_number AS outgoingNumber, sent_date AS sentDate, content, recipient, judge, clerk, note, created_by AS createdBy, created_at AS createdAt FROM outgoing_letters ORDER BY sent_date DESC, id DESC`);
+    return json(res, 200, { letters: rows });
+  }
+  if (url.pathname === '/api/outgoing-letters' && req.method === 'POST') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để ghi sổ công văn đi.' });
+    const body = await readBody(req); const sentDate = String(body.sentDate || '').trim(); const content = String(body.content || '').trim(); const recipient = String(body.recipient || '').trim();
+    if (!sentDate || !content || !recipient) return json(res, 400, { error: 'Vui lòng nhập đủ ngày gửi, nội dung và nơi nhận.' });
+    const connection = await db(); const [result] = await connection.execute(`INSERT INTO outgoing_letters (outgoing_number, sent_date, content, recipient, judge, clerk, note, created_by) VALUES (?,?,?,?,?,?,?,?)`, ['PENDING', sentDate, content, recipient, body.judge || null, body.clerk || null, body.note || null, user.email || user.openId]);
+    const year = sentDate.slice(0, 4) || new Date().getFullYear(); const outgoingNumber = `CVĐ-${year}-${String(result.insertId).padStart(5, '0')}`;
+    await connection.execute('UPDATE outgoing_letters SET outgoing_number=? WHERE id=?', [outgoingNumber, result.insertId]);
+    return json(res, 201, { ok: true, id: result.insertId, outgoingNumber });
+  }
   if (url.pathname === '/api/chat' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem khung chat.' });
     const connection = await db(); if (!connection) return json(res, 503, { error: 'Chưa kết nối được cơ sở dữ liệu.' });
@@ -311,7 +341,7 @@ async function handle(req, res) {
   const url = new URL(req.url, originFor(req));
   try {
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
-    if (req.method === 'GET' && ['/', '/so-cong-van', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/admin'].includes(url.pathname)) {
+    if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/admin'].includes(url.pathname)) {
       const user = await currentUser(req, res);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }

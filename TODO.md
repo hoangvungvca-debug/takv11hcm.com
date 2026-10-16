@@ -27,3 +27,10 @@
 - [x] Giữ nguyên trang chủ, sidebar, CSS và dữ liệu nghiệp vụ; kiểm thử không đặt lại mật khẩu tài khoản thật.
 
 - [x] Sidebar luôn hiện cả biểu tượng và tên ứng dụng, kể cả điện thoại; tên dài xuống dòng, không cần chạm/hover mới thấy. Giữ E-QLTA đầu danh sách, sidebar cố định, footer toàn chiều ngang và các phần khác.
+
+
+## Sổ công văn đi
+- [x] Tạo route nội bộ riêng; người dùng đã đăng nhập và được phê duyệt mới xem/ghi sổ.
+- [x] Biểu mẫu gồm ngày tháng gửi, số công văn cấp tự động, nội dung, nơi nhận, thẩm phán, thư ký và ghi chú.
+- [x] Cấp số sau khi lưu theo dạng CVĐ-năm-số thứ tự cơ sở dữ liệu.
+- [x] Có nút xuất PDF, Word và Excel; danh sách phân trang khi quá 10 dòng.

@@ -47,3 +47,7 @@ Kiểm tra bản mật khẩu/ghi nhớ: 22 kiểm thử giả lập đạt, ki�
 
 ## Sidebar hiện tên trên mọi thiết bị
 Giữ sidebar cố định và thứ tự E-QLTA ở đầu. Bỏ chế độ thanh chỉ biểu tượng trên mobile: hiện biểu tượng, tên ứng dụng tự xuống dòng và tên nhóm. Chiều rộng trên mobile dùng clamp(132px,38vw,180px), đồng bộ khoảng lề nội dung và footer toàn chiều ngang; desktop giữ kích thước cũ. Không sửa component trang chủ, đăng nhập, quản trị hoặc dữ liệu.
+
+
+## Sổ công văn đi — đã triển khai
+Tái sử dụng vùng giao diện sổ nội bộ, thêm bảng `outgoing_letters`, API GET/POST được bảo vệ, cấp số sau insert, xuất file phía trình duyệt và phân trang 10 dòng. “pqf” được hiểu là PDF. Không thay đổi sổ công văn đến.
