@@ -163,6 +163,7 @@ async function currentUser(req, res) {
 }
 
 const isAdmin = (user) => user?.role === 'admin' && user?.status === 'approved';
+const isOwner = (user) => Boolean(user && isAdmin(user) && String(user.email || '').trim().toLowerCase() === adminEmail);
 const passwordHash = (password, salt = randomBytes(16).toString('hex')) => ({ salt, hash: scryptSync(password, salt, 64).toString('hex') });
 const passwordMatches = (password, salt, expected) => { if (!salt || !expected) return false; const actual = Buffer.from(passwordHash(password, salt).hash, 'hex'); const target = Buffer.from(expected, 'hex'); return actual.length === target.length && timingSafeEqual(actual, target); };
 const resetTokenHash = (token) => createHmac('sha256', jwtSecret || 'local-reset-token').update(token).digest('hex');
@@ -205,7 +206,7 @@ async function api(req, res, url) {
     const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase(); const password = String(body.password || ''); const connection = await db(); const [rows] = await connection.execute('SELECT open_id AS openId, email, display_name AS name, password_hash AS passwordHash, password_salt AS passwordSalt, role, status, session_version AS sessionVersion FROM app_users WHERE email=? LIMIT 1', [email]); const user = rows[0];
     if (!user || !passwordMatches(password, user.passwordSalt, user.passwordHash)) return json(res, 401, { error: 'Email hoặc mật khẩu riêng của website không đúng. Mật khẩu Gmail/Manus không dùng được ở đây.' });
     if (!['approved', 'admin'].includes(user.status)) return json(res, 403, { pending: user.status === 'pending', error: user.status === 'deleted' ? 'Tài khoản đã bị xóa. Vui lòng liên hệ quản trị viên để khôi phục.' : user.status === 'pending' ? 'Tài khoản đang chờ quản trị viên phê duyệt.' : 'Tài khoản chưa được phép truy cập. Vui lòng liên hệ quản trị viên.' });
-    const remember = body.remember !== false; await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, remember, sessionVersion: Number(user.sessionVersion || 0), exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setSessionCookie(res, 'webdev_app_session', session, remember); return json(res, 200, { ok: true, remember, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user) } });
+    const remember = body.remember !== false; await connection.execute('UPDATE app_users SET last_login_at=CURRENT_TIMESTAMP WHERE open_id=?', [user.openId]); const session = sign({ appId: projectId, openId: user.openId, email: user.email, remember, sessionVersion: Number(user.sessionVersion || 0), exp: Math.floor(Date.now() / 1000) + SESSION_MAX_AGE }); setSessionCookie(res, 'webdev_app_session', session, remember); return json(res, 200, { ok: true, remember, user: { email: user.email, name: user.name, role: user.role, status: user.status, isAdmin: isAdmin(user), isOwner: isOwner(user) } });
   }
   if (url.pathname === '/api/auth/forgot-password' && req.method === 'POST') {
     const body = await readBody(req); const email = String(body.email || '').trim().toLowerCase();
@@ -252,7 +253,7 @@ async function api(req, res, url) {
   }
   if (url.pathname === '/api/auth/me' && req.method === 'GET') {
     const user = await currentUser(req, res);
-    return json(res, 200, { authenticated: Boolean(user), user: user ? { ...user, isAdmin: isAdmin(user) } : null });
+    return json(res, 200, { authenticated: Boolean(user), user: user ? { ...user, isAdmin: isAdmin(user), isOwner: isOwner(user) } : null });
   }
   if (url.pathname === '/api/auth/logout' && req.method === 'POST') {
     try {
@@ -283,10 +284,19 @@ async function api(req, res, url) {
     return json(res, 200, { letters: rows });
   }
   if (url.pathname === '/api/letters' && req.method === 'POST') {
-    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để ghi sổ công văn.' });
+    const user = await currentUser(req); if (!isOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được thêm, sửa hoặc xóa Sổ công văn đến.' });
     const body = await readBody(req); if (!body.incomingNumber || !body.receivedDate || !body.sender || !body.summary) return json(res, 400, { error: 'Vui lòng nhập đủ số đến, ngày đến, nơi gửi và trích yếu.' });
     const connection = await db(); const [result] = await connection.execute(`INSERT INTO incoming_letters (incoming_number, received_date, sender, document_number, document_date, summary, handler, deadline, status, created_by) VALUES (?,?,?,?,?,?,?,?,?,?)`, [body.incomingNumber, body.receivedDate, body.sender, body.documentNumber || null, body.documentDate || null, body.summary, body.handler || null, body.deadline || null, body.status || 'Chưa xử lý', user.email || user.openId]);
     return json(res, 201, { ok: true, id: result.insertId });
+  }
+  if (url.pathname.startsWith('/api/letters/') && ['PUT', 'DELETE'].includes(req.method)) {
+    const user = await currentUser(req); if (!isOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được sửa hoặc xóa Sổ công văn đến.' });
+    const id = Number(url.pathname.split('/').pop()); if (!Number.isInteger(id) || id < 1) return json(res, 400, { error: 'Mã công văn không hợp lệ.' });
+    const connection = await db();
+    if (req.method === 'DELETE') { const [result] = await connection.execute('DELETE FROM incoming_letters WHERE id=?', [id]); if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy công văn đến.' }); return json(res, 200, { ok: true }); }
+    const body = await readBody(req); if (!body.incomingNumber || !body.receivedDate || !body.sender || !body.summary) return json(res, 400, { error: 'Vui lòng nhập đủ số đến, ngày đến, nơi gửi và trích yếu.' });
+    const [result] = await connection.execute('UPDATE incoming_letters SET incoming_number=?, received_date=?, sender=?, document_number=?, document_date=?, summary=?, handler=?, deadline=?, status=? WHERE id=?', [body.incomingNumber, body.receivedDate, body.sender, body.documentNumber || null, body.documentDate || null, body.summary, body.handler || null, body.deadline || null, body.status || 'Chưa xử lý', id]);
+    if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy công văn đến.' }); return json(res, 200, { ok: true });
   }
   if (url.pathname === '/api/outgoing-letters' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem sổ công văn đi.' });
@@ -294,13 +304,23 @@ async function api(req, res, url) {
     return json(res, 200, { letters: rows });
   }
   if (url.pathname === '/api/outgoing-letters' && req.method === 'POST') {
-    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để ghi sổ công văn đi.' });
+    const user = await currentUser(req); if (!isOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được thêm, sửa hoặc xóa Sổ công văn đi.' });
     const body = await readBody(req); const sentDate = String(body.sentDate || '').trim(); const content = String(body.content || '').trim(); const recipient = String(body.recipient || '').trim();
     if (!sentDate || !content || !recipient) return json(res, 400, { error: 'Vui lòng nhập đủ ngày gửi, nội dung và nơi nhận.' });
     const connection = await db(); const [result] = await connection.execute(`INSERT INTO outgoing_letters (outgoing_number, sent_date, content, recipient, judge, clerk, note, created_by) VALUES (?,?,?,?,?,?,?,?)`, ['PENDING', sentDate, content, recipient, body.judge || null, body.clerk || null, body.note || null, user.email || user.openId]);
     const year = sentDate.slice(0, 4) || new Date().getFullYear(); const outgoingNumber = `CVĐ-${year}-${String(result.insertId).padStart(5, '0')}`;
     await connection.execute('UPDATE outgoing_letters SET outgoing_number=? WHERE id=?', [outgoingNumber, result.insertId]);
     return json(res, 201, { ok: true, id: result.insertId, outgoingNumber });
+  }
+  if (url.pathname.startsWith('/api/outgoing-letters/') && ['PUT', 'DELETE'].includes(req.method)) {
+    const user = await currentUser(req); if (!isOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được sửa hoặc xóa Sổ công văn đi.' });
+    const id = Number(url.pathname.split('/').pop()); if (!Number.isInteger(id) || id < 1) return json(res, 400, { error: 'Mã công văn không hợp lệ.' });
+    const connection = await db();
+    if (req.method === 'DELETE') { const [result] = await connection.execute('DELETE FROM outgoing_letters WHERE id=?', [id]); if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy công văn đi.' }); return json(res, 200, { ok: true }); }
+    const body = await readBody(req); const sentDate = String(body.sentDate || '').trim(); const content = String(body.content || '').trim(); const recipient = String(body.recipient || '').trim();
+    if (!sentDate || !content || !recipient) return json(res, 400, { error: 'Vui lòng nhập đủ ngày gửi, nội dung và nơi nhận.' });
+    const [result] = await connection.execute('UPDATE outgoing_letters SET sent_date=?, content=?, recipient=?, judge=?, clerk=?, note=? WHERE id=?', [sentDate, content, recipient, body.judge || null, body.clerk || null, body.note || null, id]);
+    if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy công văn đi.' }); return json(res, 200, { ok: true });
   }
   if (url.pathname === '/api/chat' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem khung chat.' });
