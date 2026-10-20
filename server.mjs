@@ -25,6 +25,7 @@ let chatSchemaPromise;
 let visitsSchemaPromise;
 let resetSchemaPromise;
 let accountSchemaPromise;
+let attendanceSchemaPromise;
 
 const base64url = (value) => Buffer.from(value).toString('base64url');
 const parseJson = (value) => { try { return JSON.parse(value); } catch { return null; } };
@@ -122,6 +123,25 @@ async function db() {
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )`);
   await visitsSchemaPromise;
+  if (!attendanceSchemaPromise) attendanceSchemaPromise = Promise.all([
+    pool.query(`CREATE TABLE IF NOT EXISTS attendance_staff (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY, source_no INT NOT NULL, name VARCHAR(255) NOT NULL,
+      position VARCHAR(255) NULL, title VARCHAR(255) NULL, unit VARCHAR(255) NULL,
+      identity_no VARCHAR(64) NULL, birth_date VARCHAR(64) NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE KEY uq_attendance_staff_source (source_no), INDEX idx_attendance_staff_name (name)
+    )`),
+    pool.query(`CREATE TABLE IF NOT EXISTS attendance_sessions (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY, token_hash CHAR(64) NOT NULL UNIQUE,
+      created_by VARCHAR(255) NOT NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      expires_at DATETIME NOT NULL, closed_at DATETIME NULL, INDEX idx_attendance_sessions_created (created_at)
+    )`),
+    pool.query(`CREATE TABLE IF NOT EXISTS attendance_records (
+      id BIGINT AUTO_INCREMENT PRIMARY KEY, session_id BIGINT NOT NULL, staff_id BIGINT NOT NULL,
+      checked_in_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, device_key_hash CHAR(64) NULL,
+      UNIQUE KEY uq_attendance_session_staff (session_id, staff_id), INDEX idx_attendance_records_session (session_id)
+    )`)
+  ]);
+  await attendanceSchemaPromise;
   if (!resetSchemaPromise) resetSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS password_reset_tokens (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     open_id VARCHAR(191) NOT NULL,
@@ -167,6 +187,8 @@ const isOwner = (user) => Boolean(user && isAdmin(user) && String(user.email || 
 const passwordHash = (password, salt = randomBytes(16).toString('hex')) => ({ salt, hash: scryptSync(password, salt, 64).toString('hex') });
 const passwordMatches = (password, salt, expected) => { if (!salt || !expected) return false; const actual = Buffer.from(passwordHash(password, salt).hash, 'hex'); const target = Buffer.from(expected, 'hex'); return actual.length === target.length && timingSafeEqual(actual, target); };
 const resetTokenHash = (token) => createHmac('sha256', jwtSecret || 'local-reset-token').update(token).digest('hex');
+const attendanceTokenHash = (token) => createHmac('sha256', jwtSecret || 'local-attendance-token').update(token).digest('hex');
+const attendanceOwner = (user) => Boolean(user && isOwner(user));
 const validEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 async function sendResetEmail(to, link) {
@@ -322,6 +344,42 @@ async function api(req, res, url) {
     const [result] = await connection.execute('UPDATE outgoing_letters SET sent_date=?, content=?, recipient=?, judge=?, clerk=?, note=? WHERE id=?', [sentDate, content, recipient, body.judge || null, body.clerk || null, body.note || null, id]);
     if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy công văn đi.' }); return json(res, 200, { ok: true });
   }
+  if (url.pathname === '/api/attendance/staff' && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved','admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt.' });
+    const connection = await db(); const [rows] = await connection.execute('SELECT id, source_no AS sourceNo, name, position, title, unit FROM attendance_staff ORDER BY source_no');
+    return json(res, 200, { staff: rows });
+  }
+  if (url.pathname === '/api/attendance/session' && req.method === 'POST') {
+    const user = await currentUser(req); if (!attendanceOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được mở phiên điểm danh.' });
+    const token = randomBytes(32).toString('base64url'); const connection = await db();
+    await connection.execute('UPDATE attendance_sessions SET closed_at=CURRENT_TIMESTAMP WHERE closed_at IS NULL OR expires_at <= NOW()');
+    const [result] = await connection.execute('INSERT INTO attendance_sessions (token_hash, created_by, expires_at) VALUES (?,?,DATE_ADD(NOW(), INTERVAL 12 SECOND))', [attendanceTokenHash(token), user.email || user.openId]);
+    return json(res, 201, { ok: true, sessionId: result.insertId, token, expiresIn: 12 });
+  }
+  if (url.pathname === '/api/attendance/checkin' && req.method === 'POST') {
+    const user = await currentUser(req); if (!user || !['approved','admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt.' });
+    const body = await readBody(req); const token = String(body.token || '').trim(); const staffId = Number(body.staffId); if (!token || !Number.isInteger(staffId)) return json(res, 400, { error: 'Mã QR hoặc cán bộ không hợp lệ.' });
+    const connection = await db(); const [sessions] = await connection.execute('SELECT id FROM attendance_sessions WHERE token_hash=? AND closed_at IS NULL AND expires_at > NOW() LIMIT 1', [attendanceTokenHash(token)]);
+    if (!sessions.length) return json(res, 410, { error: 'Mã QR đã hết hạn. Vui lòng quét mã mới.' });
+    const [staff] = await connection.execute('SELECT id, name FROM attendance_staff WHERE id=? LIMIT 1', [staffId]); if (!staff.length) return json(res, 404, { error: 'Không tìm thấy cán bộ.' });
+    const deviceKey = String(req.headers['x-attendance-device'] || '').trim(); const deviceHash = deviceKey ? attendanceTokenHash(deviceKey) : null;
+    try { await connection.execute('INSERT INTO attendance_records (session_id, staff_id, device_key_hash) VALUES (?,?,?)', [sessions[0].id, staffId, deviceHash]); } catch (error) { if (error.code === 'ER_DUP_ENTRY') return json(res, 409, { error: 'Cán bộ này đã điểm danh trong phiên hiện tại.' }); throw error; }
+    return json(res, 201, { ok: true, name: staff[0].name, checkedInAt: new Date().toISOString() });
+  }
+  if (url.pathname === '/api/attendance/report' && req.method === 'GET') {
+    const user = await currentUser(req); if (!attendanceOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được xem báo cáo điểm danh.' });
+    const sessionId = Number(url.searchParams.get('sessionId')); if (!Number.isInteger(sessionId)) return json(res, 400, { error: 'Phiên điểm danh không hợp lệ.' }); const connection = await db();
+    const [rows] = await connection.execute(`SELECT s.source_no AS sourceNo, s.name, s.title, s.position, a.checked_in_at AS checkedInAt FROM attendance_staff s LEFT JOIN attendance_records a ON a.staff_id=s.id AND a.session_id=? ORDER BY s.source_no`, [sessionId]);
+    return json(res, 200, { sessionId, rows: rows.map((r) => ({ ...r, status: r.checkedInAt ? 'Có mặt' : 'Vắng mặt' })) });
+  }
+  if (url.pathname === '/api/attendance/report.doc' && req.method === 'GET') {
+    const user = await currentUser(req); if (!attendanceOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được xuất báo cáo điểm danh.' });
+    const sessionId = Number(url.searchParams.get('sessionId')); if (!Number.isInteger(sessionId)) return json(res, 400, { error: 'Phiên điểm danh không hợp lệ.' }); const connection = await db();
+    const [rows] = await connection.execute(`SELECT s.source_no AS sourceNo, s.name, s.title, s.position, a.checked_in_at AS checkedInAt FROM attendance_staff s LEFT JOIN attendance_records a ON a.staff_id=s.id AND a.session_id=? ORDER BY s.source_no`, [sessionId]);
+    const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const body=rows.map((r)=>`<tr><td>${r.sourceNo}</td><td>${esc(r.name)}</td><td>${esc(r.title||r.position||'')}</td><td>${r.checkedInAt?'Có mặt':'Vắng mặt'}</td><td>${r.checkedInAt?new Date(r.checkedInAt).toLocaleString('vi-VN',{timeZone:'Asia/Ho_Chi_Minh'}):''}</td></tr>`).join('');
+    res.writeHead(200, {'Content-Type':'application/msword; charset=utf-8','Content-Disposition':`attachment; filename="bao-cao-diem-danh-${sessionId}.doc"`}); return res.end(`<html><meta charset="utf-8"><body><h1>BÁO CÁO ĐIỂM DANH - TAND KHU VỰC 11</h1><table border="1" cellspacing="0" cellpadding="6"><tr><th>STT</th><th>Họ và tên</th><th>Chức danh</th><th>Trạng thái</th><th>Thời điểm</th></tr>${body}</table></body></html>`);
+  }
   if (url.pathname === '/api/chat' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem khung chat.' });
     const connection = await db(); if (!connection) return json(res, 503, { error: 'Chưa kết nối được cơ sở dữ liệu.' });
@@ -392,7 +450,7 @@ async function handle(req, res) {
       return json(res, 404, { error: 'Không tìm thấy tài nguyên.' });
     }
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
-    if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/admin'].includes(url.pathname)) {
+    if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/diem-danh', '/diem-danh/quet', '/admin'].includes(url.pathname)) {
       const user = await currentUser(req, res);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }

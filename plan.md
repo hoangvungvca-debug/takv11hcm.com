@@ -70,3 +70,6 @@ Chỉ bổ sung CSS có phạm vi .internal-shell cho sổ công văn đến/đi
 
 ## Cảnh sát khu vực Tam Thắng từ ảnh
 Nhập 22 cán bộ, 25 khu phố (3 trường hợp kiêm nhiệm), 23 số di động, địa chỉ tổ CSKV và số trực ban đúng ảnh. Tái sử dụng bảng MySQL directory_contacts, API chỉ tài khoản được duyệt; danh bạ tìm không dấu/tên/số, lọc phường và tất cả địa bàn kể cả kiêm nhiệm. Giữ nguyên các danh bạ đã nhập, không tự sửa số hoặc bổ sung các phường chưa gửi.
+
+## Điểm danh QR cán bộ
+Triển khai module `src/attendance/AttendancePage.tsx` và CSS riêng, thêm lối tắt trên trang chủ/sidebar. Chủ hệ thống mở phiên điểm danh; backend tạo token ngẫu nhiên, lưu hash và thời hạn 12 giây trong `attendance_sessions`. Người dùng đã duyệt quét QR, chọn bản ghi cán bộ từ `attendance_staff`, rồi ghi nhận vào `attendance_records` với ràng buộc duy nhất theo phiên/cán bộ. Báo cáo lấy LEFT JOIN để thể hiện đủ Có mặt/Vắng mặt và xuất dạng Word-compatible `.doc`. Danh sách cán bộ được nhập từ file XLS bằng script, dữ liệu nằm ngoài `public` và route tệp nguồn bị chặn.
