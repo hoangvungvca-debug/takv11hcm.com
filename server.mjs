@@ -353,8 +353,8 @@ async function api(req, res, url) {
     const user = await currentUser(req); if (!attendanceOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được mở phiên điểm danh.' });
     const token = randomBytes(32).toString('base64url'); const connection = await db();
     await connection.execute('UPDATE attendance_sessions SET closed_at=CURRENT_TIMESTAMP WHERE closed_at IS NULL OR expires_at <= NOW()');
-    const [result] = await connection.execute('INSERT INTO attendance_sessions (token_hash, created_by, expires_at) VALUES (?,?,DATE_ADD(NOW(), INTERVAL 12 SECOND))', [attendanceTokenHash(token), user.email || user.openId]);
-    return json(res, 201, { ok: true, sessionId: result.insertId, token, expiresIn: 12 });
+    const [result] = await connection.execute('INSERT INTO attendance_sessions (token_hash, created_by, expires_at) VALUES (?,?,DATE_ADD(NOW(), INTERVAL 60 SECOND))', [attendanceTokenHash(token), user.email || user.openId]);
+    return json(res, 201, { ok: true, sessionId: result.insertId, token, expiresIn: 60 });
   }
   if (url.pathname === '/api/attendance/checkin' && req.method === 'POST') {
     const user = await currentUser(req); if (!user || !['approved','admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt.' });
