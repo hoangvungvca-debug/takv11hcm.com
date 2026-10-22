@@ -1,4 +1,4 @@
 
 
-## Cập nhật chân trang, link nghiệp vụ và biểu mẫu
-Chân trang được cố định ở cuối viewport, nằm trong khung toàn chiều ngang và căn giữa dòng bản quyền. Link Tống đạt thừa phát lại dùng Google Sheets mới do người dùng cung cấp. Trang Hệ thống biểu mẫu chuyển từ các thẻ rời sang bảng có mã, tên, nhóm, định dạng, ngày cập nhật và thao tác.
+## Hoàn thiện chân trang và bảng điểm danh
+Dòng bản quyền được giữ nguyên đầy đủ, căn giữa trong khung chân trang cố định cuối màn hình, tự xuống dòng trên màn hình hẹp để không bị cắt. Màn hình quản lý điểm danh bỏ các khối tóm tắt phụ, chỉ giữ một bảng duy nhất gồm cán bộ, trạng thái Có mặt/Vắng mặt và thời điểm.

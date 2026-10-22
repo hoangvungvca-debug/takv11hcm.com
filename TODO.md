@@ -1,5 +1,4 @@
 
-## Cập nhật chân trang, link và biểu mẫu
-- [x] Chân trang cố định ở cuối trang, nằm trong khung toàn chiều ngang và căn giữa dòng bản quyền theo nội dung đã cung cấp.
-- [x] Thay link Tống đạt thừa phát lại bằng Google Sheets mới.
-- [x] Chuyển danh sách biểu mẫu từ các thẻ tên rời sang bảng có mã, tên, nhóm, định dạng, cập nhật và thao tác.
+## Hoàn thiện chân trang và điểm danh
+- [x] Dòng bản quyền hiển thị đầy đủ, căn giữa trong khung chân trang cố định cuối màn hình và tự xuống dòng trên màn hình hẹp.
+- [x] Màn hình kết quả QR chỉ còn một bảng duy nhất gồm Có mặt, Vắng mặt và thời điểm điểm danh.

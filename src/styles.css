@@ -164,3 +164,8 @@ body{background:#fff8f8;color:var(--ink)}
 .forms-table th{background:#fff0f1;color:#805b5e;text-align:left;text-transform:uppercase;letter-spacing:.06em;font-size:9px;padding:12px 14px;white-space:nowrap}
 .forms-table td{padding:13px 14px;border-top:1px solid #f1e7e7;color:#604d50;vertical-align:middle}
 .forms-table td:nth-child(2){min-width:290px}.forms-table td strong,.forms-table td small{display:block}.forms-table td small{margin-top:4px;color:#9b8588;line-height:1.4}.form-code{color:var(--red);font-weight:700;white-space:nowrap}.form-table-action{border:0;background:transparent;color:var(--red);font-size:10px;font-weight:700;white-space:nowrap;cursor:pointer}.footer.footer-simple{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#fff;border-top:1px solid #eadbdd;box-shadow:0 -3px 12px rgba(73,22,26,.05)}body{padding-bottom:66px}
+
+/* Bản quyền luôn nằm trọn trong khung chân trang, căn giữa và cố định cuối màn hình. */
+.footer.footer-simple{width:100%;box-sizing:border-box;overflow:visible}
+.footer.footer-simple p{width:100%;max-width:none;white-space:normal;overflow:visible;text-overflow:clip;font-size:14px}
+@media(max-width:600px){.footer.footer-simple{min-height:72px;padding:14px 16px}.footer.footer-simple p{font-size:12px;line-height:1.45}}
