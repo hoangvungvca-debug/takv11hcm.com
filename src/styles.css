@@ -157,3 +157,10 @@ body{background:#fff8f8;color:var(--ink)}
 /* Footer mặc định: một dòng bản quyền căn giữa toàn chiều rộng. */
 .footer.footer-simple{display:flex;align-items:center;justify-content:center;min-height:64px;padding:18px 24px;text-align:center}
 .footer.footer-simple p{margin:0;color:#7f6266;font-size:14px;line-height:1.5}
+
+/* Bảng biểu mẫu gọn, dễ tra cứu trên màn hình lớn và cuộn ngang trên điện thoại. */
+.forms-table-wrap{background:#fff;border:1px solid var(--line);overflow:auto;margin-top:14px}
+.forms-table{width:100%;border-collapse:collapse;min-width:860px;font-size:11px}
+.forms-table th{background:#fff0f1;color:#805b5e;text-align:left;text-transform:uppercase;letter-spacing:.06em;font-size:9px;padding:12px 14px;white-space:nowrap}
+.forms-table td{padding:13px 14px;border-top:1px solid #f1e7e7;color:#604d50;vertical-align:middle}
+.forms-table td:nth-child(2){min-width:290px}.forms-table td strong,.forms-table td small{display:block}.forms-table td small{margin-top:4px;color:#9b8588;line-height:1.4}.form-code{color:var(--red);font-weight:700;white-space:nowrap}.form-table-action{border:0;background:transparent;color:var(--red);font-size:10px;font-weight:700;white-space:nowrap;cursor:pointer}.footer.footer-simple{position:fixed;left:0;right:0;bottom:0;z-index:50;background:#fff;border-top:1px solid #eadbdd;box-shadow:0 -3px 12px rgba(73,22,26,.05)}body{padding-bottom:66px}
