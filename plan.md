@@ -1,4 +1,4 @@
 
 
-## Cập nhật điểm danh QR — 60 giây
-Mã QR của mỗi phiên có hiệu lực 60 giây thay vì 12 giây. Khu vực kết quả giữ cạnh mã QR và bổ sung hai danh sách tóm tắt Có mặt/Vắng mặt, đồng thời bảng chi tiết tự làm mới để chủ hệ thống xem trước khi xuất Word.
+## Tinh gọn trang chủ và chân trang
+Xóa riêng banner giới thiệu chuyển đổi số và khối lưu ý dữ liệu theo ảnh người dùng cung cấp; giữ nguyên các khu vực khác. Chân trang dùng kiểu tối giản, một dòng bản quyền căn giữa: “Phần mềm được tạo bởi Hoàng Vững - Thư ký TAND khu vực 11 - TP. Hồ Chí Minh”.

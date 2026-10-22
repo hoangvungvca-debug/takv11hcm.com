@@ -153,3 +153,7 @@ body{background:#fff8f8;color:var(--ink)}
 .danger-button:hover{background:#fbe0e3}
 .ledger-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 @media(max-width:720px){.owner-only-note{font-size:13px}.letter-row-actions{min-width:105px}.letter-row-actions button{padding:7px 9px}}
+
+/* Footer mặc định: một dòng bản quyền căn giữa toàn chiều rộng. */
+.footer.footer-simple{display:flex;align-items:center;justify-content:center;min-height:64px;padding:18px 24px;text-align:center}
+.footer.footer-simple p{margin:0;color:#7f6266;font-size:14px;line-height:1.5}
