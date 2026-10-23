@@ -175,3 +175,11 @@ body{background:#fff8f8;color:var(--ink)}
 .footer.footer-simple{position:fixed!important;left:0!important;right:auto!important;bottom:0!important;width:100vw!important;max-width:100vw!important;margin:0!important;z-index:9999!important;display:grid!important;place-items:center!important;text-align:center!important;padding:16px 24px!important;min-height:68px!important;background:#fff!important;box-sizing:border-box!important}
 .footer.footer-simple p{display:block!important;width:100%!important;margin:0!important;text-align:center!important;color:#7f6266!important;font-size:14px!important;line-height:1.5!important;white-space:normal!important;overflow:visible!important;visibility:visible!important;opacity:1!important}
 @media(max-width:600px){.footer.footer-simple{min-height:78px!important;padding:14px 18px!important}.footer.footer-simple p{font-size:12px!important;line-height:1.45!important}}
+
+
+/* Khôi phục bộ đếm hoạt động ở chân trang. */
+.footer.footer-simple{grid-template-columns:1fr auto 1fr!important;align-items:center!important}
+.footer.footer-simple p{grid-column:2!important;grid-row:1!important}
+.home-visit-stats{grid-column:3!important;grid-row:1!important;justify-self:end;display:flex;align-items:center;gap:18px;color:#8b7073;font-size:10px;white-space:nowrap}
+.home-visit-stats span{display:inline-flex;align-items:center;gap:4px}.home-visit-stats strong{color:var(--red);font-weight:700}.home-visit-stats i{width:7px;height:7px;border-radius:50%;background:#4ca36f;box-shadow:0 0 0 3px rgba(76,163,111,.13)}
+@media(max-width:900px){.footer.footer-simple{grid-template-columns:1fr!important;gap:6px!important;padding-top:11px!important;padding-bottom:11px!important}.footer.footer-simple p{grid-column:1!important;grid-row:1!important}.home-visit-stats{grid-column:1!important;grid-row:2!important;justify-self:center;font-size:9px;gap:10px;white-space:normal;flex-wrap:wrap;justify-content:center}}
