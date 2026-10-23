@@ -1,3 +1,3 @@
 
-## Khôi phục thống kê chân trang
-- [x] Khôi phục hiển thị “Đang online”, “Lượt hôm nay” và “Tổng lượt” ở chân trang; giữ dòng bản quyền căn giữa.
+## Liên kết HDSD EQLTA
+- [x] Thêm mục “HDSD EQLTA” với liên kết Notebook Google do người dùng cung cấp; giữ nguyên mục E-QLTA và các chức năng khác.
