@@ -1,3 +1,4 @@
 
-## Liên kết HDSD EQLTA
-- [x] Thêm mục “HDSD EQLTA” với liên kết Notebook Google do người dùng cung cấp; giữ nguyên mục E-QLTA và các chức năng khác.
+## Logo Tòa án mới
+- [x] Thay logo website bằng biểu trưng do người dùng cung cấp, tách nền trắng thành nền trong suốt.
+- [x] Bỏ nền tròn, padding và khung viền quanh logo ở sidebar, banner và trang đăng nhập.

@@ -183,3 +183,10 @@ body{background:#fff8f8;color:var(--ink)}
 .home-visit-stats{grid-column:3!important;grid-row:1!important;justify-self:end;display:flex;align-items:center;gap:18px;color:#8b7073;font-size:10px;white-space:nowrap}
 .home-visit-stats span{display:inline-flex;align-items:center;gap:4px}.home-visit-stats strong{color:var(--red);font-weight:700}.home-visit-stats i{width:7px;height:7px;border-radius:50%;background:#4ca36f;box-shadow:0 0 0 3px rgba(76,163,111,.13)}
 @media(max-width:900px){.footer.footer-simple{grid-template-columns:1fr!important;gap:6px!important;padding-top:11px!important;padding-bottom:11px!important}.footer.footer-simple p{grid-column:1!important;grid-row:1!important}.home-visit-stats{grid-column:1!important;grid-row:2!important;justify-self:center;font-size:9px;gap:10px;white-space:normal;flex-wrap:wrap;justify-content:center}}
+
+
+/* Logo Tòa án mới: chỉ hiển thị biểu trưng, không nền tròn/khung viền. */
+.official-logo{background:transparent!important;border:0!important;border-radius:0!important;padding:0!important}
+.hero-emblem{background:transparent!important;box-shadow:none!important}
+.hero-emblem img{background:transparent!important;padding:0!important;border-radius:0!important}
+.login-brand img{background:transparent!important;border-radius:0!important;padding:0!important}
