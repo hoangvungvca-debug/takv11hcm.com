@@ -205,3 +205,10 @@ body{background:#fff8f8;color:var(--ink)}
 .topbar{position:relative}
 .topbar-flag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30px;height:20px;z-index:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}.topbar-flag img{display:block;width:100%;height:100%;object-fit:fill}
 @media(max-width:520px){.topbar-flag{width:27px;height:18px}}
+
+
+/* Khẩu hiệu chạy dưới tên đơn vị */
+.motto{width:min(430px,100%);overflow:hidden;margin-top:5px;color:#a8141b;font-size:10px;line-height:1.3;white-space:nowrap;position:relative}
+.motto span{display:inline-block;padding-left:100%;animation:motto-scroll 12s linear infinite}
+@keyframes motto-scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+@media(max-width:760px){.motto{width:100%;font-size:9px;margin-top:6px}.motto span{animation-duration:10s}}
