@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-labelledby="title desc">
+  <title id="title">Cờ Việt Nam</title>
+  <desc id="desc">Nền đỏ với ngôi sao vàng năm cánh ở chính giữa</desc>
+  <rect width="900" height="600" fill="#da251d"/>
+  <path fill="#ffec00" d="m450 106 42.1 129.6h136.3L518.2 316.7l42.1 129.6L450 366.2l-110.3 80.1 42.1-129.6-110.2-81.1h136.3z"/>
+</svg>
