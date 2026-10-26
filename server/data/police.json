@@ -19,15 +19,10 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 9 cũ; khu phố cũ: KP1",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 1",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 6"
     },
     {
       "id": "police-tam-thang-02",
@@ -48,19 +43,38 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 9 cũ; khu phố cũ: KP2",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 2",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 7"
     },
     {
       "id": "police-tam-thang-03",
       "sourceOrder": 3,
+      "name": "Nguyễn Hữu Tuấn Linh",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 3",
+      "neighborhoods": [
+        "Khu phố 3"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 3",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0901555304",
+      "phones": [
+        "0901555304"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Phường cũ: Phường 9 cũ; khu phố cũ: KP3",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 8"
+    },
+    {
+      "id": "police-tam-thang-04",
+      "sourceOrder": 4,
       "name": "Trần Trọng Tâm",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 4",
@@ -77,19 +91,14 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 9 cũ; khu phố cũ: KP4",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 3",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 9"
     },
     {
-      "id": "police-tam-thang-04",
-      "sourceOrder": 4,
+      "id": "police-tam-thang-05",
+      "sourceOrder": 5,
       "name": "Lê Minh Dũng",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 5",
@@ -106,20 +115,15 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 9 cũ; khu phố cũ: KP5",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 4",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 10"
     },
     {
-      "id": "police-tam-thang-05",
-      "sourceOrder": 5,
-      "name": "Ngô Anh Thắng",
+      "id": "police-tam-thang-06",
+      "sourceOrder": 6,
+      "name": "Trần Văn Chiến",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 6",
       "neighborhoods": [
@@ -127,27 +131,22 @@
       ],
       "area": "Phường Tam Thắng · Khu phố 6",
       "detail": "Cảnh sát khu vực",
-      "phone": "0979195228",
+      "phone": "0906393575",
       "phones": [
-        "0979195228"
+        "0906393575"
       ],
       "birthDate": "",
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường Nguyễn An Ninh cũ; khu phố cũ: KP1",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 5",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 12"
     },
     {
-      "id": "police-tam-thang-06",
-      "sourceOrder": 6,
+      "id": "police-tam-thang-07",
+      "sourceOrder": 7,
       "name": "Phạm Anh Tuấn",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 7",
@@ -164,19 +163,14 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường Nguyễn An Ninh cũ; khu phố cũ: KP2",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 6",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 13"
     },
     {
-      "id": "police-tam-thang-07",
-      "sourceOrder": 7,
+      "id": "police-tam-thang-08",
+      "sourceOrder": 8,
       "name": "Phan Công Dương",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 8",
@@ -193,19 +187,14 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường Nguyễn An Ninh cũ; khu phố cũ: KP3",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 7",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 14"
     },
     {
-      "id": "police-tam-thang-08",
-      "sourceOrder": 8,
+      "id": "police-tam-thang-09",
+      "sourceOrder": 9,
       "name": "Đinh Bá Vỹ",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 9",
@@ -222,27 +211,21 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường Nguyễn An Ninh cũ; khu phố cũ: KP4",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 8",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 15"
     },
     {
-      "id": "police-tam-thang-09",
-      "sourceOrder": 9,
+      "id": "police-tam-thang-10",
+      "sourceOrder": 10,
       "name": "Phan Anh Tuấn",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 10",
       "neighborhoods": [
-        "Khu phố 10",
-        "Khu phố 3"
+        "Khu phố 10"
       ],
-      "area": "Phường Tam Thắng · Khu phố 10 · Khu phố 3",
+      "area": "Phường Tam Thắng · Khu phố 10",
       "detail": "Cảnh sát khu vực",
       "phone": "0937955586",
       "phones": [
@@ -252,19 +235,14 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "Kiêm nhiệm Khu phố 3",
+      "note": "Phường cũ: Phường Nguyễn An Ninh cũ; khu phố cũ: KP5",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 9",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 16"
     },
     {
-      "id": "police-tam-thang-10",
-      "sourceOrder": 10,
+      "id": "police-tam-thang-11",
+      "sourceOrder": 11,
       "name": "Nguyễn Vũ Quang Huy",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 11",
@@ -281,84 +259,21 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 8 cũ; khu phố cũ: KP1",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 10",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 18"
     },
     {
-      "id": "police-tam-thang-11",
-      "sourceOrder": 11,
-      "name": "Trịnh Mạnh Hùng",
+      "id": "police-tam-thang-12",
+      "sourceOrder": 12,
+      "name": "Nguyễn Hồng Thắng",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 12",
       "neighborhoods": [
         "Khu phố 12"
       ],
       "area": "Phường Tam Thắng · Khu phố 12",
-      "detail": "Cảnh sát khu vực",
-      "phone": "0939717248",
-      "phones": [
-        "0939717248"
-      ],
-      "birthDate": "",
-      "address": "",
-      "qualification": "",
-      "occupation": "",
-      "note": "",
-      "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 11",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
-    },
-    {
-      "id": "police-tam-thang-12",
-      "sourceOrder": 12,
-      "name": "Trần Văn Chiến",
-      "ward": "Phường Tam Thắng",
-      "neighborhood": "Khu phố 13",
-      "neighborhoods": [
-        "Khu phố 13"
-      ],
-      "area": "Phường Tam Thắng · Khu phố 13",
-      "detail": "Cảnh sát khu vực",
-      "phone": "0906393575",
-      "phones": [
-        "0906393575"
-      ],
-      "birthDate": "",
-      "address": "",
-      "qualification": "",
-      "occupation": "",
-      "note": "",
-      "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 12",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
-    },
-    {
-      "id": "police-tam-thang-13",
-      "sourceOrder": 13,
-      "name": "Nguyễn Hồng Thắng",
-      "ward": "Phường Tam Thắng",
-      "neighborhood": "Khu phố 14",
-      "neighborhoods": [
-        "Khu phố 14"
-      ],
-      "area": "Phường Tam Thắng · Khu phố 14",
       "detail": "Cảnh sát khu vực",
       "phone": "0945767778",
       "phones": [
@@ -368,20 +283,63 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 8 cũ; khu phố cũ: KP3",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 13",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 19"
+    },
+    {
+      "id": "police-tam-thang-13",
+      "sourceOrder": 13,
+      "name": "Ngô Anh Thắng",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 13",
+      "neighborhoods": [
+        "Khu phố 13"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 13",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0979195228",
+      "phones": [
+        "0979195228"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Phường cũ: Phường 8 cũ; khu phố cũ: KP4",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 20"
     },
     {
       "id": "police-tam-thang-14",
       "sourceOrder": 14,
-      "name": "Nguyễn Hữu Tuấn Linh",
+      "name": "Điều Mạnh Tuấn",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 14",
+      "neighborhoods": [
+        "Khu phố 14"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 14",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0909625720",
+      "phones": [
+        "0909625720"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Phường cũ: Phường 8 cũ; khu phố cũ: KP5",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 21"
+    },
+    {
+      "id": "police-tam-thang-15",
+      "sourceOrder": 15,
+      "name": "Trịnh Mạnh Hùng",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 15",
       "neighborhoods": [
@@ -389,57 +347,46 @@
       ],
       "area": "Phường Tam Thắng · Khu phố 15",
       "detail": "Cảnh sát khu vực",
-      "phone": "0901555304",
+      "phone": "0939717248",
       "phones": [
-        "0901555304"
+        "0939717248"
       ],
       "birthDate": "",
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 8 cũ; khu phố cũ: KP6",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 14",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
-    },
-    {
-      "id": "police-tam-thang-15",
-      "sourceOrder": 15,
-      "name": "Điều Mạnh Tuấn",
-      "ward": "Phường Tam Thắng",
-      "neighborhood": "Khu phố 16",
-      "neighborhoods": [
-        "Khu phố 16"
-      ],
-      "area": "Phường Tam Thắng · Khu phố 16",
-      "detail": "Cảnh sát khu vực",
-      "phone": "0909202787; 0909625720",
-      "phones": [
-        "0909202787",
-        "0909625720"
-      ],
-      "birthDate": "",
-      "address": "",
-      "qualification": "",
-      "occupation": "",
-      "note": "",
-      "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 15",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 22"
     },
     {
       "id": "police-tam-thang-16",
       "sourceOrder": 16,
+      "name": "Đặng Tuấn Anh",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 17 & 25",
+      "neighborhoods": [
+        "Khu phố 17 & 25"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 17 & 25",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0987847823",
+      "phones": [
+        "0987847823"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Phường cũ: Phường 7 cũ; khu phố cũ: KP1 & KP9",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 25"
+    },
+    {
+      "id": "police-tam-thang-17",
+      "sourceOrder": 17,
       "name": "Lê Anh Tuấn",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 18",
@@ -456,27 +403,21 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 7 cũ; khu phố cũ: KP2",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 16",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 26"
     },
     {
-      "id": "police-tam-thang-17",
-      "sourceOrder": 17,
+      "id": "police-tam-thang-18",
+      "sourceOrder": 18,
       "name": "Nguyễn Hoàng Thanh Vũ",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 19",
       "neighborhoods": [
-        "Khu phố 19",
-        "Khu phố 20"
+        "Khu phố 19"
       ],
-      "area": "Phường Tam Thắng · Khu phố 19 · Khu phố 20",
+      "area": "Phường Tam Thắng · Khu phố 19",
       "detail": "Cảnh sát khu vực",
       "phone": "0933842626",
       "phones": [
@@ -486,19 +427,38 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "Kiêm nhiệm Khu phố 20",
+      "note": "Phường cũ: Phường 7 cũ; khu phố cũ: KP3",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 17",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 27"
     },
     {
-      "id": "police-tam-thang-18",
-      "sourceOrder": 18,
+      "id": "police-tam-thang-19",
+      "sourceOrder": 19,
+      "name": "Phan Nguyễn Anh Tuấn",
+      "ward": "Phường Tam Thắng",
+      "neighborhood": "Khu phố 20",
+      "neighborhoods": [
+        "Khu phố 20"
+      ],
+      "area": "Phường Tam Thắng · Khu phố 20",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0906747572",
+      "phones": [
+        "0906747572"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "Phường cũ: Phường 7 cũ; khu phố cũ: KP4",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 28"
+    },
+    {
+      "id": "police-tam-thang-20",
+      "sourceOrder": 20,
       "name": "Nguyễn Thị Quỳnh",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 21",
@@ -515,20 +475,15 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 7 cũ; khu phố cũ: KP5",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 18",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 29"
     },
     {
-      "id": "police-tam-thang-19",
-      "sourceOrder": 19,
-      "name": "Nguyễn Văn Huy",
+      "id": "police-tam-thang-21",
+      "sourceOrder": 21,
+      "name": "Phan Văn Luận",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 22",
       "neighborhoods": [
@@ -536,56 +491,22 @@
       ],
       "area": "Phường Tam Thắng · Khu phố 22",
       "detail": "Cảnh sát khu vực",
-      "phone": "0927682345",
+      "phone": "0941457272",
       "phones": [
-        "0927682345"
+        "0941457272"
       ],
       "birthDate": "",
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 7 cũ; khu phố cũ: KP6",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 19",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 30"
     },
     {
-      "id": "police-tam-thang-20",
-      "sourceOrder": 20,
-      "name": "Phạm Văn Luận",
-      "ward": "Phường Tam Thắng",
-      "neighborhood": "Khu phố 23",
-      "neighborhoods": [
-        "Khu phố 23"
-      ],
-      "area": "Phường Tam Thắng · Khu phố 23",
-      "detail": "Cảnh sát khu vực",
-      "phone": "0972972972",
-      "phones": [
-        "0972972972"
-      ],
-      "birthDate": "",
-      "address": "",
-      "qualification": "",
-      "occupation": "",
-      "note": "",
-      "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 20",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
-    },
-    {
-      "id": "police-tam-thang-21",
-      "sourceOrder": 21,
+      "id": "police-tam-thang-22",
+      "sourceOrder": 22,
       "name": "Nguyễn Thị Hải Yến",
       "ward": "Phường Tam Thắng",
       "neighborhood": "Khu phố 24",
@@ -602,52 +523,680 @@
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "",
+      "note": "Phường cũ: Phường 7 cũ; khu phố cũ: KP8",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 21",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Tam Thắng, dòng 32"
     },
     {
-      "id": "police-tam-thang-22",
-      "sourceOrder": 22,
-      "name": "Đặng Tuấn Anh",
-      "ward": "Phường Tam Thắng",
-      "neighborhood": "Khu phố 25",
+      "id": "police-rach-dua-01",
+      "sourceOrder": 23,
+      "name": "Lưu Văn Dũng",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP22",
       "neighborhoods": [
-        "Khu phố 25",
-        "Khu phố 17"
+        "KP22"
       ],
-      "area": "Phường Tam Thắng · Khu phố 25 · Khu phố 17",
+      "area": "Phường Rạch Dừa · KP22",
       "detail": "Cảnh sát khu vực",
-      "phone": "0987847823",
+      "phone": "0979442567",
       "phones": [
-        "0987847823"
+        "0979442567"
       ],
       "birthDate": "",
       "address": "",
       "qualification": "",
       "occupation": "",
-      "note": "Kiêm nhiệm Khu phố 17",
+      "note": "",
       "needsReview": false,
-      "source": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "sourceLocation": "STT 22",
-      "office": {
-        "address": "Số 2 Trương Văn Bang, phường Tam Thắng, TP. Hồ Chí Minh",
-        "dutyPhone": "02543585995",
-        "effectiveDate": "01/07/2026"
-      }
-    }
-  ],
-  "sources": [
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 5"
+    },
     {
-      "file": "1792120030245_8378643560307434835_8378643560307434835_00c89f30f95b093facc3e6b457cffe51.webp",
-      "category": "police",
-      "count": 22
+      "id": "police-rach-dua-02",
+      "sourceOrder": 24,
+      "name": "Nguyễn Mạnh Quyền",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP23",
+      "neighborhoods": [
+        "KP23"
+      ],
+      "area": "Phường Rạch Dừa · KP23",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0931286686",
+      "phones": [
+        "0931286686"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 6"
+    },
+    {
+      "id": "police-rach-dua-03",
+      "sourceOrder": 25,
+      "name": "Phạm Đức Vương",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP23",
+      "neighborhoods": [
+        "KP23"
+      ],
+      "area": "Phường Rạch Dừa · KP23",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0949500333",
+      "phones": [
+        "0949500333"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 7"
+    },
+    {
+      "id": "police-rach-dua-04",
+      "sourceOrder": 26,
+      "name": "Đặng Quốc Huy",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP24",
+      "neighborhoods": [
+        "KP24"
+      ],
+      "area": "Phường Rạch Dừa · KP24",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0936552789",
+      "phones": [
+        "0936552789"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 8"
+    },
+    {
+      "id": "police-rach-dua-05",
+      "sourceOrder": 27,
+      "name": "Nguyễn Tài Định",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP25",
+      "neighborhoods": [
+        "KP25"
+      ],
+      "area": "Phường Rạch Dừa · KP25",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0985858262",
+      "phones": [
+        "0985858262"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 9"
+    },
+    {
+      "id": "police-rach-dua-06",
+      "sourceOrder": 28,
+      "name": "Bùi Mạnh Kiên",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP5 & KP10",
+      "neighborhoods": [
+        "KP5 & KP10"
+      ],
+      "area": "Phường Rạch Dừa · KP5 & KP10",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0933039007",
+      "phones": [
+        "0933039007"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 10"
+    },
+    {
+      "id": "police-rach-dua-07",
+      "sourceOrder": 29,
+      "name": "Đào Thế Anh",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP7",
+      "neighborhoods": [
+        "KP7"
+      ],
+      "area": "Phường Rạch Dừa · KP7",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0907139979",
+      "phones": [
+        "0907139979"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 11"
+    },
+    {
+      "id": "police-rach-dua-08",
+      "sourceOrder": 30,
+      "name": "Vũ Quang Vinh",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP1",
+      "neighborhoods": [
+        "KP1"
+      ],
+      "area": "Phường Rạch Dừa · KP1",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0908097768",
+      "phones": [
+        "0908097768"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 12"
+    },
+    {
+      "id": "police-rach-dua-09",
+      "sourceOrder": 31,
+      "name": "Tạ Thanh Hà",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP2",
+      "neighborhoods": [
+        "KP2"
+      ],
+      "area": "Phường Rạch Dừa · KP2",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0886990691",
+      "phones": [
+        "0886990691"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 13"
+    },
+    {
+      "id": "police-rach-dua-10",
+      "sourceOrder": 32,
+      "name": "Phạm Sỹ Hùng",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP8 & KP11",
+      "neighborhoods": [
+        "KP8 & KP11"
+      ],
+      "area": "Phường Rạch Dừa · KP8 & KP11",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0931239439",
+      "phones": [
+        "0931239439"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 14"
+    },
+    {
+      "id": "police-rach-dua-11",
+      "sourceOrder": 33,
+      "name": "Phạm Hồng Quân",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP9 & KP12",
+      "neighborhoods": [
+        "KP9 & KP12"
+      ],
+      "area": "Phường Rạch Dừa · KP9 & KP12",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0906646365",
+      "phones": [
+        "0906646365"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 15"
+    },
+    {
+      "id": "police-rach-dua-12",
+      "sourceOrder": 34,
+      "name": "Hồ Đức Hào",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP3 & KP4",
+      "neighborhoods": [
+        "KP3 & KP4"
+      ],
+      "area": "Phường Rạch Dừa · KP3 & KP4",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0339557388",
+      "phones": [
+        "0339557388"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 16"
+    },
+    {
+      "id": "police-rach-dua-13",
+      "sourceOrder": 35,
+      "name": "Đào Hoàng Long",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP16 & KP19",
+      "neighborhoods": [
+        "KP16 & KP19"
+      ],
+      "area": "Phường Rạch Dừa · KP16 & KP19",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0705202224",
+      "phones": [
+        "0705202224"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 17"
+    },
+    {
+      "id": "police-rach-dua-14",
+      "sourceOrder": 36,
+      "name": "Phạm Thanh Phong",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP15",
+      "neighborhoods": [
+        "KP15"
+      ],
+      "area": "Phường Rạch Dừa · KP15",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0902003736",
+      "phones": [
+        "0902003736"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 18"
+    },
+    {
+      "id": "police-rach-dua-15",
+      "sourceOrder": 37,
+      "name": "Nguyễn Văn Sang",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP20",
+      "neighborhoods": [
+        "KP20"
+      ],
+      "area": "Phường Rạch Dừa · KP20",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0708347999",
+      "phones": [
+        "0708347999"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 19"
+    },
+    {
+      "id": "police-rach-dua-16",
+      "sourceOrder": 38,
+      "name": "Trần Đức Hoàng",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP17 & KP18",
+      "neighborhoods": [
+        "KP17 & KP18"
+      ],
+      "area": "Phường Rạch Dừa · KP17 & KP18",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0933793899",
+      "phones": [
+        "0933793899"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 20"
+    },
+    {
+      "id": "police-rach-dua-17",
+      "sourceOrder": 39,
+      "name": "Nguyễn Văn Biền",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP13 & KP14",
+      "neighborhoods": [
+        "KP13 & KP14"
+      ],
+      "area": "Phường Rạch Dừa · KP13 & KP14",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0915067272",
+      "phones": [
+        "0915067272"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 21"
+    },
+    {
+      "id": "police-rach-dua-18",
+      "sourceOrder": 40,
+      "name": "Tưởng Văn Tùng",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP21",
+      "neighborhoods": [
+        "KP21"
+      ],
+      "area": "Phường Rạch Dừa · KP21",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0936553997",
+      "phones": [
+        "0936553997"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 22"
+    },
+    {
+      "id": "police-rach-dua-19",
+      "sourceOrder": 41,
+      "name": "Nguyễn Doãn Cát",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP6",
+      "neighborhoods": [
+        "KP6"
+      ],
+      "area": "Phường Rạch Dừa · KP6",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0903621198",
+      "phones": [
+        "0903621198"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 23"
+    },
+    {
+      "id": "police-rach-dua-20",
+      "sourceOrder": 42,
+      "name": "Bùi Nguyên Hải",
+      "ward": "Phường Rạch Dừa",
+      "neighborhood": "KP25",
+      "neighborhoods": [
+        "KP25"
+      ],
+      "area": "Phường Rạch Dừa · KP25",
+      "detail": "Cảnh sát khu vực",
+      "phone": "0933225455",
+      "phones": [
+        "0933225455"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Rạch Dừa, dòng 24"
+    },
+    {
+      "id": "police-vung-tau-office-01",
+      "sourceOrder": 43,
+      "name": "Cảnh sát khu vực Công an phường / 1, 2 và Thắng Tam cũ",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "Trụ sở / địa bàn cũ",
+      "neighborhoods": [
+        "Trụ sở / địa bàn cũ"
+      ],
+      "area": "Phường Vũng Tàu · Trụ sở / địa bàn cũ",
+      "detail": "Trụ sở Tổ Cảnh sát khu vực",
+      "phone": "02543524048",
+      "phones": [
+        "02543524048"
+      ],
+      "birthDate": "",
+      "address": "304 Phan Chu Trinh / (Trụ sở CAP 2 cũ)",
+      "qualification": "",
+      "occupation": "",
+      "note": "304 Phan Chu Trinh / (Trụ sở CAP 2 cũ)",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, dòng 5"
+    },
+    {
+      "id": "police-vung-tau-office-02",
+      "sourceOrder": 44,
+      "name": "Cảnh sát khu vực Công an phường / 3, 4 cũ",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "Trụ sở / địa bàn cũ",
+      "neighborhoods": [
+        "Trụ sở / địa bàn cũ"
+      ],
+      "area": "Phường Vũng Tàu · Trụ sở / địa bàn cũ",
+      "detail": "Trụ sở Tổ Cảnh sát khu vực",
+      "phone": "02543852264",
+      "phones": [
+        "02543852264"
+      ],
+      "birthDate": "",
+      "address": "133 Trương Công Định / (Trụ sở CAP 3 cũ)",
+      "qualification": "",
+      "occupation": "",
+      "note": "133 Trương Công Định / (Trụ sở CAP 3 cũ)",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, dòng 6"
+    },
+    {
+      "id": "police-vung-tau-office-03",
+      "sourceOrder": 45,
+      "name": "Cảnh sát khu vực Công an phường / 5 cũ",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "Trụ sở / địa bàn cũ",
+      "neighborhoods": [
+        "Trụ sở / địa bàn cũ"
+      ],
+      "area": "Phường Vũng Tàu · Trụ sở / địa bàn cũ",
+      "detail": "Trụ sở Tổ Cảnh sát khu vực",
+      "phone": "02543832417",
+      "phones": [
+        "02543832417"
+      ],
+      "birthDate": "",
+      "address": "203 Trần Phú / (Trụ sở CAP 5 cũ)",
+      "qualification": "",
+      "occupation": "",
+      "note": "203 Trần Phú / (Trụ sở CAP 5 cũ)",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, dòng 7"
+    },
+    {
+      "id": "police-vung-tau-office-04",
+      "sourceOrder": 46,
+      "name": "Cảnh sát khu vực Công an phường / Thắng Nhì cũ",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "Trụ sở / địa bàn cũ",
+      "neighborhoods": [
+        "Trụ sở / địa bàn cũ"
+      ],
+      "area": "Phường Vũng Tàu · Trụ sở / địa bàn cũ",
+      "detail": "Trụ sở Tổ Cảnh sát khu vực",
+      "phone": "02543832121",
+      "phones": [
+        "02543832121"
+      ],
+      "birthDate": "",
+      "address": "177 Lê Lợi / (Trụ sở CAP Thắng Nhì cũ)",
+      "qualification": "",
+      "occupation": "",
+      "note": "177 Lê Lợi / (Trụ sở CAP Thắng Nhì cũ)",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, dòng 8"
+    },
+    {
+      "id": "police-vung-tau-area-01",
+      "sourceOrder": 47,
+      "name": "Đồng chí Quang",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "Nguyễn Kim",
+      "neighborhoods": [
+        "Nguyễn Kim"
+      ],
+      "area": "Phường Vũng Tàu · Nguyễn Kim",
+      "detail": "Người phụ trách khu vực",
+      "phone": "0901733119",
+      "phones": [
+        "0901733119"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, khu vực dòng 5"
+    },
+    {
+      "id": "police-vung-tau-area-02",
+      "sourceOrder": 48,
+      "name": "Đồng chí Kiên",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "Chung cư 199, Nam Kỳ Khởi Nghĩa",
+      "neighborhoods": [
+        "Chung cư 199, Nam Kỳ Khởi Nghĩa"
+      ],
+      "area": "Phường Vũng Tàu · Chung cư 199, Nam Kỳ Khởi Nghĩa",
+      "detail": "Người phụ trách khu vực",
+      "phone": "0963962738",
+      "phones": [
+        "0963962738"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, khu vực dòng 6"
+    },
+    {
+      "id": "police-vung-tau-area-03",
+      "sourceOrder": 49,
+      "name": "Đồng chí Thành",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "Chưa ghi khu vực",
+      "neighborhoods": [
+        "Chưa ghi khu vực"
+      ],
+      "area": "Phường Vũng Tàu · Chưa ghi khu vực",
+      "detail": "Người phụ trách khu vực",
+      "phone": "0909533979",
+      "phones": [
+        "0909533979"
+      ],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": false,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, khu vực dòng 7"
+    },
+    {
+      "id": "police-vung-tau-area-04",
+      "sourceOrder": 50,
+      "name": "Đồng chí Sơn",
+      "ward": "Phường Vũng Tàu",
+      "neighborhood": "181/8 Trương Công Định / 292 Ba Cu / 64 Lê Lai",
+      "neighborhoods": [
+        "181/8 Trương Công Định / 292 Ba Cu / 64 Lê Lai"
+      ],
+      "area": "Phường Vũng Tàu · 181/8 Trương Công Định / 292 Ba Cu / 64 Lê Lai",
+      "detail": "Người phụ trách khu vực",
+      "phone": "",
+      "phones": [],
+      "birthDate": "",
+      "address": "",
+      "qualification": "",
+      "occupation": "",
+      "note": "",
+      "needsReview": true,
+      "source": "Bảngthốngkêphiếuyêucầuxácminh.xlsx",
+      "sourceLocation": "Phường Vũng Tàu, khu vực dòng 8"
     }
   ]
 }

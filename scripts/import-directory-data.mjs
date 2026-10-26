@@ -3,7 +3,9 @@ import { readFile } from 'node:fs/promises';
 
 if (!process.env.DATABASE_URL) throw new Error('Thiếu cấu hình cơ sở dữ liệu.');
 const selected = process.argv.slice(2);
-const categories = selected.length ? selected : ['jurors', 'neighborhoods', 'police'];
+const replace = selected.includes('--replace');
+const requested = selected.filter((value) => value !== '--replace');
+const categories = requested.length ? requested : ['jurors', 'neighborhoods', 'police'];
 if (categories.some((category) => !['jurors', 'neighborhoods', 'police'].includes(category))) throw new Error('Loại danh bạ không hợp lệ.');
 const groups = await Promise.all(categories.map(async (category) => ({ category,
   ...JSON.parse(await readFile(new URL(`../server/data/${category}.json`, import.meta.url), 'utf8')),
@@ -27,6 +29,7 @@ try {
   await connection.beginTransaction();
   try {
     for (const group of groups) {
+      if (replace) await connection.execute('DELETE FROM directory_contacts WHERE category=?', [group.category]);
       for (let offset = 0; offset < group.entries.length; offset += 100) {
         const batch = group.entries.slice(offset, offset + 100);
         await connection.execute(`INSERT INTO directory_contacts (id, category, ward, neighborhood, payload)
