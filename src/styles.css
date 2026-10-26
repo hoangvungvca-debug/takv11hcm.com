@@ -200,3 +200,8 @@ body{background:#fff8f8;color:var(--ink)}
 .attendance-header-actions{display:flex;align-items:center;gap:14px}
 .attendance-header-actions>a{color:var(--red);font-size:11px;font-weight:700}
 @media(max-width:520px){.internal-user .sidebar-logout button,.attendance-header-actions .sidebar-logout button{font-size:9px;padding:5px 7px}.attendance-header-actions{gap:7px;flex-direction:column;align-items:flex-end}}
+
+/* Cờ Việt Nam ở chính giữa thanh điều hướng phía trên */
+.topbar{position:relative}
+.topbar-flag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:"Apple Color Emoji","Segoe UI Emoji",sans-serif;font-size:17px;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18));z-index:1}
+@media(max-width:520px){.topbar-flag{font-size:15px}}
