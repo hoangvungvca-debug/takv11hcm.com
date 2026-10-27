@@ -212,3 +212,20 @@ body{background:#fff8f8;color:var(--ink)}
 .motto span{display:inline-block;padding-left:100%;animation:motto-scroll 12s linear infinite}
 @keyframes motto-scroll{from{transform:translateX(0)}to{transform:translateX(-100%)}}
 @media(max-width:760px){.motto{width:100%;font-size:9px;margin-top:6px}.motto span{animation-duration:10s}}
+
+/* Chế độ hiển thị desktop trên điện thoại theo yêu cầu người dùng. */
+@media(max-width:760px){
+  html,body{min-width:1100px;overflow-x:auto}
+  .app-shell{min-width:1100px}
+  .sidebar{width:265px!important;transform:none!important;padding:26px 15px 18px!important}
+  .sidebar.is-open{transform:none!important}.sidebar-overlay,.mobile-toggle{display:none!important}
+  .main-area{margin-left:265px!important;min-width:835px}
+  .topbar{height:40px!important;min-height:40px!important;padding:0 36px!important}.topbar-left{display:flex!important}.topbar-right{margin-left:0!important;gap:18px!important}.system-status{display:inline!important}.clock{font-size:9px!important;white-space:nowrap}
+  .main-header{padding:21px 42px!important;min-height:100px!important}.main-header h1{font-size:29px!important}.subtitle{font-size:10px!important}.support-button{display:block!important}
+  .digital-hero{margin:28px 42px 0!important;padding:30px 38px!important;min-height:218px!important}.digital-hero h2{font-size:34px!important}.digital-hero p{font-size:12px!important;max-width:440px!important}.hero-scale{display:block!important;right:auto;bottom:auto;opacity:1!important;transform:scale(.9)!important;margin-right:20px}
+  .quick-section,.all-apps{padding:35px 42px 0!important;margin:0!important}.quick-grid,.app-grid{grid-template-columns:repeat(4,1fr)!important}.quick-card{min-height:88px!important;padding:14px 12px!important}.app-card{min-height:157px!important;padding:15px!important}.app-card h3{font-size:17px!important}.app-card p{font-size:10px!important}.filter-row{display:flex!important}.filter-pills{flex-wrap:wrap!important;overflow:visible!important}.search-box{width:190px!important}.contact{margin:0 42px 30px!important;padding:28px 34px!important;display:grid!important;grid-template-columns:1fr 1.2fr!important}.contact-items{display:grid!important;margin-top:0!important;grid-template-columns:1.4fr .8fr .8fr!important}.contact-items div{border-left:1px solid #38586c!important;border-top:0!important;padding-left:15px!important}.footer{margin-left:-265px!important;width:calc(100% + 265px)!important;padding:0 42px!important;display:flex!important;min-height:62px!important}.footer p{margin:0!important}
+  .internal-header{min-width:1100px;padding:18px 42px!important}.internal-header h1{font-size:27px!important}.internal-user{font-size:11px!important;align-items:flex-end!important}
+  .ledger-main,.directory-main,.forms-main{min-width:1100px;padding:34px 42px 60px!important}.ledger-form{grid-template-columns:repeat(4,1fr)!important}.wide-field{grid-column:span 2!important}.ledger-heading{display:flex!important}.secure-badge{display:inline-block!important;margin-top:0!important}.directory-toolbar,.forms-toolbar{display:flex!important}.directory-toolbar select{width:auto!important;margin-top:0!important}.shortcut-grid{grid-template-columns:repeat(3,1fr)!important}.forms-grid{grid-template-columns:repeat(3,1fr)!important}.directory-hero{align-items:center!important;flex-wrap:nowrap!important}.directory-hero .secure-badge{margin-left:0!important}.notice-panel{display:flex!important;margin-left:42px!important;margin-right:42px!important}.notice-panel>a{margin-top:0!important}
+  .login-shell{min-width:1100px}.login-card{grid-template-columns:44% 56%!important;width:860px!important}.login-brand{min-height:535px!important;padding:56px 42px 42px!important}.login-brand img{width:92px!important;height:92px!important;margin:30px 0 26px!important}.login-brand h1{font-size:30px!important}.login-form-panel{padding:57px 60px 37px!important}.login-footer{font-size:9px!important}
+}
+@media(max-width:430px){.app-shell,.login-shell{min-width:1100px}.sidebar{width:265px!important}.main-area{margin-left:265px!important}.footer{margin-left:-265px!important;width:calc(100% + 265px)!important}}
