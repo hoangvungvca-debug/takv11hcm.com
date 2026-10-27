@@ -396,6 +396,12 @@ async function api(req, res, url) {
     const body=rows.map((r)=>`<tr><td>${r.sourceNo}</td><td>${esc(r.name)}</td><td>${esc(r.title||r.position||'')}</td><td>${r.checkedInAt?'Có mặt':'Vắng mặt'}</td><td>${r.checkedInAt?new Date(r.checkedInAt).toLocaleString('vi-VN',{timeZone:'Asia/Ho_Chi_Minh'}):''}</td></tr>`).join('');
     res.writeHead(200, {'Content-Type':'application/msword; charset=utf-8','Content-Disposition':`attachment; filename="bao-cao-diem-danh-${sessionId}.doc"`}); return res.end(`<html><meta charset="utf-8"><body><h1>BÁO CÁO ĐIỂM DANH - TAND KHU VỰC 11</h1><table border="1" cellspacing="0" cellpadding="6"><tr><th>STT</th><th>Họ và tên</th><th>Chức danh</th><th>Trạng thái</th><th>Thời điểm</th></tr>${body}</table></body></html>`);
   }
+  if (url.pathname === '/api/work-calendar/share-options' && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved','admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem danh sách tài khoản.' });
+    const connection = await db();
+    const [rows] = await connection.execute(`SELECT email, display_name AS name FROM app_users WHERE status IN ('approved','admin') AND LOWER(email)<>LOWER(?) ORDER BY display_name, email`, [user.email]);
+    return json(res, 200, { accounts: rows });
+  }
   if (url.pathname === '/api/work-calendar' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved','admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem lịch.' });
     const connection = await db();
