@@ -55,6 +55,10 @@ const clearCookie = (res, name) => appendCookie(res, `${name}=; Max-Age=0; Path=
 const json = (res, status, body) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(body)); };
 const readBody = async (req) => { let raw = ''; for await (const chunk of req) raw += chunk; return parseJson(raw) || {}; };
 const originFor = (req) => `${req.headers['x-forwarded-proto'] || (req.socket.encrypted ? 'https' : 'http')}://${req.headers.host}`;
+const calendarDateTime = (value) => {
+  const text = String(value || '').trim().replace('T', ' ');
+  return /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}(?::\d{2})?$/.test(text) ? (text.length === 16 ? `${text}:00` : text) : null;
+};
 
 async function db() {
   if (!process.env.DATABASE_URL) return null;
@@ -405,21 +409,21 @@ async function api(req, res, url) {
   if (url.pathname === '/api/work-calendar' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved','admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem lịch.' });
     const connection = await db();
-    const [rows] = await connection.execute(`SELECT e.id,e.title,e.starts_at AS startsAt,e.ends_at AS endsAt,e.location,e.notes,e.reminder_minutes AS reminderMinutes,e.owner_email AS ownerEmail,e.owner_name AS ownerName,CASE WHEN e.owner_open_id=? THEN 0 ELSE 1 END AS sharedReadOnly,
+    const [rows] = await connection.execute(`SELECT e.id,e.title,DATE_FORMAT(e.starts_at,'%Y-%m-%dT%H:%i:%s') AS startsAt,IF(e.ends_at IS NULL,NULL,DATE_FORMAT(e.ends_at,'%Y-%m-%dT%H:%i:%s')) AS endsAt,e.location,e.notes,e.reminder_minutes AS reminderMinutes,e.owner_email AS ownerEmail,e.owner_name AS ownerName,CASE WHEN e.owner_open_id=? THEN 0 ELSE 1 END AS sharedReadOnly,
       (SELECT GROUP_CONCAT(s.viewer_email SEPARATOR ', ') FROM work_event_shares s WHERE s.event_id=e.id) AS sharedEmails
       FROM work_events e LEFT JOIN work_event_shares v ON v.event_id=e.id AND v.viewer_open_id=? WHERE e.owner_open_id=? OR v.viewer_open_id=? GROUP BY e.id ORDER BY e.starts_at ASC`, [user.openId,user.openId,user.openId,user.openId]);
     return json(res, 200, { events: rows.map(r=>({...r, sharedReadOnly:Boolean(r.sharedReadOnly), reminderMinutes:Number(r.reminderMinutes||0), shareEmails:r.sharedEmails?r.sharedEmails.split(', '):[]})) });
   }
   if (url.pathname === '/api/work-calendar' && req.method === 'POST') {
     const user = await currentUser(req); if (!user || !['approved','admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để tạo lịch.' });
-    const body=await readBody(req); const title=String(body.title||'').trim(); const startsAt=String(body.startsAt||'').trim();
-    if(!title||!startsAt) return json(res,400,{error:'Vui lòng nhập tiêu đề và thời gian bắt đầu.'});
+    const body=await readBody(req); const title=String(body.title||'').trim(); const startsAt=calendarDateTime(body.startsAt);
+    if(!title||!startsAt) return json(res,400,{error:'Vui lòng nhập tiêu đề và thời gian bắt đầu hợp lệ.'});
     const reminder=Math.max(0,Math.min(1440,Number(body.reminderMinutes||0))); const connection=await db();
-    const [result]=await connection.execute('INSERT INTO work_events (owner_open_id,owner_email,owner_name,title,starts_at,ends_at,location,notes,reminder_minutes) VALUES (?,?,?,?,?,?,?,?,?)',[user.openId,user.email||user.openId,user.name||user.email||'Người dùng',title,startsAt,body.endsAt||null,body.location||null,body.notes||null,reminder]);
+    const [result]=await connection.execute('INSERT INTO work_events (owner_open_id,owner_email,owner_name,title,starts_at,ends_at,location,notes,reminder_minutes) VALUES (?,?,?,?,?,?,?,?,?)',[user.openId,user.email||user.openId,user.name||user.email||'Người dùng',title,startsAt,null,body.location||null,body.notes||null,reminder]);
     return json(res,201,{ok:true,id:result.insertId});
   }
   if (url.pathname.startsWith('/api/work-calendar/') && req.method === 'PUT') {
-    const user=await currentUser(req); if(!user||!['approved','admin'].includes(user.status))return json(res,403,{error:'Bạn cần được phê duyệt để sửa lịch.'}); const id=Number(url.pathname.split('/')[3]); const body=await readBody(req); const title=String(body.title||'').trim(); const startsAt=String(body.startsAt||'').trim(); if(!Number.isInteger(id)||!title||!startsAt)return json(res,400,{error:'Thông tin lịch không hợp lệ.'}); const connection=await db(); const [result]=await connection.execute('UPDATE work_events SET title=?,starts_at=?,ends_at=?,location=?,notes=?,reminder_minutes=? WHERE id=? AND owner_open_id=?',[title,startsAt,body.endsAt||null,body.location||null,body.notes||null,Math.max(0,Math.min(1440,Number(body.reminderMinutes||0))),id,user.openId]); if(!result.affectedRows)return json(res,403,{error:'Chỉ chủ lịch mới được sửa lịch này.'}); return json(res,200,{ok:true});
+    const user=await currentUser(req); if(!user||!['approved','admin'].includes(user.status))return json(res,403,{error:'Bạn cần được phê duyệt để sửa lịch.'}); const id=Number(url.pathname.split('/')[3]); const body=await readBody(req); const title=String(body.title||'').trim(); const startsAt=calendarDateTime(body.startsAt); if(!Number.isInteger(id)||!title||!startsAt)return json(res,400,{error:'Thông tin lịch không hợp lệ.'}); const connection=await db(); const [result]=await connection.execute('UPDATE work_events SET title=?,starts_at=?,ends_at=?,location=?,notes=?,reminder_minutes=? WHERE id=? AND owner_open_id=?',[title,startsAt,null,body.location||null,body.notes||null,Math.max(0,Math.min(1440,Number(body.reminderMinutes||0))),id,user.openId]); if(!result.affectedRows)return json(res,403,{error:'Chỉ chủ lịch mới được sửa lịch này.'}); return json(res,200,{ok:true});
   }
   if (url.pathname.startsWith('/api/work-calendar/') && req.method === 'DELETE') {
     const user=await currentUser(req); if(!user||!['approved','admin'].includes(user.status))return json(res,403,{error:'Bạn cần được phê duyệt để xóa lịch.'}); const id=Number(url.pathname.split('/')[3]); const connection=await db(); const [result]=await connection.execute('DELETE FROM work_events WHERE id=? AND owner_open_id=?',[id,user.openId]); if(!result.affectedRows)return json(res,403,{error:'Chỉ chủ lịch mới được xóa lịch này.'}); await connection.execute('DELETE FROM work_event_shares WHERE event_id=?',[id]); return json(res,200,{ok:true});
