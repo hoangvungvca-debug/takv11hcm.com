@@ -49,6 +49,9 @@ const templateGroups = [
 ];
 type ChatMessage = { id: number; userEmail: string; userName: string; message: string; createdAt: string };
 type VisitStats = { totalVisits: number; todayVisits: number };
+type DashboardEvent = { id: number; title: string; startsAt: string; location?: string; notes?: string; ownerName?: string; ownerEmail?: string; sharedReadOnly: boolean };
+const localCalendarDate = (value: string) => { const match = String(value || '').match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2}))?/); return match ? new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]), Number(match[4]) - 7, Number(match[5]), Number(match[6] || 0))) : new Date(value); };
+const calendarLabel = (value: string) => localCalendarDate(value).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'short', timeStyle: 'short' });
 
 export default function Dashboard({ modules, preview = false }: { modules: DashboardModule[]; preview?: boolean }) {
   const [now, setNow] = useState(() => new Date());
@@ -62,6 +65,7 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
   const [chatDraft, setChatDraft] = useState('');
   const [chatSending, setChatSending] = useState(false);
   const [visitStats, setVisitStats] = useState<VisitStats | null>(preview ? { totalVisits: 0, todayVisits: 0 } : null);
+  const [calendarEvents, setCalendarEvents] = useState<DashboardEvent[]>([]);
   const [taskScope, setTaskScope] = useState<'mine' | 'all'>('mine');
   const [query, setQuery] = useState('');
   const [tag, setTag] = useState('Tất cả');
@@ -93,12 +97,13 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
         return;
       }
       try {
-        const [letterResponse, chatResponse, statsResponse] = await Promise.all([
+        const [letterResponse, chatResponse, statsResponse, calendarResponse] = await Promise.all([
           fetch('/api/letters', { signal: controller.signal, credentials: 'include', cache: 'no-store' }),
           fetch('/api/chat', { signal: controller.signal, credentials: 'include', cache: 'no-store' }),
           fetch('/api/stats/visits', { signal: controller.signal, credentials: 'include', cache: 'no-store' }),
+          fetch('/api/work-calendar', { signal: controller.signal, credentials: 'include', cache: 'no-store' }),
         ]);
-        if (letterResponse.status === 403 || letterResponse.status === 401 || chatResponse.status === 403 || statsResponse.status === 403) {
+        if (letterResponse.status === 403 || letterResponse.status === 401 || chatResponse.status === 403 || statsResponse.status === 403 || calendarResponse.status === 403) {
           window.location.replace('/dang-nhap');
           return;
         }
@@ -108,6 +113,7 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
         setLetterState('ready');
         if (chatResponse.ok) { const chatData = await chatResponse.json(); setChatMessages(Array.isArray(chatData.messages) ? chatData.messages : []); setChatState('ready'); } else setChatState('error');
         if (statsResponse.ok) setVisitStats(await statsResponse.json());
+        if (calendarResponse.ok) { const calendarData = await calendarResponse.json(); setCalendarEvents(Array.isArray(calendarData.events) ? calendarData.events : []); }
       } catch {
         if (!controller.signal.aborted) { setLetterState('error'); setChatState('error'); }
       }
@@ -115,6 +121,15 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
     void load();
     return () => controller.abort();
   }, [preview]);
+
+  useEffect(() => {
+    if (preview || authState !== 'ready') return;
+    const timer = window.setInterval(async () => {
+      const response = await fetch('/api/work-calendar', { credentials: 'include', cache: 'no-store' });
+      if (response.ok) { const data = await response.json(); setCalendarEvents(Array.isArray(data.events) ? data.events : []); }
+    }, 30000);
+    return () => window.clearInterval(timer);
+  }, [preview, authState]);
 
   async function logout() {
     if (preview) return;
@@ -163,6 +178,10 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
     { title: 'Hệ thống biểu mẫu', description: 'Kho dùng chung của đơn vị', href: '/bieu-mau', icon: 'forms' },
     { title: 'Danh bạ phối hợp', description: 'Tra cứu liên hệ nghiệp vụ', href: '#db-directories', icon: 'users' },
   ];
+  const visibleCalendarEvents = calendarEvents
+    .filter((event) => localCalendarDate(event.startsAt).getTime() >= Date.now() - 60 * 60 * 1000)
+    .sort((a, b) => localCalendarDate(a.startsAt).getTime() - localCalendarDate(b.startsAt).getTime())
+    .slice(0, 5);
   const clock = new Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(now);
   const date = new Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' }).format(now);
   const fullName = user?.name || user?.email || 'bạn';
@@ -238,7 +257,7 @@ export default function Dashboard({ modules, preview = false }: { modules: Dashb
             <div className="db-panel-foot"><Icon name="file" size={14} /><span>{letterState === 'ready' ? `${todayLetters.length} công văn đến trong ngày · Dữ liệu từ sổ công văn` : 'Nguồn dữ liệu: Sổ công văn đến'}</span></div>
           </section>
 
-          <section className="db-panel db-notice-panel" id="db-notices" aria-labelledby="db-notice-title"><div className="db-panel-head"><div><p className="db-kicker">THÔNG TIN ĐƠN VỊ</p><h2 id="db-notice-title">Thông báo mới</h2></div><span className="db-icon-soft"><Icon name="bell" /></span></div><div className="db-empty db-notice-empty"><Icon name="bell" size={28} /><strong>Chưa có thông báo nội bộ</strong><p>Khu vực dành cho lịch họp, hạn báo cáo và các cập nhật từ đơn vị. Chờ kết nối nguồn thông báo.</p></div><div className="db-calendar-card"><div className="db-icon-tile"><Icon name="calendar" /></div><div><strong>Lịch làm việc tuần</strong><p>Xem lịch công tác hiện có của đơn vị.</p><a href={weeklyUrl} target="_blank" rel="noopener noreferrer" className="db-text-link">Mở lịch làm việc <Icon name="external" size={13} /></a></div></div></section>
+          <section className="db-panel db-notice-panel" id="db-notices" aria-labelledby="db-notice-title"><div className="db-panel-head"><div><p className="db-kicker">THÔNG TIN ĐƠN VỊ</p><h2 id="db-notice-title">Thông báo mới</h2></div><span className="db-icon-soft"><Icon name="bell" /></span></div>{visibleCalendarEvents.length ? <div className="db-calendar-notices">{visibleCalendarEvents.map((event) => <article className="db-calendar-notice" key={event.id}><span className="db-calendar-notice-icon"><Icon name="calendar" size={17} /></span><div><strong>{event.title}</strong><time>{calendarLabel(event.startsAt)}{event.location ? ` · ${event.location}` : ''}</time>{event.notes && <small>{event.notes}</small>}<small>{event.sharedReadOnly ? `Chia sẻ bởi ${event.ownerName || event.ownerEmail || 'tài khoản nội bộ'}` : 'Lịch của tôi'}</small></div></article>)}</div> : <div className="db-empty db-notice-empty"><Icon name="bell" size={28} /><strong>Chưa có lịch cần làm</strong><p>Lịch làm việc được tạo hoặc chia sẻ sẽ hiển thị tại đây cho tài khoản có quyền xem.</p></div>}<div className="db-calendar-card"><div className="db-icon-tile"><Icon name="calendar" /></div><div><strong>Lịch làm việc tuần</strong><p>Xem, tạo và chia sẻ lịch làm việc.</p><a href="/lich-lam-viec" className="db-text-link">Mở lịch làm việc <Icon name="external" size={13} /></a></div></div></section>
         </div>
 
         <section className="db-panel db-chat-panel" id="db-chat" aria-labelledby="db-chat-title">
