@@ -20,6 +20,7 @@ let pool;
 let schemaPromise;
 let lettersSchemaPromise;
 let outgoingLettersSchemaPromise;
+let postalArchiveSchemaPromise;
 let passwordSchemaPromise;
 let chatSchemaPromise;
 let visitsSchemaPromise;
@@ -54,6 +55,22 @@ const setSessionCookie = (res, name, value, remember) => remember ? setCookie(re
 const clearCookie = (res, name) => appendCookie(res, `${name}=; Max-Age=0; Path=/; HttpOnly; SameSite=None; Secure`);
 const json = (res, status, body) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(body)); };
 const readBody = async (req) => { let raw = ''; for await (const chunk of req) raw += chunk; return parseJson(raw) || {}; };
+const readMultipartFile = async (req) => {
+  const type = String(req.headers['content-type'] || ''); const match = type.match(/boundary=(?:"([^"]+)"|([^;]+))/i); if (!match) return null;
+  const boundary = Buffer.from(`--${match[1] || match[2]}`); const chunks = []; let size = 0;
+  for await (const chunk of req) { size += chunk.length; if (size > 10 * 1024 * 1024) throw new Error('Tệp tải lên vượt quá 10MB.'); chunks.push(chunk); }
+  const raw = Buffer.concat(chunks); const start = raw.indexOf(boundary); if (start < 0) return null; const headerStart = start + boundary.length + 2; const headerEnd = raw.indexOf(Buffer.from('\r\n\r\n'), headerStart); if (headerEnd < 0) return null;
+  const headers = raw.slice(headerStart, headerEnd).toString('utf8'); const disposition = headers.match(/name="([^"]+)"(?:;\s*filename="([^"]*)")?/i); const contentType = headers.match(/content-type:\s*([^\r\n]+)/i)?.[1]?.trim() || 'application/octet-stream'; if (!disposition?.[2]) return null;
+  const dataStart = headerEnd + 4; const dataEnd = raw.indexOf(Buffer.from('\r\n'), dataStart + 1); const data = raw.slice(dataStart, dataEnd > 0 ? dataEnd : raw.length); return { filename: disposition[2], contentType, data };
+};
+const postalFields = ['sentDate', 'addressee', 'content', 'classification', 'clerk', 'trackingCode', 'result'];
+const cleanPostal = (body) => Object.fromEntries(postalFields.map((key) => [key, String(body?.[key] || '').trim()]));
+const postalOcr = async (file) => {
+  const apiUrl = process.env.BUILT_IN_FORGE_API_URL || 'https://forge.manus.ai'; const apiKey = process.env.BUILT_IN_FORGE_API_KEY; if (!apiKey) throw new Error('Máy chủ chưa cấu hình dịch vụ OCR AI.');
+  const imageUrl = `data:${file.contentType};base64,${file.data.toString('base64')}`;
+  const response = await fetch(`${apiUrl}/v1/chat/completions`, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'gpt-5-mini', messages: [{ role: 'system', content: 'Bạn là hệ thống OCR bì thư hành chính Việt Nam. Chỉ trích xuất thông tin nhìn thấy trong ảnh, không suy đoán. Trả về JSON đúng schema. Nếu không thấy trường nào để chuỗi rỗng. classification là thẩm phán hoặc mức phân loại nếu có; clerk là thư ký nếu có; trackingCode là mã vận đơn.' }, { role: 'user', content: [{ type: 'text', text: 'Đọc bì thư này và điền các trường ngày gửi (YYYY-MM-DD nếu đọc được), tên đương sự/người nhận, nội dung hoặc trích yếu, thẩm phán/phân loại, thư ký, mã vận đơn và kết quả.' }, { type: 'image_url', image_url: { url: imageUrl } }] }], response_format: { type: 'json_schema', json_schema: { name: 'postal_envelope', strict: true, schema: { type: 'object', additionalProperties: false, properties: { sentDate: { type: 'string' }, addressee: { type: 'string' }, content: { type: 'string' }, classification: { type: 'string' }, clerk: { type: 'string' }, trackingCode: { type: 'string' }, result: { type: 'string' } }, required: ['sentDate', 'addressee', 'content', 'classification', 'clerk', 'trackingCode', 'result'] } } }, max_completion_tokens: 1600, reasoning: { effort: 'low' } }) });
+  const payload = await response.json(); if (!response.ok) throw new Error(payload?.error?.message || `OCR AI trả về lỗi ${response.status}.`); const text = payload?.choices?.[0]?.message?.content; const parsed = typeof text === 'string' ? parseJson(text) : text; if (!parsed) throw new Error('OCR không trả về dữ liệu có cấu trúc.'); return cleanPostal(parsed);
+};
 const originFor = (req) => `${req.headers['x-forwarded-proto'] || (req.socket.encrypted ? 'https' : 'http')}://${req.headers.host}`;
 const calendarDateTime = (value) => {
   const text = String(value || '').trim().replace('T', ' ');
@@ -113,6 +130,25 @@ async function db() {
     INDEX idx_outgoing_letters_number (outgoing_number)
   )`);
   await outgoingLettersSchemaPromise;
+  if (!postalArchiveSchemaPromise) postalArchiveSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS postal_archive (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    sent_date DATE NOT NULL,
+    addressee VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    classification VARCHAR(255) NULL,
+    clerk VARCHAR(255) NULL,
+    tracking_code VARCHAR(120) NULL,
+    result VARCHAR(120) NULL,
+    image_data LONGTEXT NULL,
+    source_name VARCHAR(255) NULL,
+    ocr_status VARCHAR(80) NULL,
+    created_by VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_postal_archive_sent_date (sent_date),
+    INDEX idx_postal_archive_tracking (tracking_code),
+    INDEX idx_postal_archive_addressee (addressee)
+  )`);
+  await postalArchiveSchemaPromise;
   if (!chatSchemaPromise) chatSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS internal_chat_messages (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_email VARCHAR(255) NOT NULL,
@@ -320,6 +356,22 @@ async function api(req, res, url) {
     const [rows] = await connection.execute('SELECT payload FROM directory_contacts WHERE category=?', [category]);
     return json(res, 200, { entries: rows.map((row) => typeof row.payload === 'string' ? JSON.parse(row.payload) : row.payload) });
   }
+  if (url.pathname === '/api/postal-archive' && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để xem lưu trữ bưu gửi.' });
+    const connection = await db(); const [rows] = await connection.execute(`SELECT id, created_at AS createdAt, sent_date AS sentDate, addressee, content, classification, clerk, tracking_code AS trackingCode, result, image_data AS imageData, source_name AS sourceName, ocr_status AS ocrStatus FROM postal_archive ORDER BY sent_date DESC, id DESC`); return json(res, 200, { items: rows });
+  }
+  if (url.pathname === '/api/postal-archive/ocr' && req.method === 'POST') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để dùng OCR bì thư.' });
+    try { const file = await readMultipartFile(req); if (!file || !file.contentType.startsWith('image/')) return json(res, 400, { error: 'Vui lòng tải lên ảnh bì thư JPG, PNG hoặc WEBP.' }); const fields = await postalOcr(file); return json(res, 200, { fields, message: 'Đã đọc bì thư bằng OCR. Vui lòng kiểm tra lại thông tin trước khi lưu.' }); } catch (error) { return json(res, 502, { error: error instanceof Error ? error.message : 'OCR chưa thực hiện được.' }); }
+  }
+  if (url.pathname === '/api/postal-archive' && req.method === 'POST') {
+    const user = await currentUser(req); if (!isOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được thêm lưu trữ bưu gửi.' }); const rawBody = await readBody(req); const body = cleanPostal(rawBody); if (!body.sentDate || !body.addressee || !body.content) return json(res, 400, { error: 'Vui lòng nhập ngày gửi, tên đương sự và nội dung.' }); const imageData = String(rawBody.imageData || ''); if (imageData.length > 9 * 1024 * 1024) return json(res, 400, { error: 'Ảnh lưu trữ quá lớn.' }); const connection = await db(); const [result] = await connection.execute(`INSERT INTO postal_archive (sent_date, addressee, content, classification, clerk, tracking_code, result, image_data, source_name, ocr_status, created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?)`, [body.sentDate, body.addressee, body.content, body.classification || null, body.clerk || null, body.trackingCode || null, body.result || null, imageData || null, String(rawBody.sourceName || '').slice(0, 255) || null, String(rawBody.ocrStatus || '').slice(0, 80) || null, user.email || user.openId]); return json(res, 201, { ok: true, id: result.insertId });
+  }
+  if (url.pathname.startsWith('/api/postal-archive/') && ['PUT', 'DELETE'].includes(req.method)) {
+    const user = await currentUser(req); if (!isOwner(user)) return json(res, 403, { error: 'Chỉ chủ hệ thống được sửa hoặc xóa lưu trữ bưu gửi.' }); const id = Number(url.pathname.split('/').pop()); if (!Number.isInteger(id) || id < 1) return json(res, 400, { error: 'Mã bưu gửi không hợp lệ.' }); const connection = await db();
+    if (req.method === 'DELETE') { const [result] = await connection.execute('DELETE FROM postal_archive WHERE id=?', [id]); if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy bản ghi bưu gửi.' }); return json(res, 200, { ok: true }); }
+    const rawBody = await readBody(req); const body = cleanPostal(rawBody); if (!body.sentDate || !body.addressee || !body.content) return json(res, 400, { error: 'Vui lòng nhập ngày gửi, tên đương sự và nội dung.' }); const imageData = String(rawBody.imageData || ''); if (imageData.length > 9 * 1024 * 1024) return json(res, 400, { error: 'Ảnh lưu trữ quá lớn.' }); const [result] = await connection.execute('UPDATE postal_archive SET sent_date=?,addressee=?,content=?,classification=?,clerk=?,tracking_code=?,result=?,image_data=?,source_name=?,ocr_status=? WHERE id=?', [body.sentDate, body.addressee, body.content, body.classification || null, body.clerk || null, body.trackingCode || null, body.result || null, imageData || null, String(rawBody.sourceName || '').slice(0, 255) || null, String(rawBody.ocrStatus || '').slice(0, 80) || null, id]); if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy bản ghi bưu gửi.' }); return json(res, 200, { ok: true });
+  }
   if (url.pathname === '/api/letters' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần được phê duyệt để xem sổ công văn.' });
     const connection = await db(); const [rows] = await connection.execute(`SELECT id, incoming_number AS incomingNumber, received_date AS receivedDate, sender, document_number AS documentNumber, document_date AS documentDate, summary, handler, deadline, status, created_by AS createdBy, created_at AS createdAt FROM incoming_letters ORDER BY received_date DESC, id DESC`);
@@ -502,7 +554,7 @@ async function handle(req, res) {
       return json(res, 404, { error: 'Không tìm thấy tài nguyên.' });
     }
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
-    if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/diem-danh', '/diem-danh/quet', '/lich-lam-viec', '/admin'].includes(url.pathname)) {
+    if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/diem-danh', '/diem-danh/quet', '/lich-lam-viec', '/luu-tru-buu-gui', '/admin'].includes(url.pathname)) {
       const user = await currentUser(req, res);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }

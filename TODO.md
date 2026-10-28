@@ -4,3 +4,10 @@
 - [x] Có thể chia sẻ lịch cho tài khoản đã được phê duyệt bằng email; người được chia sẻ chỉ có quyền xem.
 - [x] Nhắc việc bằng thông báo trong website, hỗ trợ bật thông báo trình duyệt; không có lịch lặp.
 - [x] Lưu tập trung trong database, có lọc quyền ở backend và hiển thị lịch được chia sẻ.
+
+## Lưu trữ bưu gửi
+- [x] Có mục riêng “Lưu trữ bưu gửi” trong sidebar, trang chủ và route `/luu-tru-buu-gui`.
+- [x] Bảng lưu trữ gồm thời gian ghi nhận, ngày gửi, tên đương sự, nội dung, thẩm phán/phân loại, thư ký, mã vận đơn, kết quả và ảnh bì thư.
+- [x] Chủ hệ thống có thể tải ảnh bì thư JPG/PNG/WEBP, dùng OCR AI để tự điền trường dữ liệu, kiểm tra lại trước khi lưu, sau đó sửa hoặc xóa bản ghi.
+- [x] Có tìm kiếm theo tên/nội dung/thư ký/mã vận đơn, lọc theo thẩm phán/phân loại và khoảng ngày.
+- [x] Có tải dữ liệu đang lọc về PDF, Word hoặc Excel; người dùng đã duyệt có quyền xem, thao tác sửa/xóa được bảo vệ ở backend chỉ cho chủ hệ thống.
