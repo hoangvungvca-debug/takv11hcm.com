@@ -61,10 +61,11 @@ const readMultipartFile = async (req) => {
   for await (const chunk of req) { size += chunk.length; if (size > 10 * 1024 * 1024) throw new Error('Tệp tải lên vượt quá 10MB.'); chunks.push(chunk); }
   const raw = Buffer.concat(chunks); const start = raw.indexOf(boundary); if (start < 0) return null; const headerStart = start + boundary.length + 2; const headerEnd = raw.indexOf(Buffer.from('\r\n\r\n'), headerStart); if (headerEnd < 0) return null;
   const headers = raw.slice(headerStart, headerEnd).toString('utf8'); const disposition = headers.match(/name="([^"]+)"(?:;\s*filename="([^"]*)")?/i); const contentType = headers.match(/content-type:\s*([^\r\n]+)/i)?.[1]?.trim() || 'application/octet-stream'; if (!disposition?.[2]) return null;
-  const dataStart = headerEnd + 4; const dataEnd = raw.indexOf(Buffer.from('\r\n'), dataStart + 1); const data = raw.slice(dataStart, dataEnd > 0 ? dataEnd : raw.length); return { filename: disposition[2], contentType, data };
+  const dataStart = headerEnd + 4; const dataEnd = raw.indexOf(Buffer.from(`\r\n${boundary.toString()}`), dataStart); const data = raw.slice(dataStart, dataEnd > 0 ? dataEnd : raw.length); return { filename: disposition[2], contentType, data };
 };
 const postalFields = ['sentDate', 'addressee', 'content', 'classification', 'clerk', 'trackingCode', 'result'];
-const cleanPostal = (body) => Object.fromEntries(postalFields.map((key) => [key, String(body?.[key] || '').trim()]));
+const normalizePostalDate = (value) => { const text = String(value || '').trim(); let match = text.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/); if (match) return `${match[3]}-${match[2].padStart(2, '0')}-${match[1].padStart(2, '0')}`; match = text.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})/); return match ? `${match[1]}-${match[2].padStart(2, '0')}-${match[3].padStart(2, '0')}` : text; };
+const cleanPostal = (body) => Object.fromEntries(postalFields.map((key) => [key, key === 'sentDate' ? normalizePostalDate(body?.[key]) : String(body?.[key] || '').trim()]));
 const postalOcr = async (file) => {
   const apiUrl = process.env.BUILT_IN_FORGE_API_URL || 'https://forge.manus.ai'; const apiKey = process.env.BUILT_IN_FORGE_API_KEY; if (!apiKey) throw new Error('Máy chủ chưa cấu hình dịch vụ OCR AI.');
   const imageUrl = `data:${file.contentType};base64,${file.data.toString('base64')}`;
