@@ -32,3 +32,6 @@
 
 ## Hiển thị nút đăng xuất
 - [x] Sidebar chỉ cuộn phần danh sách menu; vùng trạng thái và nút “Đăng xuất tài khoản” được cố định ở đáy Sidebar để luôn nhìn thấy khi menu dài.
+
+## Bản vá hiển thị đăng xuất
+- [x] Neo nút “Đăng xuất tài khoản” bằng vị trí tuyệt đối ở đáy Sidebar, tăng tương phản nút và chừa khoảng riêng để không bị khuất bởi danh sách menu.

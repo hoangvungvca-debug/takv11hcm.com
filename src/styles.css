@@ -257,3 +257,12 @@ body{background:#fff8f8;color:var(--ink)}
 .sidebar .sidebar-logout{flex:0 0 auto;margin:8px 0 0;padding:9px 10px 2px;background:#fff;border-top:1px solid #f0dfe0;position:sticky;bottom:0;z-index:3}
 .sidebar .sidebar-logout button{display:flex;width:100%;justify-content:center;min-height:34px;font-size:11px;font-weight:700}
 @media(max-width:760px){.sidebar .sidebar-logout{padding-left:5px;padding-right:5px}.sidebar .sidebar-logout button{font-size:10px}}
+
+/* Bản vá chắc chắn: neo nút đăng xuất vào đáy Sidebar, không phụ thuộc chiều dài menu */
+.sidebar{padding-bottom:78px!important}
+.sidebar .sidebar-logout{position:absolute!important;left:0;right:0;bottom:0;width:auto;margin:0!important;padding:10px 15px 14px!important;background:#fff;border-top:2px solid #e7c7c9;z-index:50}
+.sidebar .sidebar-logout button{width:100%;min-height:38px!important;justify-content:center;background:#fff7f7!important;border:1px solid #b51e25!important;color:#8f1218!important;font-size:11px!important;font-weight:700!important;white-space:nowrap}
+.sidebar .sidebar-logout button:hover{background:#ffe8e9!important}
+.sidebar .sidebar-logout small{max-width:none;text-align:center}
+@media(max-width:1100px){.sidebar .sidebar-logout{padding-left:12px!important;padding-right:12px!important}}
+@media(max-width:760px){.sidebar .sidebar-logout{padding-left:10px!important;padding-right:10px!important}.sidebar .sidebar-logout button{font-size:10px!important}}
