@@ -22,3 +22,7 @@
 
 ## Điều hướng sidebar
 - [x] Đặt “Lưu trữ bưu gửi” ngay bên dưới “Lịch làm việc – Nhắc việc”; giữ nguyên đường dẫn `/luu-tru-buu-gui` và các mục khác.
+
+## Đăng xuất tài khoản
+- [x] Xóa các nút “Đăng xuất tài khoản” lặp lại ở phần đầu các trang nội bộ.
+- [x] Chỉ giữ một nút “Đăng xuất tài khoản” ở cuối Sidebar của trang chủ.

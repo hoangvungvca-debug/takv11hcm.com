@@ -1,4 +1,3 @@
-import { LogoutButton } from '../home-status';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import './account-admin.css';
@@ -153,7 +152,7 @@ export default function AccountAdminPage() {
     <header className="internal-header">
       <div><p className="eyebrow">QUẢN TRỊ HỆ THỐNG</p><h1>Quản lý tài khoản</h1>
         <span>TAND KHU VỰC 11 - TP HỒ CHÍ MINH</span></div>
-      <div className="internal-user">{me?.name || 'Khu vực quản trị'}<a href="/">← Trang chủ</a><LogoutButton /></div>
+      <div className="internal-user">{me?.name || 'Khu vực quản trị'}<a href="/">← Trang chủ</a></div>
     </header>
     <main className="ledger-main">
       {state === 'loading' && <div className="aa-state" role="status">Đang kiểm tra quyền quản trị và tải tài khoản…</div>}
