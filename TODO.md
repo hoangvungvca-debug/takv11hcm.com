@@ -11,3 +11,7 @@
 - [x] Chủ hệ thống có thể tải ảnh bì thư JPG/PNG/WEBP, dùng OCR AI để tự điền trường dữ liệu, kiểm tra lại trước khi lưu, sau đó sửa hoặc xóa bản ghi.
 - [x] Có tìm kiếm theo tên/nội dung/thư ký/mã vận đơn, lọc theo thẩm phán/phân loại và khoảng ngày.
 - [x] Có tải dữ liệu đang lọc về PDF, Word hoặc Excel; người dùng đã duyệt có quyền xem, thao tác sửa/xóa được bảo vệ ở backend chỉ cho chủ hệ thống.
+
+- [x] Mỗi tài khoản chỉ xem, thêm, sửa, xóa và xuất các bản ghi Lưu trữ bưu gửi do chính tài khoản đó tạo; backend lọc theo email tài khoản, không trả toàn bộ dữ liệu.
+- [x] Click ảnh bì thư mở cửa sổ xem ảnh; có nút phóng to, thu nhỏ, đóng và tải ảnh về.
+- [x] Cạnh mã vận đơn có nút Copy mã và nút Tra cứu bưu gửi mở https://ipostal.vnpost.vn/tra-cuu-buu-gui.
