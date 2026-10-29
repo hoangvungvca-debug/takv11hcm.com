@@ -15,3 +15,7 @@
 - [x] Mỗi tài khoản chỉ xem, thêm, sửa, xóa và xuất các bản ghi Lưu trữ bưu gửi do chính tài khoản đó tạo; backend lọc theo email tài khoản, không trả toàn bộ dữ liệu.
 - [x] Click ảnh bì thư mở cửa sổ xem ảnh; có nút phóng to, thu nhỏ, đóng và tải ảnh về.
 - [x] Cạnh mã vận đơn có nút Copy mã và nút Tra cứu bưu gửi mở https://ipostal.vnpost.vn/tra-cuu-buu-gui.
+
+## Trang chủ – Lịch cần làm
+- [x] Xóa khối chào mừng đỏ “HỆ THỐNG NỘI BỘ / Xin chào…” khỏi đầu trang chủ.
+- [x] Tăng cỡ chữ và độ tương phản của tiêu đề, tên lịch, thời gian và ghi chú trong khu vực “Lịch cần làm”; vẫn giữ bố cục hai cột trên màn hình nhỏ.
