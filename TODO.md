@@ -19,3 +19,6 @@
 ## Trang chủ – Lịch cần làm
 - [x] Xóa khối chào mừng đỏ “HỆ THỐNG NỘI BỘ / Xin chào…” khỏi đầu trang chủ.
 - [x] Tăng cỡ chữ và độ tương phản của tiêu đề, tên lịch, thời gian và ghi chú trong khu vực “Lịch cần làm”; vẫn giữ bố cục hai cột trên màn hình nhỏ.
+
+## Điều hướng sidebar
+- [x] Đặt “Lưu trữ bưu gửi” ngay bên dưới “Lịch làm việc – Nhắc việc”; giữ nguyên đường dẫn `/luu-tru-buu-gui` và các mục khác.
