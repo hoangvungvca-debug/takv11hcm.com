@@ -26,3 +26,6 @@
 ## Đăng xuất tài khoản
 - [x] Xóa các nút “Đăng xuất tài khoản” lặp lại ở phần đầu các trang nội bộ.
 - [x] Chỉ giữ một nút “Đăng xuất tài khoản” ở cuối Sidebar của trang chủ.
+
+## Đăng xuất tài khoản – hoàn tất
+- [x] Chỉ còn duy nhất một nút “Đăng xuất tài khoản” ở cuối Sidebar; không còn nút đăng xuất trong header hoặc nội dung các trang nghiệp vụ.
