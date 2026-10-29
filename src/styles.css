@@ -249,3 +249,11 @@ body{background:#fff8f8;color:var(--ink)}
 /* Trang chủ: ưu tiên khu vực Lịch cần làm, bỏ khối chào mừng đỏ */
 .home-calendar-notice{padding-top:26px}.home-calendar-notice .section-title{margin-bottom:18px}.home-calendar-notice .section-title .eyebrow{font-size:11px;letter-spacing:.16em}.home-calendar-notice .section-title h2{font-size:30px;line-height:1.15}.home-calendar-link{font-size:12px;padding:10px 13px}.home-calendar-list{gap:12px}.home-calendar-list article{min-height:92px;padding:16px 17px;gap:13px}.home-calendar-icon{width:34px;height:34px;font-size:20px}.home-calendar-list strong{font-size:18px;line-height:1.35}.home-calendar-list time,.home-calendar-list small{font-size:12px;line-height:1.5;margin-top:5px}.home-calendar-empty{padding:18px;font-size:13px}
 @media(max-width:760px){.home-calendar-notice{padding:22px 16px 34px}.home-calendar-notice .section-title h2{font-size:24px}.home-calendar-link{font-size:11px;padding:8px 10px}.home-calendar-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.home-calendar-list article{min-height:100px;padding:12px 10px;gap:8px}.home-calendar-icon{width:29px;height:29px;font-size:17px}.home-calendar-list strong{font-size:15px}.home-calendar-list time,.home-calendar-list small{font-size:10px}}
+
+/* Sidebar: nút đăng xuất luôn hiển thị dưới cùng, không bị đẩy khỏi khung khi menu dài */
+.sidebar{overflow:hidden!important}
+.sidebar .side-nav{min-height:0;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;flex:1 1 auto}
+.sidebar .sidebar-bottom{flex:0 0 auto}
+.sidebar .sidebar-logout{flex:0 0 auto;margin:8px 0 0;padding:9px 10px 2px;background:#fff;border-top:1px solid #f0dfe0;position:sticky;bottom:0;z-index:3}
+.sidebar .sidebar-logout button{display:flex;width:100%;justify-content:center;min-height:34px;font-size:11px;font-weight:700}
+@media(max-width:760px){.sidebar .sidebar-logout{padding-left:5px;padding-right:5px}.sidebar .sidebar-logout button{font-size:10px}}

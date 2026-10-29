@@ -29,3 +29,6 @@
 
 ## Đăng xuất tài khoản – hoàn tất
 - [x] Chỉ còn duy nhất một nút “Đăng xuất tài khoản” ở cuối Sidebar; không còn nút đăng xuất trong header hoặc nội dung các trang nghiệp vụ.
+
+## Hiển thị nút đăng xuất
+- [x] Sidebar chỉ cuộn phần danh sách menu; vùng trạng thái và nút “Đăng xuất tài khoản” được cố định ở đáy Sidebar để luôn nhìn thấy khi menu dài.
