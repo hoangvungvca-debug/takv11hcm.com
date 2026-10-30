@@ -35,3 +35,6 @@
 
 ## Bản vá hiển thị đăng xuất
 - [x] Neo nút “Đăng xuất tài khoản” bằng vị trí tuyệt đối ở đáy Sidebar, tăng tương phản nút và chừa khoảng riêng để không bị khuất bởi danh sách menu.
+
+## Thứ tự Sidebar
+- [x] Đặt nút “Đăng xuất tài khoản” ngay bên dưới mục “Duyệt tài khoản”; trạng thái “Hệ thống đang hoạt động” nằm dưới nút đăng xuất.
