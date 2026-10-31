@@ -1,1 +1,57 @@
-.report-summary{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 22px;border-bottom:1px solid #f0e4e5}.summary-box{border-radius:6px;padding:12px 14px;min-height:78px}.summary-box.present{background:#f0f9f2;border:1px solid #d6ebd9}.summary-box.absent{background:#fff5f5;border:1px solid #f0d8da}.summary-box>strong{font-size:24px;line-height:1;color:#2b7a43;margin-right:7px}.summary-box.absent>strong{color:#a75a61}.summary-box>span{font-weight:700;font-size:14px;color:#45634e}.summary-box.absent>span{color:#85565b}.summary-box>div{display:flex;flex-wrap:wrap;gap:4px 8px;margin-top:8px}.summary-box b{font-size:12px;font-weight:500;color:#45634e}.summary-box.absent b{color:#85565b}@media(max-width:800px){.report-summary{grid-template-columns:1fr;padding:12px 16px}}
+/* Màn hình điểm danh cán bộ — bố cục trắng/đỏ gọn, rõ và cân đối */
+.attendance-shell{min-height:100vh;background:#fff8f8;color:#3b2528;font-family:'DM Sans',Arial,sans-serif;padding-bottom:42px}
+.attendance-header{max-width:1180px;margin:0 auto;padding:30px 34px 24px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;border-bottom:1px solid #eddfe0;background:#fff}
+.attendance-header .eyebrow{margin:0 0 8px;color:#a8141b;font-size:10px;letter-spacing:.15em;font-weight:800}
+.attendance-header h1{margin:0;color:#8f1218;font:600 34px/1.1 'Playfair Display',Georgia,serif;letter-spacing:-.02em}
+.attendance-header span{display:block;margin-top:8px;color:#866e71;font-size:11px;letter-spacing:.08em}
+.attendance-header-actions{display:flex;align-items:center;gap:10px;flex:none}
+.attendance-header-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:35px;padding:0 14px;border:1px solid #dfb9bc;background:#fff;color:#8f1218;font-size:11px;font-weight:700;text-decoration:none;transition:.18s}
+.attendance-header-actions a:hover{background:#fff0f1;border-color:#a8141b}
+.attendance-main{max-width:1180px;margin:0 auto;padding:25px 34px 0}
+.attendance-intro{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:22px 24px;background:linear-gradient(135deg,#941017,#bd2028);border-radius:8px;box-shadow:0 10px 25px rgba(143,18,24,.12);color:#fff}
+.attendance-intro .eyebrow{margin:0 0 7px;color:#ffe3a6;font-size:9px;letter-spacing:.15em;font-weight:800}
+.attendance-intro h2{margin:0;color:#fff;font:600 25px/1.15 'Playfair Display',Georgia,serif}
+.attendance-intro p:not(.eyebrow){margin:7px 0 0;color:#ffe9e9;font-size:11px;line-height:1.5}
+.attendance-primary{border:0;border-radius:4px;background:#fff;color:#8f1218;padding:10px 16px;min-height:38px;font-size:11px;font-weight:800;white-space:nowrap;box-shadow:0 2px 8px rgba(70,0,0,.12);transition:.18s}
+.attendance-primary:hover{background:#ffe8c0;transform:translateY(-1px)}
+.attendance-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.attendance-grid{display:grid;grid-template-columns:minmax(260px,.75fr) minmax(0,1.65fr);gap:18px;align-items:stretch;margin-top:18px}
+.qr-card,.attendance-report{background:#fff;border:1px solid #eddfe0;border-radius:7px;box-shadow:0 5px 18px rgba(143,18,24,.05)}
+.qr-card{min-height:365px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.qr-card img{width:250px;height:250px;max-width:100%;padding:8px;border:1px solid #f0d8da;background:#fff;object-fit:contain}
+.qr-card>strong{margin-top:13px;color:#a8141b;font-size:17px}
+.qr-card>small{max-width:260px;margin-top:5px;color:#866e71;font-size:10px;line-height:1.5}
+.qr-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#866e71}
+.qr-empty span{width:54px;height:54px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#fff0f1;color:#a8141b;font-size:28px}
+.qr-empty p{max-width:220px;margin:14px 0 0;font-size:11px;line-height:1.55}
+.attendance-report{min-width:0;overflow:hidden}
+.report-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 20px 14px;border-bottom:1px solid #f0e4e5}
+.report-heading h3{margin:0;color:#8f1218;font:600 20px/1.2 'Playfair Display',Georgia,serif}
+.report-heading span{display:block;margin-top:5px;color:#866e71;font-size:11px}
+.attendance-export{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:0 11px;border:1px solid #dfb9bc;color:#8f1218;background:#fff7f7;font-size:10px;font-weight:800;text-decoration:none;white-space:nowrap}
+.attendance-export:hover{background:#fff0f1;border-color:#a8141b}
+.attendance-table-wrap{overflow-x:auto}
+.attendance-table-wrap table{width:100%;border-collapse:collapse;font-size:11px}
+.attendance-table-wrap th{padding:10px 12px;background:#fff4f4;color:#8f1218;border-bottom:1px solid #eddfe0;text-align:left;font-size:10px;font-weight:800;white-space:nowrap}
+.attendance-table-wrap td{padding:10px 12px;border-bottom:1px solid #f3e9e9;color:#574446;vertical-align:middle}
+.attendance-table-wrap tbody tr:last-child td{border-bottom:0}
+.attendance-table-wrap tbody tr:hover{background:#fffafb}
+.attendance-status{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}
+.attendance-status.present{background:#edf8ef;color:#2b7a43}
+.attendance-status.absent{background:#fff0f1;color:#a75a61}
+.attendance-empty{margin:0;padding:40px 20px;text-align:center;color:#927477;font-size:11px}
+.attendance-notice{margin:15px 0 0;padding:10px 13px;border-left:3px solid #a8141b;background:#fff0f1;color:#7b353b;font-size:11px}
+.attendance-security{margin:18px 2px 0;color:#927477;font-size:10px;line-height:1.6;text-align:center}
+.attendance-loading{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fff8f8;color:#8f1218;font-size:13px}
+.scan-card{max-width:600px;margin:34px auto 0;padding:30px;background:#fff;border:1px solid #eddfe0;border-radius:8px;box-shadow:0 8px 24px rgba(143,18,24,.06)}
+.scan-card h2{margin:0;color:#8f1218;font:600 28px/1.15 'Playfair Display',Georgia,serif}
+.scan-card>p:not(.eyebrow):not(.attendance-notice):not(.attendance-error){color:#866e71;font-size:12px;line-height:1.6}
+.scan-card form{display:grid;gap:16px;margin-top:23px}
+.scan-card label{display:grid;gap:7px;color:#574446;font-size:11px;font-weight:800}
+.scan-card select{width:100%;min-height:42px;padding:0 12px;border:1px solid #dfc2c4;border-radius:4px;background:#fff;color:#3b2528;font-size:12px;outline:none}
+.scan-card select:focus{border-color:#a8141b;box-shadow:0 0 0 3px rgba(168,20,27,.1)}
+.scan-card .attendance-primary{background:#a8141b;color:#fff}
+.scan-card .attendance-primary:hover{background:#8f1218}
+.attendance-error{margin:15px 0 0;color:#a8141b;font-size:11px}
+@media(max-width:800px){.attendance-header,.attendance-main{padding-left:18px;padding-right:18px}.attendance-header{align-items:flex-start;flex-direction:column;gap:16px}.attendance-header h1{font-size:29px}.attendance-header-actions{align-self:stretch}.attendance-header-actions a{width:100%}.attendance-intro{align-items:flex-start;flex-direction:column;padding:19px}.attendance-intro .attendance-primary{width:100%}.attendance-grid{grid-template-columns:1fr}.qr-card{min-height:310px}.qr-card img{width:220px;height:220px}.report-heading{padding:16px}.attendance-table-wrap th,.attendance-table-wrap td{padding:9px 10px}}
+@media(max-width:520px){.attendance-main{padding-top:16px}.attendance-intro h2{font-size:22px}.report-heading{align-items:flex-start;flex-direction:column}.attendance-export{width:100%}.scan-card{margin:18px 18px 0;padding:22px 18px}.scan-card h2{font-size:25px}}

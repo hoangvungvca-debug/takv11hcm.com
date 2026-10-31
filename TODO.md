@@ -38,3 +38,6 @@
 
 ## Thứ tự Sidebar
 - [x] Đặt nút “Đăng xuất tài khoản” ngay bên dưới mục “Duyệt tài khoản”; trạng thái “Hệ thống đang hoạt động” nằm dưới nút đăng xuất.
+
+## Giao diện điểm danh
+- [x] Tối ưu màn hình Điểm danh cán bộ theo bố cục trắng-đỏ cân đối: tiêu đề và nút thao tác rõ ràng, QR căn giữa, bảng kết quả gọn, có trạng thái trực quan và hiển thị tốt trên điện thoại.
