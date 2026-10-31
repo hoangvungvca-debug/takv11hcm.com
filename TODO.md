@@ -56,3 +56,6 @@
 
 ## Tinh gọn Trang chủ
 - [x] Gỡ Khu phố trưởng, Cảnh sát khu vực và Hội thẩm nhân dân khỏi các thẻ nội dung Trang chủ; giữ nguyên các mục và đường dẫn tương ứng trong Sidebar cùng các trang tra cứu.
+
+## Tinh gọn Trang chủ – đợt 2
+- [x] Gỡ các thẻ Hội thẩm nhân dân, Hệ thống biểu mẫu và Danh bạ phối hợp khỏi phần Không gian làm việc trên Trang chủ; giữ nguyên đầy đủ các mục tương ứng trong Sidebar.
