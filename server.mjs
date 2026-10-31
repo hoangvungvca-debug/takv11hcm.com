@@ -371,7 +371,7 @@ async function api(req, res, url) {
   }
   if (url.pathname === '/api/media-library' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt để xem thư viện ảnh.' });
-    const connection = await db(); const [rows] = await connection.execute(`SELECT id, filename, content_type AS contentType, size_bytes AS size, created_at AS createdAt FROM media_library WHERE LOWER(owner_email)=LOWER(?) ORDER BY created_at DESC, id DESC`, [user.email || user.openId]);
+    const connection = await db(); const [rows] = await connection.execute(`SELECT id, owner_email AS ownerEmail, filename, content_type AS contentType, size_bytes AS size, created_at AS createdAt FROM media_library ORDER BY created_at DESC, id DESC`);
     return json(res, 200, { items: rows.map(row => ({ ...row, size: Number(row.size) })) });
   }
   if (url.pathname === '/api/media-library' && req.method === 'POST') {
@@ -390,7 +390,7 @@ async function api(req, res, url) {
   const mediaFileMatch = url.pathname.match(/^\/api\/media-library\/(\d+)\/file$/);
   if (mediaFileMatch && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để xem tệp.' });
-    const connection = await db(); const [rows] = await connection.execute('SELECT filename, content_type AS contentType, data_base64 AS dataBase64 FROM media_library WHERE id=? AND LOWER(owner_email)=LOWER(?) LIMIT 1', [Number(mediaFileMatch[1]), user.email || user.openId]);
+    const connection = await db(); const [rows] = await connection.execute('SELECT filename, content_type AS contentType, data_base64 AS dataBase64 FROM media_library WHERE id=? LIMIT 1', [Number(mediaFileMatch[1])]);
     if (!rows.length) return json(res, 404, { error: 'Không tìm thấy tệp của tài khoản này.' });
     const item = rows[0]; const disposition = url.searchParams.get('download') === '1' ? 'attachment' : 'inline'; const filename = String(item.filename || 'tep-media').replace(/[\\"\r\n]/g, '');
     res.writeHead(200, { 'Content-Type': item.contentType, 'Content-Length': Buffer.byteLength(item.dataBase64, 'base64'), 'Content-Disposition': `${disposition}; filename="${encodeURIComponent(filename)}"`, 'Cache-Control': 'private, no-store' }); return res.end(Buffer.from(item.dataBase64, 'base64'));

@@ -82,3 +82,6 @@
 - [x] Thêm mục “Thư viện ảnh” chỉ trong Sidebar và route nội bộ `/thu-vien-anh`; không thêm thẻ hoặc liên kết chức năng này vào Trang chủ.
 - [x] Cho phép tài khoản đã được phê duyệt tải ảnh/video lên, tối đa 40MB mỗi tệp; dữ liệu lưu riêng theo tài khoản.
 - [x] Hiển thị danh sách media riêng của tài khoản, xem trước ảnh/video, tải xuống và xóa tệp; backend kiểm tra xác thực và quyền sở hữu.
+
+## Thư viện ảnh – kho chung nội bộ
+- [x] Mọi tài khoản đã được duyệt đều xem được toàn bộ kho ảnh/video và tải tệp mới lên; mỗi thẻ hiển thị người tải lên. Quyền xóa vẫn giới hạn ở người đã tải tệp để tránh xóa nhầm dữ liệu chung.
