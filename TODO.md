@@ -50,3 +50,6 @@
 - [x] Lịch được chia sẻ hiển thị cột “Thao tác” với các nút Sửa, Xóa và Tải về cho người nhận.
 - [x] Backend cho phép người nhận lịch đã được chia sẻ sửa hoặc xóa đúng bản ghi; quyền được kiểm tra bằng tài khoản đăng nhập và quan hệ chia sẻ.
 - [x] Bổ sung tải lịch dạng `.ics` để mở trên ứng dụng lịch máy tính/điện thoại.
+
+## Điều chỉnh thao tác lịch
+- [x] Bỏ nút “Tải về” và mã tải ICS khỏi giao diện lịch; chỉ giữ nút “Sửa” và “Xóa” cho lịch được chia sẻ.
