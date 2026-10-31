@@ -41,3 +41,7 @@
 
 ## Giao diện điểm danh
 - [x] Tối ưu màn hình Điểm danh cán bộ theo bố cục trắng-đỏ cân đối: tiêu đề và nút thao tác rõ ràng, QR căn giữa, bảng kết quả gọn, có trạng thái trực quan và hiển thị tốt trên điện thoại.
+
+## Cập nhật điểm danh
+- [x] Xóa cán bộ “Trịnh Xuân Luyến” và “Huỳnh Ngọc Trí” khỏi dữ liệu nguồn và bảng cán bộ điểm danh.
+- [x] Đổi thời hạn mã QR điểm danh từ 60 giây thành 5 phút ở backend, bộ đếm giao diện và nội dung hướng dẫn trên màn hình.
