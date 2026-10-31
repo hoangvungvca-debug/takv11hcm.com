@@ -99,3 +99,6 @@
 - [x] Thêm chuông ngay bên dưới lời chào cán bộ trên Trang chủ; hiển thị huy hiệu số lượng thông báo mới.
 - [x] Hiển thị thông báo khi tài khoản khác chia sẻ lịch và khi lịch sắp đến thời điểm nhắc; cập nhật tự động cùng dữ liệu lịch.
 - [x] Cho phép mở danh sách thông báo, xem người chia sẻ, thời gian, nội dung nhắc và mở nhanh trang Lịch làm việc; trạng thái đã xem lưu riêng theo từng tài khoản trên trình duyệt.
+
+## Tinh gọn Thư viện ảnh
+- [x] Xóa các nút “Xem”, “Tải xuống”, “Chỉnh sửa” và “Xóa” khỏi bên dưới từng thẻ ảnh; giữ nguyên toàn bộ thao tác trong cửa sổ mở khi click trực tiếp vào ảnh.
