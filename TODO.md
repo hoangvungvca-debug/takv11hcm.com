@@ -74,3 +74,6 @@
 
 ## Danh sách chia sẻ lịch
 - [x] Hiển thị tài khoản được chia sẻ theo danh sách dọc, có ô tìm kiếm theo tên hoặc email, giữ nút Chọn tất cả và hiển thị rõ trường hợp không có kết quả.
+
+## Giao diện bảng Lưu trữ bưu gửi
+- [x] Tăng cỡ chữ và độ thoáng cho tiêu đề cột, dữ liệu, mã vận đơn, kết quả và nút thao tác; căn giữa tiêu đề cột và các trường ngắn, giữ nội dung dài căn trái.

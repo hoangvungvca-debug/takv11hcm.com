@@ -6,3 +6,34 @@
 
 .postal-owner-caption{margin:4px 0 0;color:#8b7375;font-size:10px}.postal-table-heading>div{display:flex;flex-direction:column;gap:0}.postal-preview-button{border:1px solid #dcb8bb;background:#fff;color:var(--red);border-radius:4px;padding:7px 10px;font-size:10px;cursor:pointer}.postal-upload-preview{cursor:zoom-in}.postal-tracking{display:flex;flex-direction:column;gap:6px;min-width:125px}.postal-tracking strong{color:#4d3b3e;white-space:nowrap}.postal-tracking-actions{display:flex;align-items:center;gap:5px;flex-wrap:wrap}.postal-tracking-actions button,.postal-tracking-actions a{border:1px solid #dcb8bb;background:#fff;color:var(--red);border-radius:3px;padding:4px 6px;font-size:9px;cursor:pointer;text-decoration:none;white-space:nowrap}.postal-tracking-actions button:hover,.postal-tracking-actions a:hover{background:#fff0f1}.postal-image-link{border:0;background:transparent;padding:0;cursor:zoom-in}.postal-image-link:hover span{text-decoration:underline}.postal-lightbox{position:fixed;z-index:1000;inset:0;background:rgba(42,15,17,.78);display:flex;align-items:center;justify-content:center;padding:24px}.postal-lightbox-panel{width:min(94vw,1100px);height:min(92vh,820px);background:#fff;border-radius:8px;box-shadow:0 18px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden}.postal-lightbox-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;background:#fff8f8;border-bottom:1px solid #eddfe0;color:var(--red);font-size:12px}.postal-lightbox-toolbar>div{display:flex;align-items:center;gap:6px}.postal-lightbox-toolbar button{border:1px solid #dcb8bb;background:#fff;color:var(--red);border-radius:4px;min-width:30px;height:29px;padding:4px 8px;cursor:pointer;font-weight:700}.postal-lightbox-toolbar button:hover{background:#fff0f1}.postal-lightbox-toolbar span{min-width:46px;text-align:center;color:#684e51;font-size:10px}.postal-lightbox-toolbar .postal-download-button{background:var(--red);color:#fff;border-color:var(--red)}.postal-lightbox-toolbar .postal-close-button{background:#684e51;color:#fff;border-color:#684e51}.postal-lightbox-stage{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:30px;background:#2b2021}.postal-lightbox-stage img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center center;transition:transform .18s ease;box-shadow:0 4px 18px rgba(0,0,0,.28)}
 @media(max-width:760px){.postal-lightbox{padding:8px}.postal-lightbox-panel{width:100%;height:90vh}.postal-lightbox-toolbar{align-items:flex-start;flex-direction:column}.postal-lightbox-toolbar>div{width:100%;justify-content:flex-end}.postal-lightbox-stage{padding:15px}.postal-tracking{min-width:110px}}
+
+/* Bảng bưu gửi: font rõ hơn, tiêu đề cân đối và thao tác dễ nhìn */
+.postal-heading h2{font-size:34px;line-height:1.15}
+.postal-heading p:not(.eyebrow){font-size:13px}
+.postal-table-heading{padding:18px 20px}
+.postal-table-heading h3{font-size:23px}
+.postal-table-heading span{font-size:12px}
+.postal-owner-caption{font-size:12px}
+.postal-filters label{font-size:12px}
+.postal-filters input,.postal-filters select{font-size:13px;padding:10px 11px}
+.postal-filters button,.postal-export-actions button{font-size:12px;padding:10px 13px}
+.postal-table-scroll table{min-width:1500px;font-size:13px}
+.postal-table-scroll th{font-size:13px;text-align:center;vertical-align:middle;padding:13px 11px;line-height:1.3}
+.postal-table-scroll td{font-size:13px;line-height:1.55;padding:13px 11px;vertical-align:middle}
+.postal-table-scroll td:nth-child(1),.postal-table-scroll td:nth-child(2),.postal-table-scroll td:nth-child(5),.postal-table-scroll td:nth-child(6),.postal-table-scroll td:nth-child(8),.postal-table-scroll td:nth-child(9),.postal-table-scroll td:nth-child(10){text-align:center}
+.postal-table-scroll td:nth-child(4){min-width:250px}
+.postal-tracking{min-width:150px;gap:7px}
+.postal-tracking strong{font-size:13px}
+.postal-tracking-actions button,.postal-tracking-actions a{font-size:11px;padding:6px 8px}
+.postal-result{font-size:12px}
+.postal-image-link{font-size:11px}
+.postal-thumb{width:78px;height:56px}
+.postal-main .letter-row-actions{justify-content:center;gap:6px}
+.postal-main .letter-row-actions button{font-size:11px;padding:7px 10px}
+@media(max-width:760px){
+  .postal-heading h2{font-size:29px}
+  .postal-table-heading h3{font-size:21px}
+  .postal-table-scroll table{min-width:1500px}
+  .postal-table-scroll th{font-size:13px}
+  .postal-table-scroll td{font-size:13px}
+}
