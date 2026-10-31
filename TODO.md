@@ -77,3 +77,8 @@
 
 ## Giao diện bảng Lưu trữ bưu gửi
 - [x] Tăng cỡ chữ và độ thoáng cho tiêu đề cột, dữ liệu, mã vận đơn, kết quả và nút thao tác; căn giữa tiêu đề cột và các trường ngắn, giữ nội dung dài căn trái.
+
+## Thư viện ảnh
+- [x] Thêm mục “Thư viện ảnh” chỉ trong Sidebar và route nội bộ `/thu-vien-anh`; không thêm thẻ hoặc liên kết chức năng này vào Trang chủ.
+- [x] Cho phép tài khoản đã được phê duyệt tải ảnh/video lên, tối đa 40MB mỗi tệp; dữ liệu lưu riêng theo tài khoản.
+- [x] Hiển thị danh sách media riêng của tài khoản, xem trước ảnh/video, tải xuống và xóa tệp; backend kiểm tra xác thực và quyền sở hữu.

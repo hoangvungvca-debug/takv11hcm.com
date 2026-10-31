@@ -28,6 +28,7 @@ let resetSchemaPromise;
 let accountSchemaPromise;
 let attendanceSchemaPromise;
 let calendarSchemaPromise;
+let mediaLibrarySchemaPromise;
 
 const base64url = (value) => Buffer.from(value).toString('base64url');
 const parseJson = (value) => { try { return JSON.parse(value); } catch { return null; } };
@@ -55,10 +56,10 @@ const setSessionCookie = (res, name, value, remember) => remember ? setCookie(re
 const clearCookie = (res, name) => appendCookie(res, `${name}=; Max-Age=0; Path=/; HttpOnly; SameSite=None; Secure`);
 const json = (res, status, body) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }); res.end(JSON.stringify(body)); };
 const readBody = async (req) => { let raw = ''; for await (const chunk of req) raw += chunk; return parseJson(raw) || {}; };
-const readMultipartFile = async (req) => {
+const readMultipartFile = async (req, maxBytes = 10 * 1024 * 1024) => {
   const type = String(req.headers['content-type'] || ''); const match = type.match(/boundary=(?:"([^"]+)"|([^;]+))/i); if (!match) return null;
   const boundary = Buffer.from(`--${match[1] || match[2]}`); const chunks = []; let size = 0;
-  for await (const chunk of req) { size += chunk.length; if (size > 10 * 1024 * 1024) throw new Error('Tệp tải lên vượt quá 10MB.'); chunks.push(chunk); }
+  for await (const chunk of req) { size += chunk.length; if (size > maxBytes) throw new Error(`Tệp tải lên vượt quá ${Math.round(maxBytes / (1024 * 1024))}MB.`); chunks.push(chunk); }
   const raw = Buffer.concat(chunks); const start = raw.indexOf(boundary); if (start < 0) return null; const headerStart = start + boundary.length + 2; const headerEnd = raw.indexOf(Buffer.from('\r\n\r\n'), headerStart); if (headerEnd < 0) return null;
   const headers = raw.slice(headerStart, headerEnd).toString('utf8'); const disposition = headers.match(/name="([^"]+)"(?:;\s*filename="([^"]*)")?/i); const contentType = headers.match(/content-type:\s*([^\r\n]+)/i)?.[1]?.trim() || 'application/octet-stream'; if (!disposition?.[2]) return null;
   const dataStart = headerEnd + 4; const dataEnd = raw.indexOf(Buffer.from(`\r\n${boundary.toString()}`), dataStart); const data = raw.slice(dataStart, dataEnd > 0 ? dataEnd : raw.length); return { filename: disposition[2], contentType, data };
@@ -199,6 +200,17 @@ async function db() {
     )`)
   ]);
   await calendarSchemaPromise;
+  if (!mediaLibrarySchemaPromise) mediaLibrarySchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS media_library (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    owner_email VARCHAR(255) NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    content_type VARCHAR(120) NOT NULL,
+    size_bytes BIGINT UNSIGNED NOT NULL,
+    data_base64 LONGTEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_media_library_owner (owner_email), INDEX idx_media_library_created (created_at)
+  )`);
+  await mediaLibrarySchemaPromise;
   if (!resetSchemaPromise) resetSchemaPromise = pool.query(`CREATE TABLE IF NOT EXISTS password_reset_tokens (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     open_id VARCHAR(191) NOT NULL,
@@ -356,6 +368,36 @@ async function api(req, res, url) {
     const connection = await db();
     const [rows] = await connection.execute('SELECT payload FROM directory_contacts WHERE category=?', [category]);
     return json(res, 200, { entries: rows.map((row) => typeof row.payload === 'string' ? JSON.parse(row.payload) : row.payload) });
+  }
+  if (url.pathname === '/api/media-library' && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt để xem thư viện ảnh.' });
+    const connection = await db(); const [rows] = await connection.execute(`SELECT id, filename, content_type AS contentType, size_bytes AS size, created_at AS createdAt FROM media_library WHERE LOWER(owner_email)=LOWER(?) ORDER BY created_at DESC, id DESC`, [user.email || user.openId]);
+    return json(res, 200, { items: rows.map(row => ({ ...row, size: Number(row.size) })) });
+  }
+  if (url.pathname === '/api/media-library' && req.method === 'POST') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập bằng tài khoản đã được duyệt để tải tệp lên.' });
+    try {
+      const file = await readMultipartFile(req, 40 * 1024 * 1024);
+      if (!file) return json(res, 400, { error: 'Vui lòng chọn một tệp ảnh hoặc video.' });
+      if (!file.contentType.startsWith('image/') && !file.contentType.startsWith('video/')) return json(res, 400, { error: 'Chỉ hỗ trợ tệp ảnh hoặc video.' });
+      if (!file.data.length) return json(res, 400, { error: 'Tệp không có dữ liệu.' });
+      const filename = String(file.filename || 'tep-media').replace(/[\\/\0]/g, '').slice(0, 255) || 'tep-media';
+      const dataBase64 = file.data.toString('base64'); const connection = await db();
+      const [result] = await connection.execute('INSERT INTO media_library (owner_email, filename, content_type, size_bytes, data_base64) VALUES (?,?,?,?,?)', [user.email || user.openId, filename, file.contentType.slice(0, 120), file.data.length, dataBase64]);
+      return json(res, 201, { ok: true, id: result.insertId });
+    } catch (error) { return json(res, 400, { error: error instanceof Error ? error.message : 'Không thể tải tệp lên.' }); }
+  }
+  const mediaFileMatch = url.pathname.match(/^\/api\/media-library\/(\d+)\/file$/);
+  if (mediaFileMatch && req.method === 'GET') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để xem tệp.' });
+    const connection = await db(); const [rows] = await connection.execute('SELECT filename, content_type AS contentType, data_base64 AS dataBase64 FROM media_library WHERE id=? AND LOWER(owner_email)=LOWER(?) LIMIT 1', [Number(mediaFileMatch[1]), user.email || user.openId]);
+    if (!rows.length) return json(res, 404, { error: 'Không tìm thấy tệp của tài khoản này.' });
+    const item = rows[0]; const disposition = url.searchParams.get('download') === '1' ? 'attachment' : 'inline'; const filename = String(item.filename || 'tep-media').replace(/[\\"\r\n]/g, '');
+    res.writeHead(200, { 'Content-Type': item.contentType, 'Content-Length': Buffer.byteLength(item.dataBase64, 'base64'), 'Content-Disposition': `${disposition}; filename="${encodeURIComponent(filename)}"`, 'Cache-Control': 'private, no-store' }); return res.end(Buffer.from(item.dataBase64, 'base64'));
+  }
+  if (url.pathname.startsWith('/api/media-library/') && req.method === 'DELETE') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để xóa tệp.' }); const id = Number(url.pathname.split('/').pop()); if (!Number.isInteger(id) || id < 1) return json(res, 400, { error: 'Mã tệp không hợp lệ.' });
+    const connection = await db(); const [result] = await connection.execute('DELETE FROM media_library WHERE id=? AND LOWER(owner_email)=LOWER(?)', [id, user.email || user.openId]); if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy tệp của tài khoản này.' }); return json(res, 200, { ok: true });
   }
   if (url.pathname === '/api/postal-archive' && req.method === 'GET') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để xem lưu trữ bưu gửi.' });
@@ -555,7 +597,7 @@ async function handle(req, res) {
       return json(res, 404, { error: 'Không tìm thấy tài nguyên.' });
     }
     if (url.pathname.startsWith('/api/') || url.pathname === '/_app/health') return await api(req, res, url);
-    if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/diem-danh', '/diem-danh/quet', '/lich-lam-viec', '/luu-tru-buu-gui', '/admin'].includes(url.pathname)) {
+    if (req.method === 'GET' && ['/', '/so-cong-van', '/so-cong-van-di', '/hoi-tham', '/khu-pho-truong', '/canh-sat-khu-vuc', '/bieu-mau', '/diem-danh', '/diem-danh/quet', '/lich-lam-viec', '/luu-tru-buu-gui', '/thu-vien-anh', '/admin'].includes(url.pathname)) {
       const user = await currentUser(req, res);
       if (!user || !['approved', 'admin'].includes(user.status)) { res.writeHead(302, { Location: `/dang-nhap${url.search}` }); return res.end(); }
       if (url.pathname === '/admin' && !isAdmin(user)) { res.writeHead(302, { Location: '/so-cong-van' }); return res.end(); }
