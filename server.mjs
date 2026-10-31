@@ -395,6 +395,15 @@ async function api(req, res, url) {
     const item = rows[0]; const disposition = url.searchParams.get('download') === '1' ? 'attachment' : 'inline'; const filename = String(item.filename || 'tep-media').replace(/[\\"\r\n]/g, '');
     res.writeHead(200, { 'Content-Type': item.contentType, 'Content-Length': Buffer.byteLength(item.dataBase64, 'base64'), 'Content-Disposition': `${disposition}; filename="${encodeURIComponent(filename)}"`, 'Cache-Control': 'private, no-store' }); return res.end(Buffer.from(item.dataBase64, 'base64'));
   }
+  if (url.pathname.startsWith('/api/media-library/') && req.method === 'PUT') {
+    const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để chỉnh sửa ảnh.' });
+    const id = Number(url.pathname.split('/').pop()); if (!Number.isInteger(id) || id < 1) return json(res, 400, { error: 'Mã tệp không hợp lệ.' });
+    const body = await readBody(req); const match = String(body.dataUrl || '').match(/^data:(image\/[a-z0-9.+-]+);base64,([A-Za-z0-9+/=]+)$/i);
+    if (!match) return json(res, 400, { error: 'Ảnh chỉnh sửa không hợp lệ.' });
+    const data = Buffer.from(match[2], 'base64'); if (!data.length || data.length > 40 * 1024 * 1024) return json(res, 400, { error: 'Ảnh sau chỉnh sửa vượt quá 40MB.' });
+    const connection = await db(); const [result] = await connection.execute("UPDATE media_library SET content_type=?, size_bytes=?, data_base64=? WHERE id=? AND LOWER(owner_email)=LOWER(?) AND content_type LIKE 'image/%'", [match[1].toLowerCase(), data.length, data.toString('base64'), id, user.email || user.openId]);
+    if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy ảnh hoặc bạn không có quyền chỉnh sửa.' }); return json(res, 200, { ok: true });
+  }
   if (url.pathname.startsWith('/api/media-library/') && req.method === 'DELETE') {
     const user = await currentUser(req); if (!user || !['approved', 'admin'].includes(user.status)) return json(res, 403, { error: 'Bạn cần đăng nhập để xóa tệp.' }); const id = Number(url.pathname.split('/').pop()); if (!Number.isInteger(id) || id < 1) return json(res, 400, { error: 'Mã tệp không hợp lệ.' });
     const connection = await db(); const [result] = await connection.execute('DELETE FROM media_library WHERE id=? AND LOWER(owner_email)=LOWER(?)', [id, user.email || user.openId]); if (!result.affectedRows) return json(res, 404, { error: 'Không tìm thấy tệp của tài khoản này.' }); return json(res, 200, { ok: true });

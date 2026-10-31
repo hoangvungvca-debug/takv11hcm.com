@@ -85,3 +85,8 @@
 
 ## Thư viện ảnh – kho chung nội bộ
 - [x] Mọi tài khoản đã được duyệt đều xem được toàn bộ kho ảnh/video và tải tệp mới lên; mỗi thẻ hiển thị người tải lên. Quyền xóa vẫn giới hạn ở người đã tải tệp để tránh xóa nhầm dữ liệu chung.
+
+## Thao tác Thư viện ảnh
+- [x] Click ảnh mở modal xem lớn; có phóng to, thu nhỏ, xoay, xem trước, tải xuống và đóng.
+- [x] Người tải ảnh có thể vào chế độ “Chỉnh sửa” và lưu ảnh sau khi xoay/phóng to/thu nhỏ; người khác vẫn xem và tải xuống được.
+- [x] Có nút Xóa trong thẻ và modal; backend tiếp tục kiểm tra quyền sở hữu trước khi chỉnh sửa hoặc xóa.
