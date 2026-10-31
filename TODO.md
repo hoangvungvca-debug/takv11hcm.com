@@ -71,3 +71,6 @@
 
 ## Khôi phục lời chào Trang chủ
 - [x] Khôi phục “Xin chào, [tên cán bộ]” ở bên phải tiêu đề Trang chủ; không khôi phục lại nút “Hỗ trợ hệ thống” hoặc “Tài khoản”.
+
+## Danh sách chia sẻ lịch
+- [x] Hiển thị tài khoản được chia sẻ theo danh sách dọc, có ô tìm kiếm theo tên hoặc email, giữ nút Chọn tất cả và hiển thị rõ trường hợp không có kết quả.

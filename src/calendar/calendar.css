@@ -8,3 +8,12 @@
 
 /* Trên điện thoại vẫn giữ bố cục desktop theo yêu cầu; người dùng có thể cuộn ngang bảng. */
 @media(max-width:760px){.calendar-shell{min-width:1100px}.calendar-main{min-width:980px;max-width:1180px;padding:34px 42px 90px}.calendar-heading{display:flex}.calendar-notify{margin-top:0}.calendar-layout{grid-template-columns:330px 1fr}.calendar-event{display:flex}.calendar-event-actions{margin-top:0}.calendar-event-actions button{margin-right:0}}
+
+/* Danh sách tài khoản chia sẻ: dọc, dễ quét và có tìm kiếm */
+.share-modal{max-width:440px}
+.share-search{box-sizing:border-box!important;margin-top:13px!important;padding:10px 12px!important;border:1px solid #e4bfc1!important;background:#fff!important;color:#4e3b3e}
+.share-search:focus{box-shadow:0 0 0 3px #fff0f1}
+.share-options{display:flex!important;flex-direction:column!important;max-height:300px!important;overflow-y:auto!important;overflow-x:hidden!important;padding:4px!important}
+.share-check{width:100%;box-sizing:border-box;min-height:46px;align-items:flex-start!important}
+.share-check span{flex:1}
+@media(max-width:520px){.share-modal{max-width:calc(100% - 24px);padding:18px}.share-options{max-height:270px!important}.share-check{padding:10px 8px}}
