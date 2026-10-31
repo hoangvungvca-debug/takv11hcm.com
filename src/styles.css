@@ -324,3 +324,25 @@ body{background:#fff8f8;color:var(--ink)}
   .workspace-directory .quick-card strong{font-size:14px}
   .workspace-directory .quick-desc{font-size:8px}
 }
+
+/* Chuông thông báo lịch dưới lời chào */
+.header-actions{position:relative}
+.notification-wrap{position:relative;display:flex;justify-content:flex-end}
+.notification-bell{position:relative;display:inline-flex;align-items:center;justify-content:center;width:34px;height:30px;border:1px solid #e4c5c7;border-radius:5px;background:#fff;color:var(--red);cursor:pointer;box-shadow:0 2px 7px rgba(143,18,24,.06)}
+.notification-bell:hover,.notification-bell.is-open{background:#fff0f1;border-color:#c58b8f}
+.notification-bell>span:first-of-type{font-size:16px;line-height:1}
+.notification-bell>b{position:absolute;right:-7px;top:-8px;min-width:17px;height:17px;padding:0 4px;border-radius:10px;background:var(--red);color:#fff;border:2px solid #fff;font-size:9px;line-height:13px;text-align:center}
+.notification-panel{position:absolute;right:0;top:38px;z-index:30;width:320px;background:#fff;border:1px solid #e7d3d5;border-radius:7px;box-shadow:0 12px 30px rgba(71,25,28,.16);overflow:hidden;text-align:left}
+.notification-panel-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#fff8f8;border-bottom:1px solid #f0e2e3;color:var(--red);font-size:12px}
+.notification-panel-head a{color:var(--red);font-size:10px;font-weight:700;text-decoration:none}
+.notification-list{max-height:275px;overflow:auto}
+.notification-item{display:flex;gap:9px;padding:11px 13px;border-bottom:1px solid #f3e8e8;text-decoration:none;color:var(--ink);background:#fff}
+.notification-item:hover{background:#fff8f8}
+.notification-item-icon{width:25px;height:25px;display:grid;place-items:center;flex:none;border-radius:50%;background:#fff0f1;color:var(--red);font-size:14px}
+.notification-item.is-reminder .notification-item-icon{background:#fff5df;color:#a56c16}
+.notification-item span:last-child{min-width:0}
+.notification-item strong,.notification-item small{display:block}
+.notification-item strong{color:#5d3438;font-size:11px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.notification-item small{margin-top:3px;color:#907b7e;font-size:9px;line-height:1.45}
+.notification-empty{margin:0;padding:20px 14px;color:#927c7f;font-size:10px;line-height:1.5}
+@media(max-width:520px){.notification-panel{position:fixed;right:12px;top:118px;width:min(320px,calc(100vw - 24px))}.notification-bell{width:32px;height:28px}}

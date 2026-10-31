@@ -94,3 +94,8 @@
 ## Sắp xếp lịch trong Sidebar
 - [x] Đổi “Lịch làm việc – Nhắc việc” thành “Lịch làm việc cá nhân - Nhắc việc”.
 - [x] Đổi “Lịch làm việc theo tuần” thành “Lịch làm việc cơ quan theo tuần” và đặt ngay bên dưới mục lịch cá nhân; giữ liên kết Google Docs hiện có.
+
+## Chuông thông báo lịch
+- [x] Thêm chuông ngay bên dưới lời chào cán bộ trên Trang chủ; hiển thị huy hiệu số lượng thông báo mới.
+- [x] Hiển thị thông báo khi tài khoản khác chia sẻ lịch và khi lịch sắp đến thời điểm nhắc; cập nhật tự động cùng dữ liệu lịch.
+- [x] Cho phép mở danh sách thông báo, xem người chia sẻ, thời gian, nội dung nhắc và mở nhanh trang Lịch làm việc; trạng thái đã xem lưu riêng theo từng tài khoản trên trình duyệt.
