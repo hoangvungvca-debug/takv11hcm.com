@@ -68,3 +68,6 @@
 
 ## Tinh gọn đầu Trang chủ
 - [x] Xóa cụm nút “Hỗ trợ hệ thống” và “Tài khoản” khỏi phần đầu Trang chủ; giữ nguyên các chức năng đăng nhập và quản trị trong Sidebar cùng các route tương ứng.
+
+## Khôi phục lời chào Trang chủ
+- [x] Khôi phục “Xin chào, [tên cán bộ]” ở bên phải tiêu đề Trang chủ; không khôi phục lại nút “Hỗ trợ hệ thống” hoặc “Tài khoản”.
