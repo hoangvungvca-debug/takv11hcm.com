@@ -65,3 +65,6 @@
 
 ## Thiết kế thẻ nghiệp vụ – phiên bản chuyên nghiệp
 - [x] Làm mới Lịch cần làm và Không gian làm việc bằng thẻ nền sáng, bo góc nhẹ, đổ bóng tinh tế, điểm nhấn đỏ nhất quán và font chữ lớn hơn để dễ đọc.
+
+## Tinh gọn đầu Trang chủ
+- [x] Xóa cụm nút “Hỗ trợ hệ thống” và “Tài khoản” khỏi phần đầu Trang chủ; giữ nguyên các chức năng đăng nhập và quản trị trong Sidebar cùng các route tương ứng.
