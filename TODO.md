@@ -62,3 +62,6 @@
 
 ## Thiết kế Không gian làm việc
 - [x] Thu gọn tiêu đề, khoảng cách, chiều cao thẻ, biểu tượng và cỡ chữ của bốn chức năng còn lại trên Trang chủ; giữ khả năng đọc rõ và bố cục cân đối trên màn hình nhỏ.
+
+## Thiết kế thẻ nghiệp vụ – phiên bản chuyên nghiệp
+- [x] Làm mới Lịch cần làm và Không gian làm việc bằng thẻ nền sáng, bo góc nhẹ, đổ bóng tinh tế, điểm nhấn đỏ nhất quán và font chữ lớn hơn để dễ đọc.

@@ -284,3 +284,43 @@ body{background:#fff8f8;color:var(--ink)}
 .workspace-directory .quick-desc{font-size:8px;line-height:1.25;margin-top:3px}
 .workspace-directory .quick-card>b{font-size:14px}
 @media(max-width:760px){.workspace-directory{padding:16px 16px 0!important}.workspace-directory>.section-title h2{font-size:22px}.workspace-directory .quick-grid{gap:7px}.workspace-directory .quick-card{min-height:70px!important;padding:9px 8px!important;grid-template-columns:26px minmax(0,1fr) auto;gap:6px}.workspace-directory .quick-icon{width:26px;height:26px;font-size:14px}.workspace-directory .quick-card strong{font-size:12px}.workspace-directory .quick-desc{font-size:7px}}
+
+/* Giao diện thẻ nghiệp vụ: rõ chữ, gọn và chuyên nghiệp */
+.home-calendar-notice{padding:24px 32px 34px!important}
+.home-calendar-notice .section-title{margin-bottom:14px}
+.home-calendar-notice .section-title .eyebrow{font-size:10px;letter-spacing:.14em}
+.home-calendar-notice .section-title h2{font-size:32px}
+.home-calendar-link{font-size:11px!important;padding:10px 14px!important;border-radius:4px;box-shadow:0 3px 8px rgba(143,18,24,.06)}
+.home-calendar-list{gap:12px}
+.home-calendar-list article{min-height:96px!important;padding:15px 16px!important;gap:13px;border-radius:5px;background:linear-gradient(180deg,#fff 0%,#fffdfd 100%);box-shadow:0 4px 13px rgba(119,22,29,.045)}
+.home-calendar-icon{width:36px;height:36px;font-size:20px;border-radius:5px}
+.home-calendar-list strong{font-size:20px!important;line-height:1.25!important}
+.home-calendar-list time,.home-calendar-list small{font-size:13px!important;line-height:1.45;margin-top:5px}
+.workspace-directory{padding:22px 32px 0!important}
+.workspace-directory>.section-title{margin-bottom:14px}
+.workspace-directory>.section-title h2{font-size:29px}
+.workspace-directory>.section-title .eyebrow{font-size:9px}
+.workspace-directory .quick-grid{gap:10px}
+.workspace-directory .quick-card{min-height:84px!important;padding:12px 13px!important;grid-template-columns:33px minmax(0,1fr) auto;gap:10px;border-radius:6px;background:linear-gradient(180deg,#fff 0%,#fffdfd 100%);box-shadow:0 4px 13px rgba(119,22,29,.045)}
+.workspace-directory .quick-icon{width:33px;height:33px;font-size:18px}
+.workspace-directory .quick-card small{font-size:8px}
+.workspace-directory .quick-card strong{font-size:16px;line-height:1.18;margin-top:3px}
+.workspace-directory .quick-desc{font-size:9px;line-height:1.3;margin-top:4px}
+.workspace-directory .quick-card>b{font-size:16px}
+@media(max-width:760px){
+  .home-calendar-notice{padding:20px 16px 28px!important}
+  .home-calendar-notice .section-title h2{font-size:26px}
+  .home-calendar-link{font-size:10px!important;padding:8px 10px!important}
+  .home-calendar-list{gap:8px}
+  .home-calendar-list article{min-height:92px!important;padding:12px 10px!important;gap:8px}
+  .home-calendar-icon{width:30px;height:30px;font-size:17px}
+  .home-calendar-list strong{font-size:16px!important}
+  .home-calendar-list time,.home-calendar-list small{font-size:11px!important}
+  .workspace-directory{padding:18px 16px 0!important}
+  .workspace-directory>.section-title h2{font-size:24px}
+  .workspace-directory .quick-grid{gap:8px}
+  .workspace-directory .quick-card{min-height:78px!important;padding:10px 9px!important;grid-template-columns:29px minmax(0,1fr) auto;gap:7px}
+  .workspace-directory .quick-icon{width:29px;height:29px;font-size:16px}
+  .workspace-directory .quick-card strong{font-size:14px}
+  .workspace-directory .quick-desc{font-size:8px}
+}
