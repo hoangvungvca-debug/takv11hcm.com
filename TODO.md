@@ -53,3 +53,6 @@
 
 ## Điều chỉnh thao tác lịch
 - [x] Bỏ nút “Tải về” và mã tải ICS khỏi giao diện lịch; chỉ giữ nút “Sửa” và “Xóa” cho lịch được chia sẻ.
+
+## Tinh gọn Trang chủ
+- [x] Gỡ Khu phố trưởng, Cảnh sát khu vực và Hội thẩm nhân dân khỏi các thẻ nội dung Trang chủ; giữ nguyên các mục và đường dẫn tương ứng trong Sidebar cùng các trang tra cứu.
