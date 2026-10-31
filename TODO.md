@@ -45,3 +45,8 @@
 ## Cập nhật điểm danh
 - [x] Xóa cán bộ “Trịnh Xuân Luyến” và “Huỳnh Ngọc Trí” khỏi dữ liệu nguồn và bảng cán bộ điểm danh.
 - [x] Đổi thời hạn mã QR điểm danh từ 60 giây thành 5 phút ở backend, bộ đếm giao diện và nội dung hướng dẫn trên màn hình.
+
+## Lịch được chia sẻ – quyền thao tác
+- [x] Lịch được chia sẻ hiển thị cột “Thao tác” với các nút Sửa, Xóa và Tải về cho người nhận.
+- [x] Backend cho phép người nhận lịch đã được chia sẻ sửa hoặc xóa đúng bản ghi; quyền được kiểm tra bằng tài khoản đăng nhập và quan hệ chia sẻ.
+- [x] Bổ sung tải lịch dạng `.ics` để mở trên ứng dụng lịch máy tính/điện thoại.
