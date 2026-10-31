@@ -90,3 +90,7 @@
 - [x] Click ảnh mở modal xem lớn; có phóng to, thu nhỏ, xoay, xem trước, tải xuống và đóng.
 - [x] Người tải ảnh có thể vào chế độ “Chỉnh sửa” và lưu ảnh sau khi xoay/phóng to/thu nhỏ; người khác vẫn xem và tải xuống được.
 - [x] Có nút Xóa trong thẻ và modal; backend tiếp tục kiểm tra quyền sở hữu trước khi chỉnh sửa hoặc xóa.
+
+## Sắp xếp lịch trong Sidebar
+- [x] Đổi “Lịch làm việc – Nhắc việc” thành “Lịch làm việc cá nhân - Nhắc việc”.
+- [x] Đổi “Lịch làm việc theo tuần” thành “Lịch làm việc cơ quan theo tuần” và đặt ngay bên dưới mục lịch cá nhân; giữ liên kết Google Docs hiện có.
