@@ -270,3 +270,17 @@ body{background:#fff8f8;color:var(--ink)}
 /* Thứ tự Sidebar: Đăng xuất ngay dưới Duyệt tài khoản, trạng thái nằm cuối */
 .sidebar .sidebar-logout{position:static!important;left:auto;right:auto;bottom:auto;width:auto;flex:0 0 auto;margin:8px 0 0!important;padding:10px 10px 8px!important;background:#fff;border-top:1px solid #e7c7c9;z-index:auto}
 .sidebar .sidebar-bottom{flex:0 0 auto;margin-top:0}
+
+/* Không gian làm việc: thẻ gọn, dễ quét thông tin */
+.workspace-directory{padding:20px 32px 0!important}
+.workspace-directory>.section-title{margin-bottom:12px}
+.workspace-directory>.section-title h2{font-size:26px}
+.workspace-directory>.section-title .eyebrow{font-size:8px;margin-bottom:4px}
+.workspace-directory .quick-grid{gap:8px;margin-bottom:0}
+.workspace-directory .quick-card{min-height:76px!important;padding:10px 11px!important;grid-template-columns:29px minmax(0,1fr) auto;gap:8px;border-radius:4px}
+.workspace-directory .quick-icon{width:29px;height:29px;font-size:16px}
+.workspace-directory .quick-card small{font-size:7px}
+.workspace-directory .quick-card strong{font-size:14px;line-height:1.15;margin-top:2px}
+.workspace-directory .quick-desc{font-size:8px;line-height:1.25;margin-top:3px}
+.workspace-directory .quick-card>b{font-size:14px}
+@media(max-width:760px){.workspace-directory{padding:16px 16px 0!important}.workspace-directory>.section-title h2{font-size:22px}.workspace-directory .quick-grid{gap:7px}.workspace-directory .quick-card{min-height:70px!important;padding:9px 8px!important;grid-template-columns:26px minmax(0,1fr) auto;gap:6px}.workspace-directory .quick-icon{width:26px;height:26px;font-size:14px}.workspace-directory .quick-card strong{font-size:12px}.workspace-directory .quick-desc{font-size:7px}}

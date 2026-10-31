@@ -59,3 +59,6 @@
 
 ## Tinh gọn Trang chủ – đợt 2
 - [x] Gỡ các thẻ Hội thẩm nhân dân, Hệ thống biểu mẫu và Danh bạ phối hợp khỏi phần Không gian làm việc trên Trang chủ; giữ nguyên đầy đủ các mục tương ứng trong Sidebar.
+
+## Thiết kế Không gian làm việc
+- [x] Thu gọn tiêu đề, khoảng cách, chiều cao thẻ, biểu tượng và cỡ chữ của bốn chức năng còn lại trên Trang chủ; giữ khả năng đọc rõ và bố cục cân đối trên màn hình nhỏ.
